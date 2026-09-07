@@ -4,14 +4,85 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quản lý lịch đào tạo</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f5f6f8;
+    }
+
+    h1 {
+      color: #1f3c5c;
+    }
+
+    .container {
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #1f3c5c;
+      color: white;
+    }
+  </style>
 </head>
 
 <body>
-  <h1>Quản lý lịch đào tạo</h1>
 
-  <p>
-    Website hỗ trợ theo dõi lịch tổ chức các khóa học,
-    phát hiện trùng lịch và kiểm tra học viên đăng ký nhiều khóa cùng thời điểm.
-  </p>
+  <div class="container">
+
+    <h1>Quản lý lịch đào tạo</h1>
+
+    <p>
+      Theo dõi thời gian tổ chức các khóa học và kiểm tra trùng lịch.
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Tên khóa học</th>
+          <th>Ngày bắt đầu</th>
+          <th>Ngày kết thúc</th>
+          <th>Thời gian</th>
+          <th>Số học viên</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td>Quản trị rủi ro</td>
+          <td>15/09/2026</td>
+          <td>16/09/2026</td>
+          <td>08:30 - 16:30</td>
+          <td>25</td>
+        </tr>
+
+        <tr>
+          <td>Kỹ năng đàm phán</td>
+          <td>16/09/2026</td>
+          <td>16/09/2026</td>
+          <td>14:00 - 17:00</td>
+          <td>20</td>
+        </tr>
+      </tbody>
+
+    </table>
+
+  </div>
+
 </body>
 </html>
