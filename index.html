@@ -71,6 +71,14 @@
       background-color: #1f3c5c;
       color: white;
     }
+
+    .note {
+      margin-top: 15px;
+      padding: 12px;
+      background-color: #eef3f8;
+      border-radius: 6px;
+      font-size: 14px;
+    }
   </style>
 </head>
 
@@ -118,6 +126,10 @@
 
     <button onclick="addCourse()">Thêm khóa học</button>
 
+    <div class="note">
+      Dữ liệu bạn nhập sẽ được lưu trên trình duyệt của máy đang sử dụng.
+    </div>
+
     <h2>Danh sách khóa học</h2>
 
     <table>
@@ -132,54 +144,48 @@
       </thead>
 
       <tbody id="courseTable">
-
-        <tr>
-          <td>Quản trị rủi ro</td>
-          <td>15/09/2026</td>
-          <td>16/09/2026</td>
-          <td>08:30 - 16:30</td>
-          <td>25</td>
-        </tr>
-
-        <tr>
-          <td>Kỹ năng đàm phán</td>
-          <td>16/09/2026</td>
-          <td>16/09/2026</td>
-          <td>14:00 - 17:00</td>
-          <td>20</td>
-        </tr>
-
       </tbody>
     </table>
 
   </div>
 
   <script>
+    let courses = JSON.parse(localStorage.getItem("courses")) || [];
 
     function formatDate(date) {
       const parts = date.split("-");
       return parts[2] + "/" + parts[1] + "/" + parts[0];
     }
 
+    function saveCourses() {
+      localStorage.setItem("courses", JSON.stringify(courses));
+    }
+
+    function renderCourses() {
+      const table = document.getElementById("courseTable");
+
+      table.innerHTML = "";
+
+      courses.forEach(function(course) {
+        const newRow = table.insertRow();
+
+        newRow.innerHTML = `
+          <td>${course.courseName}</td>
+          <td>${formatDate(course.startDate)}</td>
+          <td>${formatDate(course.endDate)}</td>
+          <td>${course.startTime} - ${course.endTime}</td>
+          <td>${course.studentCount}</td>
+        `;
+      });
+    }
+
     function addCourse() {
-
-      const courseName =
-        document.getElementById("courseName").value;
-
-      const startDate =
-        document.getElementById("startDate").value;
-
-      const endDate =
-        document.getElementById("endDate").value;
-
-      const startTime =
-        document.getElementById("startTime").value;
-
-      const endTime =
-        document.getElementById("endTime").value;
-
-      const studentCount =
-        document.getElementById("studentCount").value;
+      const courseName = document.getElementById("courseName").value;
+      const startDate = document.getElementById("startDate").value;
+      const endDate = document.getElementById("endDate").value;
+      const startTime = document.getElementById("startTime").value;
+      const endTime = document.getElementById("endTime").value;
+      const studentCount = document.getElementById("studentCount").value;
 
       if (
         courseName === "" ||
@@ -192,19 +198,20 @@
         return;
       }
 
-      const table =
-        document.getElementById("courseTable");
+      const newCourse = {
+        courseName: courseName,
+        startDate: startDate,
+        endDate: endDate,
+        startTime: startTime,
+        endTime: endTime,
+        studentCount: studentCount
+      };
 
-      const newRow =
-        table.insertRow();
+      courses.push(newCourse);
 
-      newRow.innerHTML = `
-        <td>${courseName}</td>
-        <td>${formatDate(startDate)}</td>
-        <td>${formatDate(endDate)}</td>
-        <td>${startTime} - ${endTime}</td>
-        <td>${studentCount}</td>
-      `;
+      saveCourses();
+
+      renderCourses();
 
       document.getElementById("courseName").value = "";
       document.getElementById("startDate").value = "";
@@ -214,6 +221,7 @@
       document.getElementById("studentCount").value = "";
     }
 
+    renderCourses();
   </script>
 
 </body>
