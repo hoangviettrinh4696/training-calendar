@@ -6,6 +6,9 @@
 
 <title>Phòng Đào tạo - Quản lý lịch đào tạo</title>
 
+<!-- Thư viện dùng để xuất file Excel .xlsx -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
 <style>
 
 * {
@@ -422,7 +425,15 @@ button {
 }
 
 
-/* VIEW TABS */
+/* VIEW + EXPORT */
+
+.management-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
 
 .view-tabs {
   display: flex;
@@ -443,6 +454,35 @@ button {
   background: white;
   color: var(--green-dark);
   box-shadow: 0 2px 7px rgba(0,0,0,0.08);
+}
+
+.export-actions {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.btn-export {
+  height: 39px;
+  padding: 0 14px;
+  border: 1px solid #b9d8c5;
+  background: white;
+  color: var(--green-dark);
+  font-size: 11px;
+}
+
+.btn-export:hover {
+  background: #eaf5ee;
+}
+
+.btn-export-main {
+  background: var(--green);
+  color: white;
+  border-color: var(--green);
+}
+
+.btn-export-main:hover {
+  background: var(--green-dark);
 }
 
 
@@ -501,6 +541,10 @@ button {
   color: var(--green-dark);
   border: 1px solid #bdd6c7;
   white-space: nowrap;
+}
+
+.btn-clear-filter:hover {
+  background: #eaf5ee;
 }
 
 .filter-result {
@@ -1086,11 +1130,14 @@ tbody tr:hover {
     align-items: flex-start;
   }
 
+  .management-actions {
+    justify-content: flex-start;
+  }
+
 }
 
 </style>
 </head>
-
 
 <body>
 
@@ -1150,6 +1197,8 @@ tbody tr:hover {
 
 <main class="container">
 
+
+<!-- DASHBOARD -->
 
 <section class="stats">
 
@@ -1519,23 +1568,48 @@ Lê Văn C"
     </div>
 
 
-    <div class="view-tabs">
+    <div class="management-actions">
 
-      <button
-        id="listTab"
-        class="view-tab active"
-        onclick="switchView('list')"
-      >
-        ☷ Danh sách
-      </button>
+      <div class="export-actions">
 
-      <button
-        id="calendarTab"
-        class="view-tab"
-        onclick="switchView('calendar')"
-      >
-        📅 Lịch tháng
-      </button>
+        <button
+          class="btn-export btn-export-main"
+          onclick="exportFilteredCourses()"
+          title="Xuất đúng các khóa đang hiển thị sau khi lọc"
+        >
+          📤 Xuất dữ liệu đang lọc
+        </button>
+
+        <button
+          class="btn-export"
+          onclick="exportAllCourses()"
+          title="Xuất toàn bộ dữ liệu đào tạo"
+        >
+          📦 Xuất toàn bộ dữ liệu
+        </button>
+
+      </div>
+
+
+      <div class="view-tabs">
+
+        <button
+          id="listTab"
+          class="view-tab active"
+          onclick="switchView('list')"
+        >
+          ☷ Danh sách
+        </button>
+
+        <button
+          id="calendarTab"
+          class="view-tab"
+          onclick="switchView('calendar')"
+        >
+          📅 Lịch tháng
+        </button>
+
+      </div>
 
     </div>
 
@@ -2060,8 +2134,7 @@ courses =
   );
 
 
-let editingIndex =
-  null;
+let editingIndex = null;
 
 
 let calendarDate =
@@ -2195,15 +2268,23 @@ function formatCourseTime(course) {
 }
 
 
+
+/* =========================
+   NORMALIZE
+========================= */
+
 function normalizeText(value) {
 
   return String(
     value || ""
   )
-  .normalize("NFC")
+  .normalize("NFD")
+  .replace(/[\u0300-\u036f]/g,"")
+  .replace(/đ/g,"d")
+  .replace(/Đ/g,"D")
+  .toLowerCase()
   .trim()
-  .replace(/\s+/g," ")
-  .toLowerCase();
+  .replace(/\s+/g," ");
 
 }
 
@@ -2777,6 +2858,16 @@ function courseTouchesMonth(
   }
 
 
+  if (
+    !course.startDate ||
+    !course.endDate
+  ) {
+
+    return false;
+
+  }
+
+
   const parts =
     selectedMonth.split("-");
 
@@ -2815,23 +2906,10 @@ function courseTouchesMonth(
 
 
 /* =========================
-   RENDER LIST
+   LẤY DANH SÁCH SAU KHI LỌC
 ========================= */
 
-function renderCourses() {
-
-  updatePersonFilter();
-
-
-  const table =
-    document.getElementById(
-      "courseTable"
-    );
-
-
-  table.innerHTML =
-    "";
-
+function getFilteredCourseItems() {
 
   const courseFilter =
     normalizeText(
@@ -2891,6 +2969,171 @@ function renderCourses() {
     ).value;
 
 
+  return courses
+
+    .map(
+      function(
+        course,
+        originalIndex
+      ) {
+
+        return {
+          course,
+          originalIndex
+        };
+
+      }
+    )
+
+    .filter(
+      function(item) {
+
+        const course =
+          item.course;
+
+
+        if (
+          courseFilter &&
+          !normalizeText(
+            course.courseName
+          ).includes(
+            courseFilter
+          )
+        ) {
+
+          return false;
+
+        }
+
+
+        if (
+          lecturerFilter &&
+          !normalizeText(
+            course.lecturer
+          ).includes(
+            lecturerFilter
+          )
+        ) {
+
+          return false;
+
+        }
+
+
+        if (
+          studentFilter
+        ) {
+
+          const found =
+            getStudentArray(
+              course.students
+            )
+            .some(
+              student =>
+                normalizeText(
+                  student
+                ).includes(
+                  studentFilter
+                )
+            );
+
+
+          if (!found) {
+            return false;
+          }
+
+        }
+
+
+        if (
+          locationFilter &&
+          !normalizeText(
+            course.location
+          ).includes(
+            locationFilter
+          )
+        ) {
+
+          return false;
+
+        }
+
+
+        if (
+          departmentFilter &&
+          !normalizeText(
+            course.department
+          ).includes(
+            departmentFilter
+          )
+        ) {
+
+          return false;
+
+        }
+
+
+        if (
+          !courseTouchesMonth(
+            course,
+            monthFilter
+          )
+        ) {
+
+          return false;
+
+        }
+
+
+        if (
+          statusFilter &&
+          course.status !==
+          statusFilter
+        ) {
+
+          return false;
+
+        }
+
+
+        if (
+          personFilter &&
+          course.personInCharge !==
+          personFilter
+        ) {
+
+          return false;
+
+        }
+
+
+        return true;
+
+      }
+    );
+
+}
+
+
+
+/* =========================
+   RENDER LIST
+========================= */
+
+function renderCourses() {
+
+  updatePersonFilter();
+
+
+  const table =
+    document.getElementById(
+      "courseTable"
+    );
+
+
+  table.innerHTML =
+    "";
+
 
   let totalStudents =
     0;
@@ -2945,148 +3188,7 @@ function renderCourses() {
 
 
   const filtered =
-    courses
-
-      .map(
-        function(
-          course,
-          originalIndex
-        ) {
-
-          return {
-            course,
-            originalIndex
-          };
-
-        }
-      )
-
-      .filter(
-        function(item) {
-
-          const course =
-            item.course;
-
-
-          if (
-            courseFilter &&
-            !normalizeText(
-              course.courseName
-            ).includes(
-              courseFilter
-            )
-          ) {
-
-            return false;
-
-          }
-
-
-          if (
-            lecturerFilter &&
-            !normalizeText(
-              course.lecturer
-            ).includes(
-              lecturerFilter
-            )
-          ) {
-
-            return false;
-
-          }
-
-
-          if (
-            studentFilter
-          ) {
-
-            const found =
-              getStudentArray(
-                course.students
-              )
-              .some(
-                student =>
-                  normalizeText(
-                    student
-                  ).includes(
-                    studentFilter
-                  )
-              );
-
-
-            if (!found) {
-              return false;
-            }
-
-          }
-
-
-          if (
-            locationFilter &&
-            !normalizeText(
-              course.location
-            ).includes(
-              locationFilter
-            )
-          ) {
-
-            return false;
-
-          }
-
-
-          if (
-            departmentFilter &&
-            !normalizeText(
-              course.department
-            ).includes(
-              departmentFilter
-            )
-          ) {
-
-            return false;
-
-          }
-
-
-          if (
-            !courseTouchesMonth(
-              course,
-              monthFilter
-            )
-          ) {
-
-            return false;
-
-          }
-
-
-          if (
-            statusFilter &&
-            course.status !==
-            statusFilter
-          ) {
-
-            return false;
-
-          }
-
-
-          if (
-            personFilter &&
-            course.personInCharge !==
-            personFilter
-          ) {
-
-            return false;
-
-          }
-
-
-          return true;
-
-        }
-      );
+    getFilteredCourseItems();
 
 
   document.getElementById(
@@ -3351,6 +3453,349 @@ function renderCourses() {
 
 
   renderCalendar();
+
+}
+
+
+
+/* =========================
+   EXPORT EXCEL
+========================= */
+
+function buildExcelData(
+  courseList
+) {
+
+  return courseList.map(
+    function(
+      course,
+      index
+    ) {
+
+      const students =
+        getStudentArray(
+          course.students
+        );
+
+
+      return {
+
+        "STT":
+          index + 1,
+
+        "Tên khóa đào tạo":
+          course.courseName || "",
+
+        "Ngày bắt đầu":
+          formatDate(
+            course.startDate
+          ),
+
+        "Ngày kết thúc":
+          formatDate(
+            course.endDate
+          ),
+
+        "Giờ bắt đầu":
+          course.startTime || "",
+
+        "Giờ kết thúc":
+          course.endTime || "",
+
+        "Địa điểm":
+          course.location || "",
+
+        "Giảng viên":
+          course.lecturer || "",
+
+        "Ban / Đối tượng":
+          course.department || "",
+
+        "Đơn vị đào tạo":
+          course.provider || "",
+
+        "Tình trạng":
+          course.status || "",
+
+        "Nhân sự thực hiện":
+          course.personInCharge || "",
+
+        "Số học viên":
+          students.length,
+
+        "Danh sách học viên":
+          students.join("\n")
+
+      };
+
+    }
+  );
+
+}
+
+
+function getExportFileName(
+  type
+) {
+
+  const today =
+    new Date();
+
+
+  const day =
+    String(
+      today.getDate()
+    ).padStart(
+      2,
+      "0"
+    );
+
+
+  const month =
+    String(
+      today.getMonth() + 1
+    ).padStart(
+      2,
+      "0"
+    );
+
+
+  const year =
+    today.getFullYear();
+
+
+  if (
+    type === "filtered"
+  ) {
+
+    const selectedMonth =
+      document.getElementById(
+        "monthFilter"
+      ).value;
+
+
+    if (
+      selectedMonth
+    ) {
+
+      const parts =
+        selectedMonth.split("-");
+
+
+      return (
+        "Lich_dao_tao_PVEP_" +
+        parts[1] +
+        "-" +
+        parts[0] +
+        ".xlsx"
+      );
+
+    }
+
+
+    return (
+      "Lich_dao_tao_PVEP_Da_loc_" +
+      day +
+      "-" +
+      month +
+      "-" +
+      year +
+      ".xlsx"
+    );
+
+  }
+
+
+  return (
+    "Lich_dao_tao_PVEP_Toan_bo_" +
+    day +
+    "-" +
+    month +
+    "-" +
+    year +
+    ".xlsx"
+  );
+
+}
+
+
+function exportCoursesToExcel(
+  courseList,
+  fileName
+) {
+
+  if (
+    typeof XLSX === "undefined"
+  ) {
+
+    alert(
+      "Không tải được công cụ xuất Excel. Vui lòng kiểm tra kết nối Internet rồi tải lại trang."
+    );
+
+    return;
+
+  }
+
+
+  if (
+    courseList.length === 0
+  ) {
+
+    alert(
+      "Không có dữ liệu để xuất."
+    );
+
+    return;
+
+  }
+
+
+  const excelData =
+    buildExcelData(
+      courseList
+    );
+
+
+  const worksheet =
+    XLSX.utils.json_to_sheet(
+      excelData
+    );
+
+
+  worksheet["!cols"] = [
+
+    {wch: 6},
+    {wch: 38},
+    {wch: 14},
+    {wch: 14},
+    {wch: 12},
+    {wch: 12},
+    {wch: 28},
+    {wch: 25},
+    {wch: 25},
+    {wch: 25},
+    {wch: 20},
+    {wch: 22},
+    {wch: 12},
+    {wch: 40}
+
+  ];
+
+
+  const range =
+    XLSX.utils.decode_range(
+      worksheet["!ref"]
+    );
+
+
+  for (
+    let row = 1;
+    row <= range.e.r;
+    row++
+  ) {
+
+    const studentCellAddress =
+      XLSX.utils.encode_cell({
+        r: row,
+        c: 13
+      });
+
+
+    if (
+      worksheet[
+        studentCellAddress
+      ]
+    ) {
+
+      worksheet[
+        studentCellAddress
+      ].s = {
+        alignment: {
+          wrapText: true,
+          vertical: "top"
+        }
+      };
+
+    }
+
+  }
+
+
+  const workbook =
+    XLSX.utils.book_new();
+
+
+  XLSX.utils.book_append_sheet(
+    workbook,
+    worksheet,
+    "Lịch đào tạo"
+  );
+
+
+  XLSX.writeFile(
+    workbook,
+    fileName
+  );
+
+}
+
+
+function exportAllCourses() {
+
+  if (
+    courses.length === 0
+  ) {
+
+    alert(
+      "Hiện chưa có khóa đào tạo nào để xuất."
+    );
+
+    return;
+
+  }
+
+
+  exportCoursesToExcel(
+    courses,
+    getExportFileName(
+      "all"
+    )
+  );
+
+}
+
+
+function exportFilteredCourses() {
+
+  const filteredItems =
+    getFilteredCourseItems();
+
+
+  if (
+    filteredItems.length === 0
+  ) {
+
+    alert(
+      "Không có khóa đào tạo nào phù hợp với bộ lọc hiện tại để xuất."
+    );
+
+    return;
+
+  }
+
+
+  const filteredCourses =
+    filteredItems.map(
+      item => item.course
+    );
+
+
+  exportCoursesToExcel(
+    filteredCourses,
+    getExportFileName(
+      "filtered"
+    )
+  );
 
 }
 
@@ -4867,7 +5312,9 @@ document.addEventListener(
 
 
 
-/* START */
+/* =========================
+   START
+========================= */
 
 saveCourses();
 
