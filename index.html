@@ -3,226 +3,958 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Quản lý lịch đào tạo</title>
 
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 40px;
-      background-color: #f5f6f8;
-    }
 
-    h1 {
-      color: #1f3c5c;
-    }
-
-    h2 {
-      margin-top: 30px;
-    }
-
-    .container {
-      background: white;
-      padding: 25px;
-      border-radius: 10px;
-    }
-
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
+    * {
       box-sizing: border-box;
     }
 
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f8f5;
+      color: #24352b;
+    }
+
+    /* HEADER */
+
+    .header {
+      background-color: #176b45;
+      color: white;
+      padding: 25px 40px;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 27px;
+    }
+
+    .header p {
+      margin: 7px 0 0;
+      opacity: 0.9;
+    }
+
+    /* NỘI DUNG */
+
+    .container {
+      max-width: 1450px;
+      margin: 30px auto;
+      padding: 0 25px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #176b45;
+      font-size: 21px;
+    }
+
+    /* FORM */
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 7px;
+      font-size: 14px;
+    }
+
+    input,
+    select,
+    textarea {
+      border: 1px solid #cbd8cf;
+      border-radius: 7px;
+      padding: 11px;
+      font-size: 14px;
+      outline: none;
+      font-family: Arial, sans-serif;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #2e8b57;
+      box-shadow: 0 0 0 2px rgba(46,139,87,0.12);
+    }
+
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: #6b756e;
+      margin-top: 5px;
+    }
+
+    /* BUTTON */
+
+    .button-area {
+      margin-top: 22px;
+    }
+
     button {
-      padding: 10px 18px;
-      background-color: #1f3c5c;
+      background-color: #198754;
       color: white;
       border: none;
-      border-radius: 5px;
+      padding: 12px 22px;
+      border-radius: 7px;
       cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
     }
 
     button:hover {
-      opacity: 0.9;
+      background-color: #146c43;
+    }
+
+    /* THỐNG KÊ */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .stat-box {
+      background: white;
+      border-left: 5px solid #198754;
+      border-radius: 10px;
+      padding: 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .stat-number {
+      font-size: 28px;
+      font-weight: bold;
+      color: #176b45;
+    }
+
+    .stat-label {
+      margin-top: 5px;
+      color: #68746d;
+      font-size: 13px;
+    }
+
+    /* TABLE */
+
+    .table-wrapper {
+      overflow-x: auto;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    th, td {
-      border: 1px solid #ddd;
-      padding: 12px;
-      text-align: left;
+      min-width: 1200px;
     }
 
     th {
-      background-color: #1f3c5c;
+      background-color: #176b45;
       color: white;
+      padding: 12px 10px;
+      text-align: left;
+      font-size: 13px;
     }
 
-    .note {
-      margin-top: 15px;
-      padding: 12px;
-      background-color: #eef3f8;
-      border-radius: 6px;
-      font-size: 14px;
+    td {
+      border-bottom: 1px solid #e3ebe6;
+      padding: 11px 10px;
+      vertical-align: top;
+      font-size: 13px;
     }
+
+    tr:hover {
+      background-color: #f3faf6;
+    }
+
+    .student-list {
+      white-space: pre-line;
+      min-width: 190px;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 15px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .status-completed {
+      background: #d8f3e3;
+      color: #176b45;
+    }
+
+    .status-pending {
+      background: #fff4cc;
+      color: #806500;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 800px) {
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .header {
+        padding: 20px;
+      }
+
+      .container {
+        padding: 0 15px;
+      }
+    }
+
   </style>
 </head>
 
+
 <body>
 
-  <div class="container">
+
+  <!-- TIÊU ĐỀ -->
+
+  <div class="header">
 
     <h1>Quản lý lịch đào tạo</h1>
 
     <p>
-      Theo dõi thời gian tổ chức các khóa học và kiểm tra trùng lịch.
+      Theo dõi kế hoạch đào tạo, lịch tổ chức và danh sách học viên
     </p>
-
-    <h2>Thêm khóa học</h2>
-
-    <div class="form-group">
-      <label for="courseName">Tên khóa học</label>
-      <input type="text" id="courseName">
-    </div>
-
-    <div class="form-group">
-      <label for="startDate">Ngày bắt đầu</label>
-      <input type="date" id="startDate">
-    </div>
-
-    <div class="form-group">
-      <label for="endDate">Ngày kết thúc</label>
-      <input type="date" id="endDate">
-    </div>
-
-    <div class="form-group">
-      <label for="startTime">Giờ bắt đầu</label>
-      <input type="time" id="startTime">
-    </div>
-
-    <div class="form-group">
-      <label for="endTime">Giờ kết thúc</label>
-      <input type="time" id="endTime">
-    </div>
-
-    <div class="form-group">
-      <label for="studentCount">Số học viên</label>
-      <input type="number" id="studentCount">
-    </div>
-
-    <button onclick="addCourse()">Thêm khóa học</button>
-
-    <div class="note">
-      Dữ liệu bạn nhập sẽ được lưu trên trình duyệt của máy đang sử dụng.
-    </div>
-
-    <h2>Danh sách khóa học</h2>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Tên khóa học</th>
-          <th>Ngày bắt đầu</th>
-          <th>Ngày kết thúc</th>
-          <th>Thời gian</th>
-          <th>Số học viên</th>
-        </tr>
-      </thead>
-
-      <tbody id="courseTable">
-      </tbody>
-    </table>
 
   </div>
 
-  <script>
-    let courses = JSON.parse(localStorage.getItem("courses")) || [];
 
-    function formatDate(date) {
-      const parts = date.split("-");
-      return parts[2] + "/" + parts[1] + "/" + parts[0];
-    }
+  <div class="container">
 
-    function saveCourses() {
-      localStorage.setItem("courses", JSON.stringify(courses));
-    }
 
-    function renderCourses() {
-      const table = document.getElementById("courseTable");
+    <!-- THỐNG KÊ -->
 
-      table.innerHTML = "";
+    <div class="stats">
 
-      courses.forEach(function(course) {
-        const newRow = table.insertRow();
+      <div class="stat-box">
 
-        newRow.innerHTML = `
-          <td>${course.courseName}</td>
-          <td>${formatDate(course.startDate)}</td>
-          <td>${formatDate(course.endDate)}</td>
-          <td>${course.startTime} - ${course.endTime}</td>
-          <td>${course.studentCount}</td>
-        `;
-      });
-    }
+        <div class="stat-number" id="totalCourses">
+          0
+        </div>
 
-    function addCourse() {
-      const courseName = document.getElementById("courseName").value;
-      const startDate = document.getElementById("startDate").value;
-      const endDate = document.getElementById("endDate").value;
-      const startTime = document.getElementById("startTime").value;
-      const endTime = document.getElementById("endTime").value;
-      const studentCount = document.getElementById("studentCount").value;
+        <div class="stat-label">
+          Tổng số khóa học
+        </div>
+
+      </div>
+
+
+      <div class="stat-box">
+
+        <div class="stat-number" id="totalStudents">
+          0
+        </div>
+
+        <div class="stat-label">
+          Tổng lượt học viên
+        </div>
+
+      </div>
+
+
+      <div class="stat-box">
+
+        <div class="stat-number">
+          0
+        </div>
+
+        <div class="stat-label">
+          Cảnh báo trùng lịch
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- FORM NHẬP -->
+
+    <div class="card">
+
+      <h2>Thêm khóa đào tạo</h2>
+
+
+      <div class="form-grid">
+
+
+        <!-- TÊN KHÓA -->
+
+        <div class="form-group full-width">
+
+          <label>
+            Tên khóa đào tạo *
+          </label>
+
+          <input
+            type="text"
+            id="courseName"
+            placeholder="Ví dụ: Kỹ năng giải quyết vấn đề và ra quyết định"
+          >
+
+        </div>
+
+
+
+        <!-- NGÀY -->
+
+        <div class="form-group">
+
+          <label>
+            Ngày bắt đầu *
+          </label>
+
+          <input
+            type="date"
+            id="startDate"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Ngày kết thúc *
+          </label>
+
+          <input
+            type="date"
+            id="endDate"
+          >
+
+        </div>
+
+
+
+        <!-- GIỜ -->
+
+        <div class="form-group">
+
+          <label>
+            Giờ bắt đầu
+          </label>
+
+          <input
+            type="time"
+            id="startTime"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Giờ kết thúc
+          </label>
+
+          <input
+            type="time"
+            id="endTime"
+          >
+
+        </div>
+
+
+
+        <!-- BAN -->
+
+        <div class="form-group">
+
+          <label>
+            Ban chức năng / Đối tượng
+          </label>
+
+          <input
+            type="text"
+            id="department"
+            placeholder="Ví dụ: CN TTKT, QTNNL, NVTN, All..."
+          >
+
+        </div>
+
+
+
+        <!-- ĐƠN VỊ ĐÀO TẠO -->
+
+        <div class="form-group">
+
+          <label>
+            Đơn vị đào tạo
+          </label>
+
+          <input
+            type="text"
+            id="provider"
+            placeholder="Ví dụ: PVU, FSB, Brainwork..."
+          >
+
+        </div>
+
+
+
+        <!-- TÌNH TRẠNG -->
+
+        <div class="form-group">
+
+          <label>
+            Tình trạng thực hiện
+          </label>
+
+          <select id="status">
+
+            <option value="Chưa triển khai">
+              Chưa triển khai
+            </option>
+
+            <option value="Đang triển khai">
+              Đang triển khai
+            </option>
+
+            <option value="Hoàn thành">
+              Hoàn thành
+            </option>
+
+            <option value="Tạm hoãn">
+              Tạm hoãn
+            </option>
+
+            <option value="Hủy">
+              Hủy
+            </option>
+
+          </select>
+
+        </div>
+
+
+
+        <!-- NGƯỜI PHỤ TRÁCH -->
+
+        <div class="form-group">
+
+          <label>
+            Nhân sự thực hiện
+          </label>
+
+          <input
+            type="text"
+            id="personInCharge"
+            placeholder="Ví dụ: Trinh"
+          >
+
+        </div>
+
+
+
+        <!-- DANH SÁCH HỌC VIÊN -->
+
+        <div class="form-group full-width">
+
+          <label>
+            Danh sách học viên
+          </label>
+
+          <textarea
+            id="students"
+            placeholder="Nhập mỗi học viên trên một dòng. Ví dụ:
+
+Nguyễn Văn A
+Trần Thị B
+Lê Văn C"
+          ></textarea>
+
+          <div class="hint">
+            Mỗi học viên nhập trên một dòng. Website sẽ tự động đếm số lượng học viên.
+          </div>
+
+        </div>
+
+
+      </div>
+
+
+
+      <div class="button-area">
+
+        <button onclick="addCourse()">
+          + Thêm khóa học
+        </button>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- DANH SÁCH -->
+
+    <div class="card">
+
+      <h2>Danh sách khóa đào tạo</h2>
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>STT</th>
+
+              <th>Tên khóa</th>
+
+              <th>Thời gian</th>
+
+              <th>Ban chức năng</th>
+
+              <th>Đơn vị đào tạo</th>
+
+              <th>Tình trạng</th>
+
+              <th>Nhân sự thực hiện</th>
+
+              <th>Số HV</th>
+
+              <th>Danh sách học viên</th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody id="courseTable">
+          </tbody>
+
+
+        </table>
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+
+<script>
+
+
+  /* LẤY DỮ LIỆU ĐÃ LƯU */
+
+  let courses =
+    JSON.parse(localStorage.getItem("trainingCourses")) || [];
+
+
+
+  /* ĐỔI NGÀY THÀNH DD/MM/YYYY */
+
+  function formatDate(date) {
+
+    if (!date) return "";
+
+    const parts = date.split("-");
+
+    return (
+      parts[2] +
+      "/" +
+      parts[1] +
+      "/" +
+      parts[0]
+    );
+
+  }
+
+
+
+  /* TÁCH DANH SÁCH HỌC VIÊN */
+
+  function getStudentArray(text) {
+
+    return text
+      .split("\n")
+      .map(name => name.trim())
+      .filter(name => name !== "");
+
+  }
+
+
+
+  /* LƯU DỮ LIỆU */
+
+  function saveCourses() {
+
+    localStorage.setItem(
+      "trainingCourses",
+      JSON.stringify(courses)
+    );
+
+  }
+
+
+
+  /* HIỂN THỊ BẢNG */
+
+  function renderCourses() {
+
+    const table =
+      document.getElementById("courseTable");
+
+    table.innerHTML = "";
+
+
+    let totalStudents = 0;
+
+
+    courses.forEach(function(course, index) {
+
+
+      const students =
+        getStudentArray(course.students);
+
+
+      totalStudents += students.length;
+
+
+      let timeText =
+        formatDate(course.startDate);
+
 
       if (
-        courseName === "" ||
-        startDate === "" ||
-        endDate === "" ||
-        startTime === "" ||
-        endTime === ""
+        course.endDate &&
+        course.endDate !== course.startDate
       ) {
-        alert("Vui lòng nhập đầy đủ thông tin khóa học.");
-        return;
+
+        timeText +=
+          " - " +
+          formatDate(course.endDate);
+
       }
 
-      const newCourse = {
-        courseName: courseName,
-        startDate: startDate,
-        endDate: endDate,
-        startTime: startTime,
-        endTime: endTime,
-        studentCount: studentCount
-      };
 
-      courses.push(newCourse);
+      if (
+        course.startTime ||
+        course.endTime
+      ) {
 
-      saveCourses();
+        timeText += "<br>";
 
-      renderCourses();
+        timeText +=
+          (course.startTime || "") +
+          " - " +
+          (course.endTime || "");
 
-      document.getElementById("courseName").value = "";
-      document.getElementById("startDate").value = "";
-      document.getElementById("endDate").value = "";
-      document.getElementById("startTime").value = "";
-      document.getElementById("endTime").value = "";
-      document.getElementById("studentCount").value = "";
+      }
+
+
+      let statusClass =
+        "status-pending";
+
+
+      if (
+        course.status === "Hoàn thành"
+      ) {
+
+        statusClass =
+          "status-completed";
+
+      }
+
+
+
+      const row =
+        table.insertRow();
+
+
+      row.innerHTML = `
+
+        <td>${index + 1}</td>
+
+        <td>
+          <strong>
+            ${course.courseName}
+          </strong>
+        </td>
+
+        <td>
+          ${timeText}
+        </td>
+
+        <td>
+          ${course.department || ""}
+        </td>
+
+        <td>
+          ${course.provider || ""}
+        </td>
+
+        <td>
+
+          <span class="status ${statusClass}">
+
+            ${course.status}
+
+          </span>
+
+        </td>
+
+        <td>
+          ${course.personInCharge || ""}
+        </td>
+
+        <td>
+          ${students.length}
+        </td>
+
+        <td class="student-list">
+          ${students.join("<br>")}
+        </td>
+
+      `;
+
+    });
+
+
+
+    document.getElementById(
+      "totalCourses"
+    ).innerText =
+      courses.length;
+
+
+
+    document.getElementById(
+      "totalStudents"
+    ).innerText =
+      totalStudents;
+
+  }
+
+
+
+  /* THÊM KHÓA */
+
+  function addCourse() {
+
+
+    const courseName =
+      document.getElementById(
+        "courseName"
+      ).value.trim();
+
+
+    const startDate =
+      document.getElementById(
+        "startDate"
+      ).value;
+
+
+    const endDate =
+      document.getElementById(
+        "endDate"
+      ).value;
+
+
+    const startTime =
+      document.getElementById(
+        "startTime"
+      ).value;
+
+
+    const endTime =
+      document.getElementById(
+        "endTime"
+      ).value;
+
+
+    const department =
+      document.getElementById(
+        "department"
+      ).value.trim();
+
+
+    const provider =
+      document.getElementById(
+        "provider"
+      ).value.trim();
+
+
+    const status =
+      document.getElementById(
+        "status"
+      ).value;
+
+
+    const personInCharge =
+      document.getElementById(
+        "personInCharge"
+      ).value.trim();
+
+
+    const students =
+      document.getElementById(
+        "students"
+      ).value.trim();
+
+
+
+    if (
+      courseName === "" ||
+      startDate === "" ||
+      endDate === ""
+    ) {
+
+      alert(
+        "Vui lòng nhập Tên khóa, Ngày bắt đầu và Ngày kết thúc."
+      );
+
+      return;
+
     }
 
+
+
+    if (
+      endDate < startDate
+    ) {
+
+      alert(
+        "Ngày kết thúc không thể trước ngày bắt đầu."
+      );
+
+      return;
+
+    }
+
+
+
+    const newCourse = {
+
+      courseName,
+      startDate,
+      endDate,
+      startTime,
+      endTime,
+      department,
+      provider,
+      status,
+      personInCharge,
+      students
+
+    };
+
+
+    courses.push(newCourse);
+
+
+    saveCourses();
+
+
     renderCourses();
-  </script>
+
+
+    clearForm();
+
+
+    alert(
+      "Đã thêm khóa học thành công."
+    );
+
+  }
+
+
+
+  /* XÓA FORM SAU KHI NHẬP */
+
+  function clearForm() {
+
+    document.getElementById(
+      "courseName"
+    ).value = "";
+
+    document.getElementById(
+      "startDate"
+    ).value = "";
+
+    document.getElementById(
+      "endDate"
+    ).value = "";
+
+    document.getElementById(
+      "startTime"
+    ).value = "";
+
+    document.getElementById(
+      "endTime"
+    ).value = "";
+
+    document.getElementById(
+      "department"
+    ).value = "";
+
+    document.getElementById(
+      "provider"
+    ).value = "";
+
+    document.getElementById(
+      "personInCharge"
+    ).value = "";
+
+    document.getElementById(
+      "students"
+    ).value = "";
+
+  }
+
+
+
+  /* CHẠY KHI MỞ WEBSITE */
+
+  renderCourses();
+
+
+</script>
+
 
 </body>
 </html>
