@@ -422,6 +422,30 @@ button {
 }
 
 
+/* VIEW TABS */
+
+.view-tabs {
+  display: flex;
+  gap: 8px;
+  background: #eef6f1;
+  padding: 5px;
+  border-radius: 9px;
+}
+
+.view-tab {
+  padding: 9px 15px;
+  background: transparent;
+  color: #496156;
+  font-size: 12px;
+}
+
+.view-tab.active {
+  background: white;
+  color: var(--green-dark);
+  box-shadow: 0 2px 7px rgba(0,0,0,0.08);
+}
+
+
 /* FILTER */
 
 .filter-section {
@@ -477,10 +501,6 @@ button {
   color: var(--green-dark);
   border: 1px solid #bdd6c7;
   white-space: nowrap;
-}
-
-.btn-clear-filter:hover {
-  background: #eaf5ee;
 }
 
 .filter-result {
@@ -618,6 +638,198 @@ tbody tr:hover {
 }
 
 
+/* CALENDAR */
+
+#calendarView {
+  display: none;
+}
+
+.calendar-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 15px;
+}
+
+.calendar-title {
+  font-size: 20px;
+  color: var(--green-dark);
+  font-weight: bold;
+}
+
+.calendar-actions {
+  display: flex;
+  gap: 7px;
+}
+
+.calendar-button {
+  background: white;
+  color: var(--green-dark);
+  border: 1px solid #c6dccc;
+  padding: 8px 12px;
+  font-size: 12px;
+}
+
+.calendar-button:hover {
+  background: #edf7f0;
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7,1fr);
+  background: var(--green-dark);
+  border-radius: 8px 8px 0 0;
+  overflow: hidden;
+}
+
+.calendar-weekday {
+  color: white;
+  text-align: center;
+  padding: 10px 5px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7,1fr);
+  border-left: 1px solid #dce7e0;
+  border-top: 1px solid #dce7e0;
+}
+
+.calendar-day {
+  min-height: 135px;
+  background: white;
+  border-right: 1px solid #dce7e0;
+  border-bottom: 1px solid #dce7e0;
+  padding: 7px;
+  overflow: hidden;
+}
+
+.calendar-day.other-month {
+  background: #f7f9f8;
+}
+
+.calendar-day.today {
+  background: #f0faf4;
+}
+
+.day-number {
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 7px;
+  color: #53635b;
+}
+
+.today .day-number {
+  display: inline-flex;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--green);
+  color: white;
+  align-items: center;
+  justify-content: center;
+}
+
+.calendar-course {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 6px 7px;
+  border-radius: 6px;
+  margin-bottom: 5px;
+  font-size: 10px;
+  line-height: 1.3;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.calendar-course:hover {
+  filter: brightness(0.97);
+}
+
+.calendar-course.pending {
+  background: #edf1f3;
+  color: #455762;
+}
+
+.calendar-course.progress {
+  background: #fff0c9;
+  color: #785600;
+}
+
+.calendar-course.completed {
+  background: #dff3e7;
+  color: #12603b;
+}
+
+.calendar-course.cancelled {
+  background: #f5e3e3;
+  color: #963131;
+  text-decoration: line-through;
+}
+
+.calendar-course.conflict {
+  border: 1px solid #e29a28;
+  box-shadow: inset 3px 0 0 #e29a28;
+}
+
+.calendar-time {
+  font-size: 9px;
+  opacity: .8;
+  margin-bottom: 2px;
+}
+
+.calendar-course-name {
+  font-weight: bold;
+}
+
+.calendar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 13px;
+  font-size: 11px;
+  color: #67766e;
+  margin-top: 13px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.legend-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
+}
+
+.legend-pending {
+  background: #dfe5e8;
+}
+
+.legend-progress {
+  background: #f4d989;
+}
+
+.legend-completed {
+  background: #bde2cc;
+}
+
+.legend-cancelled {
+  background: #efc2c2;
+}
+
+.legend-conflict {
+  background: white;
+  border: 2px solid #e29a28;
+}
+
+
 /* MODAL */
 
 .modal-overlay {
@@ -736,13 +948,57 @@ tbody tr:hover {
 
 .course-detail-time {
   color: #65746c;
-  margin-top: 3px;
+  margin-top: 4px;
 }
 
 .modal-note {
   color: #76837c;
   font-size: 12px;
   margin-bottom: 15px;
+}
+
+.detail-section {
+  background: white;
+  border: 1px solid #dfe9e3;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.detail-course-title {
+  font-size: 19px;
+  font-weight: bold;
+  color: var(--green-dark);
+  line-height: 1.4;
+  margin-bottom: 13px;
+}
+
+.detail-row {
+  display: grid;
+  grid-template-columns: 145px 1fr;
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px solid #edf2ef;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  font-weight: bold;
+  color: #52645a;
+}
+
+.detail-students {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.detail-students li {
+  margin-bottom: 4px;
 }
 
 
@@ -772,6 +1028,23 @@ tbody tr:hover {
 
   .span-4 {
     grid-column: 1 / -1;
+  }
+
+  .calendar-day {
+    min-height: 110px;
+  }
+
+}
+
+@media (max-width: 700px) {
+
+  .calendar-wrapper {
+    overflow-x: auto;
+  }
+
+  .calendar-weekdays,
+  .calendar-grid {
+    min-width: 900px;
   }
 
 }
@@ -807,7 +1080,8 @@ tbody tr:hover {
     display: none;
   }
 
-  .card-title-row {
+  .card-title-row,
+  .calendar-toolbar {
     flex-direction: column;
     align-items: flex-start;
   }
@@ -877,10 +1151,7 @@ tbody tr:hover {
 <main class="container">
 
 
-<!-- DASHBOARD -->
-
 <section class="stats">
-
 
   <div class="stat-card">
 
@@ -889,18 +1160,8 @@ tbody tr:hover {
     </div>
 
     <div>
-
-      <div
-        class="stat-number"
-        id="totalCourses"
-      >
-        0
-      </div>
-
-      <div class="stat-label">
-        Tổng số khóa học
-      </div>
-
+      <div class="stat-number" id="totalCourses">0</div>
+      <div class="stat-label">Tổng số khóa học</div>
     </div>
 
   </div>
@@ -913,18 +1174,8 @@ tbody tr:hover {
     </div>
 
     <div>
-
-      <div
-        class="stat-number"
-        id="totalStudents"
-      >
-        0
-      </div>
-
-      <div class="stat-label">
-        Tổng lượt học viên
-      </div>
-
+      <div class="stat-number" id="totalStudents">0</div>
+      <div class="stat-label">Tổng lượt học viên</div>
     </div>
 
   </div>
@@ -940,22 +1191,9 @@ tbody tr:hover {
     </div>
 
     <div>
-
-      <div
-        class="stat-number"
-        id="totalWarnings"
-      >
-        0
-      </div>
-
-      <div class="stat-label">
-        Khóa học trùng lịch
-      </div>
-
-      <div class="stat-click-hint">
-        Bấm để xem chi tiết
-      </div>
-
+      <div class="stat-number" id="totalWarnings">0</div>
+      <div class="stat-label">Khóa học trùng lịch</div>
+      <div class="stat-click-hint">Bấm để xem chi tiết</div>
     </div>
 
   </div>
@@ -971,22 +1209,9 @@ tbody tr:hover {
     </div>
 
     <div>
-
-      <div
-        class="stat-number"
-        id="studentConflictCount"
-      >
-        0
-      </div>
-
-      <div class="stat-label">
-        Học viên trùng lịch
-      </div>
-
-      <div class="stat-click-hint">
-        Bấm để xem chi tiết
-      </div>
-
+      <div class="stat-number" id="studentConflictCount">0</div>
+      <div class="stat-label">Học viên trùng lịch</div>
+      <div class="stat-click-hint">Bấm để xem chi tiết</div>
     </div>
 
   </div>
@@ -1275,7 +1500,7 @@ Lê Văn C"
 
 
 
-<!-- DANH SÁCH -->
+<!-- QUẢN LÝ LỊCH -->
 
 <section class="card">
 
@@ -1288,242 +1513,359 @@ Lê Văn C"
       </div>
 
       <h2>
-        Danh sách khóa đào tạo
+        Lịch đào tạo
       </h2>
 
     </div>
 
-  </div>
 
-
-  <!-- BỘ LỌC -->
-
-  <div class="filter-section">
-
-    <div class="filter-heading">
-      🔎 Tìm kiếm và lọc dữ liệu
-    </div>
-
-
-    <!-- HÀNG 1 -->
-
-    <div class="filter-row-primary">
-
-
-      <div class="filter-group">
-
-        <label>
-          Tên khóa đào tạo
-        </label>
-
-        <input
-          type="text"
-          id="courseFilter"
-          placeholder="Nhập tên khóa..."
-          oninput="renderCourses()"
-        >
-
-      </div>
-
-
-      <div class="filter-group">
-
-        <label>
-          Giảng viên
-        </label>
-
-        <input
-          type="text"
-          id="lecturerFilter"
-          placeholder="Nhập tên giảng viên..."
-          oninput="renderCourses()"
-        >
-
-      </div>
-
-
-      <div class="filter-group">
-
-        <label>
-          Học viên
-        </label>
-
-        <input
-          type="text"
-          id="studentFilter"
-          placeholder="Nhập tên học viên..."
-          oninput="renderCourses()"
-        >
-
-      </div>
-
-
-      <div class="filter-group">
-
-        <label>
-          Địa điểm
-        </label>
-
-        <input
-          type="text"
-          id="locationFilter"
-          placeholder="Nhập địa điểm..."
-          oninput="renderCourses()"
-        >
-
-      </div>
-
-
-      <div class="filter-group">
-
-        <label>
-          Ban / Đối tượng
-        </label>
-
-        <input
-          type="text"
-          id="departmentFilter"
-          placeholder="Nhập Ban hoặc đối tượng..."
-          oninput="renderCourses()"
-        >
-
-      </div>
-
-    </div>
-
-
-    <!-- HÀNG 2 -->
-
-    <div class="filter-row-secondary">
-
-
-      <div class="filter-group">
-
-        <label>
-          Tháng
-        </label>
-
-        <input
-          type="month"
-          id="monthFilter"
-          onchange="renderCourses()"
-        >
-
-      </div>
-
-
-      <div class="filter-group">
-
-        <label>
-          Tình trạng
-        </label>
-
-        <select
-          id="statusFilter"
-          onchange="renderCourses()"
-        >
-
-          <option value="">
-            Tất cả tình trạng
-          </option>
-
-          <option value="Chưa triển khai">
-            Chưa triển khai
-          </option>
-
-          <option value="Đang triển khai">
-            Đang triển khai
-          </option>
-
-          <option value="Hoàn thành">
-            Hoàn thành
-          </option>
-
-          <option value="Tạm hoãn">
-            Tạm hoãn
-          </option>
-
-          <option value="Hủy">
-            Hủy
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <div class="filter-group">
-
-        <label>
-          Nhân sự thực hiện
-        </label>
-
-        <select
-          id="personFilter"
-          onchange="renderCourses()"
-        >
-
-          <option value="">
-            Tất cả nhân sự
-          </option>
-
-        </select>
-
-      </div>
-
+    <div class="view-tabs">
 
       <button
-        class="btn-clear-filter"
-        onclick="clearFilters()"
+        id="listTab"
+        class="view-tab active"
+        onclick="switchView('list')"
       >
-        ↻ Xóa bộ lọc
+        ☷ Danh sách
+      </button>
+
+      <button
+        id="calendarTab"
+        class="view-tab"
+        onclick="switchView('calendar')"
+      >
+        📅 Lịch tháng
       </button>
 
     </div>
 
+  </div>
 
-    <div
-      class="filter-result"
-      id="filterResult"
-    ></div>
+
+
+  <!-- DANH SÁCH -->
+
+  <div id="listView">
+
+
+    <div class="filter-section">
+
+      <div class="filter-heading">
+        🔎 Tìm kiếm và lọc dữ liệu
+      </div>
+
+
+      <div class="filter-row-primary">
+
+
+        <div class="filter-group">
+
+          <label>
+            Tên khóa đào tạo
+          </label>
+
+          <input
+            type="text"
+            id="courseFilter"
+            placeholder="Nhập tên khóa..."
+            oninput="renderCourses()"
+          >
+
+        </div>
+
+
+        <div class="filter-group">
+
+          <label>
+            Giảng viên
+          </label>
+
+          <input
+            type="text"
+            id="lecturerFilter"
+            placeholder="Nhập tên giảng viên..."
+            oninput="renderCourses()"
+          >
+
+        </div>
+
+
+        <div class="filter-group">
+
+          <label>
+            Học viên
+          </label>
+
+          <input
+            type="text"
+            id="studentFilter"
+            placeholder="Nhập tên học viên..."
+            oninput="renderCourses()"
+          >
+
+        </div>
+
+
+        <div class="filter-group">
+
+          <label>
+            Địa điểm
+          </label>
+
+          <input
+            type="text"
+            id="locationFilter"
+            placeholder="Nhập địa điểm..."
+            oninput="renderCourses()"
+          >
+
+        </div>
+
+
+        <div class="filter-group">
+
+          <label>
+            Ban / Đối tượng
+          </label>
+
+          <input
+            type="text"
+            id="departmentFilter"
+            placeholder="Nhập Ban hoặc đối tượng..."
+            oninput="renderCourses()"
+          >
+
+        </div>
+
+      </div>
+
+
+      <div class="filter-row-secondary">
+
+
+        <div class="filter-group">
+
+          <label>
+            Tháng
+          </label>
+
+          <input
+            type="month"
+            id="monthFilter"
+            onchange="renderCourses()"
+          >
+
+        </div>
+
+
+        <div class="filter-group">
+
+          <label>
+            Tình trạng
+          </label>
+
+          <select
+            id="statusFilter"
+            onchange="renderCourses()"
+          >
+
+            <option value="">
+              Tất cả tình trạng
+            </option>
+
+            <option value="Chưa triển khai">
+              Chưa triển khai
+            </option>
+
+            <option value="Đang triển khai">
+              Đang triển khai
+            </option>
+
+            <option value="Hoàn thành">
+              Hoàn thành
+            </option>
+
+            <option value="Tạm hoãn">
+              Tạm hoãn
+            </option>
+
+            <option value="Hủy">
+              Hủy
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="filter-group">
+
+          <label>
+            Nhân sự thực hiện
+          </label>
+
+          <select
+            id="personFilter"
+            onchange="renderCourses()"
+          >
+
+            <option value="">
+              Tất cả nhân sự
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <button
+          class="btn-clear-filter"
+          onclick="clearFilters()"
+        >
+          ↻ Xóa bộ lọc
+        </button>
+
+      </div>
+
+
+      <div
+        class="filter-result"
+        id="filterResult"
+      ></div>
+
+    </div>
+
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>STT</th>
+            <th>Tên khóa đào tạo</th>
+            <th>Thời gian</th>
+            <th>Địa điểm</th>
+            <th>Giảng viên</th>
+            <th>Ban / Đối tượng</th>
+            <th>Đơn vị đào tạo</th>
+            <th>Tình trạng</th>
+            <th>Nhân sự thực hiện</th>
+            <th>Số HV</th>
+            <th>Danh sách học viên</th>
+            <th>Thao tác</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody id="courseTable">
+        </tbody>
+
+      </table>
+
+    </div>
 
   </div>
 
 
 
-  <!-- TABLE -->
+  <!-- LỊCH THÁNG -->
 
-  <div class="table-wrapper">
+  <div id="calendarView">
 
-    <table>
+    <div class="calendar-toolbar">
 
-      <thead>
+      <div
+        class="calendar-title"
+        id="calendarTitle"
+      ></div>
 
-        <tr>
 
-          <th>STT</th>
-          <th>Tên khóa đào tạo</th>
-          <th>Thời gian</th>
-          <th>Địa điểm</th>
-          <th>Giảng viên</th>
-          <th>Ban / Đối tượng</th>
-          <th>Đơn vị đào tạo</th>
-          <th>Tình trạng</th>
-          <th>Nhân sự thực hiện</th>
-          <th>Số HV</th>
-          <th>Danh sách học viên</th>
-          <th>Thao tác</th>
+      <div class="calendar-actions">
 
-        </tr>
+        <button
+          class="calendar-button"
+          onclick="changeCalendarMonth(-1)"
+        >
+          ← Tháng trước
+        </button>
 
-      </thead>
+        <button
+          class="calendar-button"
+          onclick="goToCurrentMonth()"
+        >
+          Tháng này
+        </button>
 
-      <tbody id="courseTable">
-      </tbody>
+        <button
+          class="calendar-button"
+          onclick="changeCalendarMonth(1)"
+        >
+          Tháng sau →
+        </button>
 
-    </table>
+      </div>
+
+    </div>
+
+
+    <div class="calendar-wrapper">
+
+      <div class="calendar-weekdays">
+
+        <div class="calendar-weekday">Thứ 2</div>
+        <div class="calendar-weekday">Thứ 3</div>
+        <div class="calendar-weekday">Thứ 4</div>
+        <div class="calendar-weekday">Thứ 5</div>
+        <div class="calendar-weekday">Thứ 6</div>
+        <div class="calendar-weekday">Thứ 7</div>
+        <div class="calendar-weekday">Chủ nhật</div>
+
+      </div>
+
+
+      <div
+        class="calendar-grid"
+        id="calendarGrid"
+      ></div>
+
+    </div>
+
+
+    <div class="calendar-legend">
+
+      <div class="legend-item">
+        <span class="legend-dot legend-pending"></span>
+        Chưa triển khai
+      </div>
+
+      <div class="legend-item">
+        <span class="legend-dot legend-progress"></span>
+        Đang triển khai
+      </div>
+
+      <div class="legend-item">
+        <span class="legend-dot legend-completed"></span>
+        Hoàn thành
+      </div>
+
+      <div class="legend-item">
+        <span class="legend-dot legend-cancelled"></span>
+        Tạm hoãn / Hủy
+      </div>
+
+      <div class="legend-item">
+        <span class="legend-dot legend-conflict"></span>
+        Trùng lịch
+      </div>
+
+    </div>
 
   </div>
+
 
 </section>
 
@@ -1568,7 +1910,7 @@ Lê Văn C"
 
 
 
-<!-- MODAL HỌC VIÊN TRÙNG -->
+<!-- MODAL HỌC VIÊN -->
 
 <div
   class="modal-overlay"
@@ -1604,11 +1946,47 @@ Lê Văn C"
 
 
 
+<!-- MODAL CHI TIẾT KHÓA -->
+
+<div
+  class="modal-overlay"
+  id="courseDetailModal"
+  onclick="closeModalIfOutside(event,'courseDetailModal')"
+>
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <div class="modal-title">
+        📚 Chi tiết khóa đào tạo
+      </div>
+
+      <button
+        class="modal-close"
+        onclick="closeModal('courseDetailModal')"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <div
+      class="modal-body"
+      id="courseDetailModalBody"
+    ></div>
+
+  </div>
+
+</div>
+
+
+
 <script>
 
 
 /* =========================
-   DỮ LIỆU
+   DATA
 ========================= */
 
 let courses =
@@ -1619,76 +1997,88 @@ let courses =
   ) || [];
 
 
-/* Tương thích với dữ liệu từ các phiên bản cũ */
+courses =
+  courses.map(
+    function(course) {
 
-courses = courses.map(
-  function(course) {
+      return {
 
-    return {
+        courseName:
+          course.courseName ||
+          course.name ||
+          "",
 
-      courseName:
-        course.courseName ||
-        course.name ||
-        "",
+        startDate:
+          course.startDate ||
+          "",
 
-      startDate:
-        course.startDate ||
-        "",
+        endDate:
+          course.endDate ||
+          course.startDate ||
+          "",
 
-      endDate:
-        course.endDate ||
-        course.startDate ||
-        "",
+        startTime:
+          course.startTime ||
+          "",
 
-      startTime:
-        course.startTime ||
-        "",
+        endTime:
+          course.endTime ||
+          "",
 
-      endTime:
-        course.endTime ||
-        "",
+        location:
+          course.location ||
+          "",
 
-      location:
-        course.location ||
-        "",
+        lecturer:
+          course.lecturer ||
+          "",
 
-      lecturer:
-        course.lecturer ||
-        "",
+        department:
+          course.department ||
+          "",
 
-      department:
-        course.department ||
-        "",
+        provider:
+          course.provider ||
+          "",
 
-      provider:
-        course.provider ||
-        "",
+        status:
+          course.status ||
+          "Chưa triển khai",
 
-      status:
-        course.status ||
-        "Chưa triển khai",
+        personInCharge:
+          course.personInCharge ||
+          course.owner ||
+          "",
 
-      personInCharge:
-        course.personInCharge ||
-        course.owner ||
-        "",
+        students:
+          course.students ||
+          ""
 
-      students:
-        course.students ||
-        ""
+      };
 
-    };
-
-  }
-);
+    }
+  );
 
 
-let editingIndex = null;
+let editingIndex =
+  null;
+
+
+let calendarDate =
+  new Date();
+
+
+calendarDate =
+  new Date(
+    calendarDate.getFullYear(),
+    calendarDate.getMonth(),
+    1
+  );
 
 
 
 /* =========================
-   AN TOÀN HIỂN THỊ
+   ESCAPE
 ========================= */
 
 function escapeHTML(value) {
@@ -1696,24 +2086,25 @@ function escapeHTML(value) {
   return String(
     value ?? ""
   )
-  .replaceAll("&","&amp;")
-  .replaceAll("<","&lt;")
-  .replaceAll(">","&gt;")
-  .replaceAll('"',"&quot;")
-  .replaceAll("'","&#039;");
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;")
+  .replace(/'/g,"&#039;");
 
 }
 
 
 
 /* =========================
-   NGÀY HIỆN TẠI
+   BASIC FORMAT
 ========================= */
 
 function showCurrentDate() {
 
   const today =
     new Date();
+
 
   const text =
     today.toLocaleDateString(
@@ -1726,6 +2117,7 @@ function showCurrentDate() {
       }
     );
 
+
   document.getElementById(
     "currentDate"
   ).innerText =
@@ -1734,19 +2126,16 @@ function showCurrentDate() {
 }
 
 
-
-/* =========================
-   FORMAT
-========================= */
-
 function formatDate(date) {
 
   if (!date) {
     return "";
   }
 
+
   const parts =
     date.split("-");
+
 
   return (
     parts[2] +
@@ -1766,6 +2155,7 @@ function formatCourseTime(course) {
       course.startDate
     );
 
+
   if (
     course.endDate &&
     course.endDate !==
@@ -1779,6 +2169,7 @@ function formatCourseTime(course) {
       );
 
   }
+
 
   if (
     course.startTime &&
@@ -1798,15 +2189,11 @@ function formatCourseTime(course) {
 
   }
 
+
   return text;
 
 }
 
-
-
-/* =========================
-   NORMALIZE TEXT
-========================= */
 
 function normalizeText(value) {
 
@@ -1821,16 +2208,18 @@ function normalizeText(value) {
 }
 
 
-function normalizeName(name) {
+function normalizeName(value) {
 
-  return normalizeText(name);
+  return normalizeText(
+    value
+  );
 
 }
 
 
 
 /* =========================
-   HỌC VIÊN
+   STUDENTS
 ========================= */
 
 function getStudentArray(text) {
@@ -1839,13 +2228,14 @@ function getStudentArray(text) {
     return [];
   }
 
+
   return text
     .split("\n")
     .map(
-      name => name.trim()
+      value => value.trim()
     )
     .filter(
-      name => name !== ""
+      Boolean
     );
 
 }
@@ -1881,6 +2271,7 @@ function getStatusClass(status) {
 
   }
 
+
   if (
     status === "Đang triển khai"
   ) {
@@ -1888,6 +2279,7 @@ function getStatusClass(status) {
     return "status-progress";
 
   }
+
 
   if (
     status === "Tạm hoãn" ||
@@ -1898,14 +2290,52 @@ function getStatusClass(status) {
 
   }
 
+
   return "status-pending";
+
+}
+
+
+function getCalendarStatusClass(
+  status
+) {
+
+  if (
+    status === "Hoàn thành"
+  ) {
+
+    return "completed";
+
+  }
+
+
+  if (
+    status === "Đang triển khai"
+  ) {
+
+    return "progress";
+
+  }
+
+
+  if (
+    status === "Tạm hoãn" ||
+    status === "Hủy"
+  ) {
+
+    return "cancelled";
+
+  }
+
+
+  return "pending";
 
 }
 
 
 
 /* =========================
-   CHECK TRÙNG LỊCH
+   CONFLICTS
 ========================= */
 
 function timeToMinutes(time) {
@@ -1914,8 +2344,10 @@ function timeToMinutes(time) {
     return null;
   }
 
+
   const parts =
     time.split(":");
+
 
   return (
     Number(parts[0]) * 60 +
@@ -1957,25 +2389,30 @@ function timesOverlap(
 
   }
 
+
   const startA =
     timeToMinutes(
       courseA.startTime
     );
+
 
   const endA =
     timeToMinutes(
       courseA.endTime
     );
 
+
   const startB =
     timeToMinutes(
       courseB.startTime
     );
 
+
   const endB =
     timeToMinutes(
       courseB.endTime
     );
+
 
   return (
     startA < endB &&
@@ -1999,20 +2436,17 @@ function coursesOverlap(
 
   }
 
-  if (
-    !datesOverlap(
+
+  return (
+    datesOverlap(
       courseA,
       courseB
     )
-  ) {
-
-    return false;
-
-  }
-
-  return timesOverlap(
-    courseA,
-    courseB
+    &&
+    timesOverlap(
+      courseA,
+      courseB
+    )
   );
 
 }
@@ -2020,7 +2454,9 @@ function coursesOverlap(
 
 function findConflicts() {
 
-  const conflicts = [];
+  const result =
+    [];
+
 
   for (
     let i = 0;
@@ -2041,7 +2477,7 @@ function findConflicts() {
         )
       ) {
 
-        conflicts.push({
+        result.push({
 
           firstIndex: i,
 
@@ -2061,37 +2497,25 @@ function findConflicts() {
 
   }
 
-  return conflicts;
+
+  return result;
 
 }
 
-
-
-/* =========================
-   TRÙNG HỌC VIÊN
-========================= */
 
 function findCommonStudents(
   courseA,
   courseB
 ) {
 
-  const studentsA =
-    getStudentArray(
-      courseA.students
-    );
-
-  const studentsB =
-    getStudentArray(
-      courseB.students
-    );
-
-
   const mapB =
     new Map();
 
 
-  studentsB.forEach(
+  getStudentArray(
+    courseB.students
+  )
+  .forEach(
     function(name) {
 
       mapB.set(
@@ -2103,22 +2527,25 @@ function findCommonStudents(
   );
 
 
-  const resultMap =
+  const result =
     new Map();
 
 
-  studentsA.forEach(
+  getStudentArray(
+    courseA.students
+  )
+  .forEach(
     function(name) {
 
       const key =
         normalizeName(name);
 
+
       if (
-        mapB.has(key) &&
-        !resultMap.has(key)
+        mapB.has(key)
       ) {
 
-        resultMap.set(
+        result.set(
           key,
           name
         );
@@ -2130,7 +2557,7 @@ function findCommonStudents(
 
 
   return Array.from(
-    resultMap.values()
+    result.values()
   );
 
 }
@@ -2138,50 +2565,34 @@ function findCommonStudents(
 
 function findStudentConflicts() {
 
-  const conflicts =
-    findConflicts();
-
   const result =
     [];
 
 
-  conflicts.forEach(
-    function(conflict) {
+  findConflicts()
+    .forEach(
+      function(conflict) {
 
-      const commonStudents =
-        findCommonStudents(
-          conflict.firstCourse,
-          conflict.secondCourse
-        );
-
-
-      if (
-        commonStudents.length > 0
-      ) {
-
-        result.push({
-
-          firstIndex:
-            conflict.firstIndex,
-
-          secondIndex:
-            conflict.secondIndex,
-
-          firstCourse:
+        const students =
+          findCommonStudents(
             conflict.firstCourse,
+            conflict.secondCourse
+          );
 
-          secondCourse:
-            conflict.secondCourse,
 
-          students:
-            commonStudents
+        if (
+          students.length
+        ) {
 
-        });
+          result.push({
+            ...conflict,
+            students
+          });
+
+        }
 
       }
-
-    }
-  );
+    );
 
 
   return result;
@@ -2203,20 +2614,10 @@ function getUniqueConflictStudents() {
           .forEach(
             function(name) {
 
-              const key =
-                normalizeName(name);
-
-
-              if (
-                !map.has(key)
-              ) {
-
-                map.set(
-                  key,
-                  name
-                );
-
-              }
+              map.set(
+                normalizeName(name),
+                name
+              );
 
             }
           );
@@ -2232,14 +2633,9 @@ function getUniqueConflictStudents() {
 }
 
 
-
-/* =========================
-   INDEX CẢNH BÁO
-========================= */
-
 function getConflictCourseIndexes() {
 
-  const indexes =
+  const result =
     new Set();
 
 
@@ -2247,11 +2643,11 @@ function getConflictCourseIndexes() {
     .forEach(
       function(conflict) {
 
-        indexes.add(
+        result.add(
           conflict.firstIndex
         );
 
-        indexes.add(
+        result.add(
           conflict.secondIndex
         );
 
@@ -2259,14 +2655,14 @@ function getConflictCourseIndexes() {
     );
 
 
-  return indexes;
+  return result;
 
 }
 
 
 function getStudentConflictCourseIndexes() {
 
-  const indexes =
+  const result =
     new Set();
 
 
@@ -2274,11 +2670,11 @@ function getStudentConflictCourseIndexes() {
     .forEach(
       function(conflict) {
 
-        indexes.add(
+        result.add(
           conflict.firstIndex
         );
 
-        indexes.add(
+        result.add(
           conflict.secondIndex
         );
 
@@ -2286,14 +2682,14 @@ function getStudentConflictCourseIndexes() {
     );
 
 
-  return indexes;
+  return result;
 
 }
 
 
 
 /* =========================
-   NHÂN SỰ THỰC HIỆN
+   PERSON FILTER
 ========================= */
 
 function updatePersonFilter() {
@@ -2304,7 +2700,7 @@ function updatePersonFilter() {
     );
 
 
-  const currentValue =
+  const current =
     select.value;
 
 
@@ -2343,11 +2739,14 @@ function updatePersonFilter() {
           "option"
         );
 
+
       option.value =
         person;
 
+
       option.textContent =
         person;
+
 
       select.appendChild(
         option
@@ -2358,14 +2757,14 @@ function updatePersonFilter() {
 
 
   select.value =
-    currentValue;
+    current;
 
 }
 
 
 
 /* =========================
-   LỌC THÁNG
+   MONTH FILTER
 ========================= */
 
 function courseTouchesMonth(
@@ -2373,22 +2772,8 @@ function courseTouchesMonth(
   selectedMonth
 ) {
 
-  if (
-    !selectedMonth
-  ) {
-
+  if (!selectedMonth) {
     return true;
-
-  }
-
-
-  if (
-    !course.startDate ||
-    !course.endDate
-  ) {
-
-    return false;
-
   }
 
 
@@ -2421,11 +2806,8 @@ function courseTouchesMonth(
 
 
   return (
-    course.startDate <=
-    monthEnd
-    &&
-    course.endDate >=
-    monthStart
+    course.startDate <= monthEnd &&
+    course.endDate >= monthStart
   );
 
 }
@@ -2433,7 +2815,7 @@ function courseTouchesMonth(
 
 
 /* =========================
-   RENDER
+   RENDER LIST
 ========================= */
 
 function renderCourses() {
@@ -2449,9 +2831,6 @@ function renderCourses() {
 
   table.innerHTML =
     "";
-
-
-  /* LẤY TỪNG ĐIỀU KIỆN RIÊNG */
 
 
   const courseFilter =
@@ -2513,9 +2892,6 @@ function renderCourses() {
 
 
 
-  /* THỐNG KÊ TOÀN BỘ */
-
-
   let totalStudents =
     0;
 
@@ -2534,10 +2910,6 @@ function renderCourses() {
 
   const conflicts =
     findConflicts();
-
-
-  const conflictStudents =
-    getUniqueConflictStudents();
 
 
   document.getElementById(
@@ -2561,11 +2933,7 @@ function renderCourses() {
   document.getElementById(
     "studentConflictCount"
   ).innerText =
-    conflictStudents.length;
-
-
-
-  /* INDEX CẢNH BÁO */
+    getUniqueConflictStudents().length;
 
 
   const conflictIndexes =
@@ -2574,10 +2942,6 @@ function renderCourses() {
 
   const studentConflictIndexes =
     getStudentConflictCourseIndexes();
-
-
-
-  /* LỌC DỮ LIỆU */
 
 
   const filtered =
@@ -2604,8 +2968,6 @@ function renderCourses() {
             item.course;
 
 
-          /* TÊN KHÓA */
-
           if (
             courseFilter &&
             !normalizeText(
@@ -2619,8 +2981,6 @@ function renderCourses() {
 
           }
 
-
-          /* GIẢNG VIÊN */
 
           if (
             lecturerFilter &&
@@ -2636,41 +2996,30 @@ function renderCourses() {
           }
 
 
-          /* HỌC VIÊN - CHỈ TÌM TRONG DS HỌC VIÊN */
-
           if (
             studentFilter
           ) {
 
-            const studentMatched =
+            const found =
               getStudentArray(
                 course.students
               )
               .some(
-                function(student) {
-
-                  return normalizeText(
+                student =>
+                  normalizeText(
                     student
                   ).includes(
                     studentFilter
-                  );
-
-                }
+                  )
               );
 
 
-            if (
-              !studentMatched
-            ) {
-
+            if (!found) {
               return false;
-
             }
 
           }
 
-
-          /* ĐỊA ĐIỂM */
 
           if (
             locationFilter &&
@@ -2686,8 +3035,6 @@ function renderCourses() {
           }
 
 
-          /* BAN / ĐỐI TƯỢNG */
-
           if (
             departmentFilter &&
             !normalizeText(
@@ -2702,8 +3049,6 @@ function renderCourses() {
           }
 
 
-          /* THÁNG */
-
           if (
             !courseTouchesMonth(
               course,
@@ -2716,8 +3061,6 @@ function renderCourses() {
           }
 
 
-          /* TÌNH TRẠNG */
-
           if (
             statusFilter &&
             course.status !==
@@ -2728,8 +3071,6 @@ function renderCourses() {
 
           }
 
-
-          /* NHÂN SỰ THỰC HIỆN */
 
           if (
             personFilter &&
@@ -2748,7 +3089,6 @@ function renderCourses() {
       );
 
 
-
   document.getElementById(
     "filterResult"
   ).innerText =
@@ -2757,7 +3097,6 @@ function renderCourses() {
     " / " +
     courses.length +
     " khóa đào tạo";
-
 
 
   if (
@@ -2774,16 +3113,12 @@ function renderCourses() {
         colspan="12"
         class="empty-state"
       >
-
-        Không có khóa đào tạo
-        phù hợp với điều kiện tìm kiếm.
-
+        Không có khóa đào tạo phù hợp với điều kiện tìm kiếm.
       </td>
 
     `;
 
   }
-
 
 
   filtered.forEach(
@@ -2883,14 +3218,6 @@ function renderCourses() {
       }
 
 
-      const studentHtml =
-        students
-          .map(
-            escapeHTML
-          )
-          .join("<br>");
-
-
       row.innerHTML = `
 
         <td>
@@ -2987,7 +3314,15 @@ function renderCourses() {
 
 
         <td class="student-list">
-          ${studentHtml}
+
+          ${
+            students
+              .map(
+                escapeHTML
+              )
+              .join("<br>")
+          }
+
         </td>
 
 
@@ -2999,7 +3334,6 @@ function renderCourses() {
           >
             ✎ Sửa
           </button>
-
 
           <button
             class="btn-delete"
@@ -3015,54 +3349,38 @@ function renderCourses() {
     }
   );
 
+
+  renderCalendar();
+
 }
 
 
 
 /* =========================
-   XÓA BỘ LỌC
+   CLEAR FILTERS
 ========================= */
 
 function clearFilters() {
 
-  document.getElementById(
-    "courseFilter"
-  ).value = "";
-
-
-  document.getElementById(
-    "lecturerFilter"
-  ).value = "";
-
-
-  document.getElementById(
-    "studentFilter"
-  ).value = "";
-
-
-  document.getElementById(
-    "locationFilter"
-  ).value = "";
-
-
-  document.getElementById(
-    "departmentFilter"
-  ).value = "";
-
-
-  document.getElementById(
-    "monthFilter"
-  ).value = "";
-
-
-  document.getElementById(
-    "statusFilter"
-  ).value = "";
-
-
-  document.getElementById(
+  [
+    "courseFilter",
+    "lecturerFilter",
+    "studentFilter",
+    "locationFilter",
+    "departmentFilter",
+    "monthFilter",
+    "statusFilter",
     "personFilter"
-  ).value = "";
+  ]
+  .forEach(
+    function(id) {
+
+      document.getElementById(
+        id
+      ).value = "";
+
+    }
+  );
 
 
   renderCourses();
@@ -3072,7 +3390,7 @@ function clearFilters() {
 
 
 /* =========================
-   SAVE COURSE
+   SAVE
 ========================= */
 
 function saveCourse() {
@@ -3108,66 +3426,6 @@ function saveCourse() {
     document.getElementById(
       "endTime"
     ).value;
-
-
-  const location =
-    document
-      .getElementById(
-        "location"
-      )
-      .value
-      .trim();
-
-
-  const lecturer =
-    document
-      .getElementById(
-        "lecturer"
-      )
-      .value
-      .trim();
-
-
-  const department =
-    document
-      .getElementById(
-        "department"
-      )
-      .value
-      .trim();
-
-
-  const provider =
-    document
-      .getElementById(
-        "provider"
-      )
-      .value
-      .trim();
-
-
-  const status =
-    document.getElementById(
-      "status"
-    ).value;
-
-
-  const personInCharge =
-    document
-      .getElementById(
-        "personInCharge"
-      )
-      .value
-      .trim();
-
-
-  const students =
-    document
-      .getElementById(
-        "students"
-      )
-      .value
-      .trim();
 
 
   if (
@@ -3216,17 +3474,49 @@ function saveCourse() {
   const courseData = {
 
     courseName,
+
     startDate,
+
     endDate,
+
     startTime,
+
     endTime,
-    location,
-    lecturer,
-    department,
-    provider,
-    status,
-    personInCharge,
-    students
+
+    location:
+      document.getElementById(
+        "location"
+      ).value.trim(),
+
+    lecturer:
+      document.getElementById(
+        "lecturer"
+      ).value.trim(),
+
+    department:
+      document.getElementById(
+        "department"
+      ).value.trim(),
+
+    provider:
+      document.getElementById(
+        "provider"
+      ).value.trim(),
+
+    status:
+      document.getElementById(
+        "status"
+      ).value,
+
+    personInCharge:
+      document.getElementById(
+        "personInCharge"
+      ).value.trim(),
+
+    students:
+      document.getElementById(
+        "students"
+      ).value.trim()
 
   };
 
@@ -3239,6 +3529,7 @@ function saveCourse() {
       courseData
     );
 
+
     alert(
       "Đã thêm khóa học thành công."
     );
@@ -3250,6 +3541,7 @@ function saveCourse() {
     ] =
       courseData;
 
+
     alert(
       "Đã cập nhật khóa học thành công."
     );
@@ -3259,16 +3551,16 @@ function saveCourse() {
 
   saveCourses();
 
-  renderCourses();
-
   resetForm();
+
+  renderCourses();
 
 }
 
 
 
 /* =========================
-   EDIT
+   EDIT DELETE
 ========================= */
 
 function editCourse(index) {
@@ -3281,77 +3573,30 @@ function editCourse(index) {
     index;
 
 
-  document.getElementById(
-    "courseName"
-  ).value =
-    course.courseName || "";
-
-
-  document.getElementById(
-    "startDate"
-  ).value =
-    course.startDate || "";
-
-
-  document.getElementById(
-    "endDate"
-  ).value =
-    course.endDate || "";
-
-
-  document.getElementById(
-    "startTime"
-  ).value =
-    course.startTime || "";
-
-
-  document.getElementById(
-    "endTime"
-  ).value =
-    course.endTime || "";
-
-
-  document.getElementById(
-    "location"
-  ).value =
-    course.location || "";
-
-
-  document.getElementById(
-    "lecturer"
-  ).value =
-    course.lecturer || "";
-
-
-  document.getElementById(
-    "department"
-  ).value =
-    course.department || "";
-
-
-  document.getElementById(
-    "provider"
-  ).value =
-    course.provider || "";
-
-
-  document.getElementById(
-    "status"
-  ).value =
-    course.status ||
-    "Chưa triển khai";
-
-
-  document.getElementById(
-    "personInCharge"
-  ).value =
-    course.personInCharge || "";
-
-
-  document.getElementById(
+  [
+    "courseName",
+    "startDate",
+    "endDate",
+    "startTime",
+    "endTime",
+    "location",
+    "lecturer",
+    "department",
+    "provider",
+    "status",
+    "personInCharge",
     "students"
-  ).value =
-    course.students || "";
+  ]
+  .forEach(
+    function(id) {
+
+      document.getElementById(
+        id
+      ).value =
+        course[id] || "";
+
+    }
+  );
 
 
   document.getElementById(
@@ -3386,11 +3631,6 @@ function editCourse(index) {
 }
 
 
-
-/* =========================
-   DELETE
-========================= */
-
 function deleteCourse(index) {
 
   const confirmed =
@@ -3414,17 +3654,12 @@ function deleteCourse(index) {
 
   saveCourses();
 
-  renderCourses();
-
   resetForm();
+
+  renderCourses();
 
 }
 
-
-
-/* =========================
-   RESET
-========================= */
 
 function cancelEdit() {
 
@@ -3497,7 +3732,751 @@ function resetForm() {
 
 
 /* =========================
-   CHI TIẾT KHÓA TRONG POPUP
+   SWITCH VIEW
+========================= */
+
+function switchView(view) {
+
+  const listView =
+    document.getElementById(
+      "listView"
+    );
+
+
+  const calendarView =
+    document.getElementById(
+      "calendarView"
+    );
+
+
+  const listTab =
+    document.getElementById(
+      "listTab"
+    );
+
+
+  const calendarTab =
+    document.getElementById(
+      "calendarTab"
+    );
+
+
+  if (
+    view === "calendar"
+  ) {
+
+    listView.style.display =
+      "none";
+
+
+    calendarView.style.display =
+      "block";
+
+
+    listTab.classList.remove(
+      "active"
+    );
+
+
+    calendarTab.classList.add(
+      "active"
+    );
+
+
+    renderCalendar();
+
+  } else {
+
+    listView.style.display =
+      "block";
+
+
+    calendarView.style.display =
+      "none";
+
+
+    calendarTab.classList.remove(
+      "active"
+    );
+
+
+    listTab.classList.add(
+      "active"
+    );
+
+  }
+
+}
+
+
+
+/* =========================
+   CALENDAR
+========================= */
+
+function toDateString(date) {
+
+  const year =
+    date.getFullYear();
+
+
+  const month =
+    String(
+      date.getMonth() + 1
+    ).padStart(
+      2,
+      "0"
+    );
+
+
+  const day =
+    String(
+      date.getDate()
+    ).padStart(
+      2,
+      "0"
+    );
+
+
+  return (
+    year +
+    "-" +
+    month +
+    "-" +
+    day
+  );
+
+}
+
+
+function courseOccursOnDate(
+  course,
+  dateString
+) {
+
+  return (
+    course.startDate <=
+    dateString
+    &&
+    course.endDate >=
+    dateString
+  );
+
+}
+
+
+function changeCalendarMonth(
+  offset
+) {
+
+  calendarDate =
+    new Date(
+      calendarDate.getFullYear(),
+      calendarDate.getMonth() + offset,
+      1
+    );
+
+
+  renderCalendar();
+
+}
+
+
+function goToCurrentMonth() {
+
+  const today =
+    new Date();
+
+
+  calendarDate =
+    new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      1
+    );
+
+
+  renderCalendar();
+
+}
+
+
+function renderCalendar() {
+
+  const grid =
+    document.getElementById(
+      "calendarGrid"
+    );
+
+
+  if (!grid) {
+    return;
+  }
+
+
+  grid.innerHTML =
+    "";
+
+
+  const year =
+    calendarDate.getFullYear();
+
+
+  const month =
+    calendarDate.getMonth();
+
+
+  document.getElementById(
+    "calendarTitle"
+  ).innerText =
+    "Tháng " +
+    (month + 1) +
+    "/" +
+    year;
+
+
+  const firstDay =
+    new Date(
+      year,
+      month,
+      1
+    );
+
+
+  let mondayIndex =
+    firstDay.getDay() - 1;
+
+
+  if (
+    mondayIndex < 0
+  ) {
+
+    mondayIndex =
+      6;
+
+  }
+
+
+  const startGrid =
+    new Date(
+      year,
+      month,
+      1 - mondayIndex
+    );
+
+
+  const todayString =
+    toDateString(
+      new Date()
+    );
+
+
+  const conflictIndexes =
+    getConflictCourseIndexes();
+
+
+  for (
+    let i = 0;
+    i < 42;
+    i++
+  ) {
+
+    const currentDate =
+      new Date(
+        startGrid
+      );
+
+
+    currentDate.setDate(
+      startGrid.getDate() + i
+    );
+
+
+    const dateString =
+      toDateString(
+        currentDate
+      );
+
+
+    const cell =
+      document.createElement(
+        "div"
+      );
+
+
+    cell.className =
+      "calendar-day";
+
+
+    if (
+      currentDate.getMonth() !==
+      month
+    ) {
+
+      cell.classList.add(
+        "other-month"
+      );
+
+    }
+
+
+    if (
+      dateString ===
+      todayString
+    ) {
+
+      cell.classList.add(
+        "today"
+      );
+
+    }
+
+
+    const number =
+      document.createElement(
+        "div"
+      );
+
+
+    number.className =
+      "day-number";
+
+
+    number.textContent =
+      currentDate.getDate();
+
+
+    cell.appendChild(
+      number
+    );
+
+
+    const dayCourses =
+      courses
+
+        .map(
+          function(
+            course,
+            index
+          ) {
+
+            return {
+              course,
+              index
+            };
+
+          }
+        )
+
+        .filter(
+          function(item) {
+
+            return courseOccursOnDate(
+              item.course,
+              dateString
+            );
+
+          }
+        )
+
+        .sort(
+          function(a,b) {
+
+            return (
+              a.course.startTime ||
+              "99:99"
+            )
+            .localeCompare(
+              b.course.startTime ||
+              "99:99"
+            );
+
+          }
+        );
+
+
+    dayCourses.forEach(
+      function(item) {
+
+        const course =
+          item.course;
+
+
+        const button =
+          document.createElement(
+            "button"
+          );
+
+
+        button.type =
+          "button";
+
+
+        button.className =
+          "calendar-course " +
+          getCalendarStatusClass(
+            course.status
+          );
+
+
+        if (
+          conflictIndexes.has(
+            item.index
+          )
+        ) {
+
+          button.classList.add(
+            "conflict"
+          );
+
+        }
+
+
+        let timeText =
+          "";
+
+
+        if (
+          course.startTime
+        ) {
+
+          timeText =
+            escapeHTML(
+              course.startTime
+            );
+
+
+          if (
+            course.endTime
+          ) {
+
+            timeText +=
+              "–" +
+              escapeHTML(
+                course.endTime
+              );
+
+          }
+
+        }
+
+
+        button.innerHTML = `
+
+          ${
+            timeText
+              ? `
+                <div class="calendar-time">
+                  ${timeText}
+                </div>
+              `
+              : ""
+          }
+
+          <div class="calendar-course-name">
+
+            ${
+              conflictIndexes.has(
+                item.index
+              )
+                ? "⚠ "
+                : ""
+            }
+
+            ${escapeHTML(
+              course.courseName
+            )}
+
+          </div>
+
+        `;
+
+
+        button.onclick =
+          function() {
+
+            openCourseDetail(
+              item.index
+            );
+
+          };
+
+
+        cell.appendChild(
+          button
+        );
+
+      }
+    );
+
+
+    grid.appendChild(
+      cell
+    );
+
+  }
+
+}
+
+
+
+/* =========================
+   COURSE DETAIL
+========================= */
+
+function openCourseDetail(index) {
+
+  const course =
+    courses[index];
+
+
+  const students =
+    getStudentArray(
+      course.students
+    );
+
+
+  const conflict =
+    getConflictCourseIndexes()
+      .has(
+        index
+      );
+
+
+  const studentConflict =
+    getStudentConflictCourseIndexes()
+      .has(
+        index
+      );
+
+
+  const body =
+    document.getElementById(
+      "courseDetailModalBody"
+    );
+
+
+  body.innerHTML = `
+
+    <div class="detail-section">
+
+      <div class="detail-course-title">
+
+        ${escapeHTML(
+          course.courseName
+        )}
+
+      </div>
+
+
+      ${
+        conflict
+          ? `
+            <span class="conflict-label">
+              ⚠ Trùng lịch
+            </span>
+          `
+          : ""
+      }
+
+
+      ${
+        studentConflict
+          ? `
+            <span class="student-conflict-label">
+              👤 Trùng học viên
+            </span>
+          `
+          : ""
+      }
+
+
+      <div style="height:8px;"></div>
+
+
+      <div class="detail-row">
+
+        <div class="detail-label">
+          Thời gian
+        </div>
+
+        <div>
+          ${escapeHTML(
+            formatCourseTime(
+              course
+            )
+          )}
+        </div>
+
+      </div>
+
+
+      <div class="detail-row">
+
+        <div class="detail-label">
+          Địa điểm
+        </div>
+
+        <div>
+          ${escapeHTML(
+            course.location ||
+            "Chưa cập nhật"
+          )}
+        </div>
+
+      </div>
+
+
+      <div class="detail-row">
+
+        <div class="detail-label">
+          Giảng viên
+        </div>
+
+        <div>
+          ${escapeHTML(
+            course.lecturer ||
+            "Chưa cập nhật"
+          )}
+        </div>
+
+      </div>
+
+
+      <div class="detail-row">
+
+        <div class="detail-label">
+          Ban / Đối tượng
+        </div>
+
+        <div>
+          ${escapeHTML(
+            course.department ||
+            "Chưa cập nhật"
+          )}
+        </div>
+
+      </div>
+
+
+      <div class="detail-row">
+
+        <div class="detail-label">
+          Đơn vị đào tạo
+        </div>
+
+        <div>
+          ${escapeHTML(
+            course.provider ||
+            "Chưa cập nhật"
+          )}
+        </div>
+
+      </div>
+
+
+      <div class="detail-row">
+
+        <div class="detail-label">
+          Tình trạng
+        </div>
+
+        <div>
+
+          <span
+            class="status ${getStatusClass(course.status)}"
+          >
+            ${escapeHTML(
+              course.status
+            )}
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="detail-row">
+
+        <div class="detail-label">
+          Nhân sự thực hiện
+        </div>
+
+        <div>
+          ${escapeHTML(
+            course.personInCharge ||
+            "Chưa cập nhật"
+          )}
+        </div>
+
+      </div>
+
+
+      <div class="detail-row">
+
+        <div class="detail-label">
+          Số học viên
+        </div>
+
+        <div>
+          ${students.length}
+        </div>
+
+      </div>
+
+
+      <div class="detail-row">
+
+        <div class="detail-label">
+          Danh sách học viên
+        </div>
+
+        <div>
+
+          ${
+            students.length
+              ? `
+                <ol class="detail-students">
+
+                  ${
+                    students
+                      .map(
+                        student =>
+                          `<li>${escapeHTML(student)}</li>`
+                      )
+                      .join("")
+                  }
+
+                </ol>
+              `
+              : "Chưa có danh sách học viên"
+          }
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  document.getElementById(
+    "courseDetailModal"
+  ).classList.add(
+    "show"
+  );
+
+
+  document.body.style.overflow =
+    "hidden";
+
+}
+
+
+
+/* =========================
+   CONFLICT POPUPS
 ========================= */
 
 function courseDetailHtml(course) {
@@ -3530,10 +4509,7 @@ function courseDetailHtml(course) {
         course.location
           ? `
             <div class="course-detail-time">
-              📍
-              ${escapeHTML(
-                course.location
-              )}
+              📍 ${escapeHTML(course.location)}
             </div>
           `
           : ""
@@ -3545,9 +4521,7 @@ function courseDetailHtml(course) {
           ? `
             <div class="course-detail-time">
               🎓 Giảng viên:
-              ${escapeHTML(
-                course.lecturer
-              )}
+              ${escapeHTML(course.lecturer)}
             </div>
           `
           : ""
@@ -3560,11 +4534,6 @@ function courseDetailHtml(course) {
 }
 
 
-
-/* =========================
-   POPUP KHÓA TRÙNG
-========================= */
-
 function openCourseConflictModal() {
 
   const conflicts =
@@ -3575,9 +4544,6 @@ function openCourseConflictModal() {
     document.getElementById(
       "courseConflictModalBody"
     );
-
-
-  body.innerHTML = "";
 
 
   if (
@@ -3617,36 +4583,25 @@ function openCourseConflictModal() {
         index
       ) {
 
-        const item =
-          document.createElement(
-            "div"
-          );
+        body.innerHTML += `
 
+          <div class="modal-item modal-conflict-item">
 
-        item.className =
-          "modal-item modal-conflict-item";
+            <div class="modal-item-title">
+              Cảnh báo ${index + 1}
+            </div>
 
+            ${courseDetailHtml(
+              conflict.firstCourse
+            )}
 
-        item.innerHTML = `
+            ${courseDetailHtml(
+              conflict.secondCourse
+            )}
 
-          <div class="modal-item-title">
-            Cảnh báo ${index + 1}
           </div>
 
-          ${courseDetailHtml(
-            conflict.firstCourse
-          )}
-
-          ${courseDetailHtml(
-            conflict.secondCourse
-          )}
-
         `;
-
-
-        body.appendChild(
-          item
-        );
 
       }
     );
@@ -3667,11 +4622,6 @@ function openCourseConflictModal() {
 }
 
 
-
-/* =========================
-   TỔNG HỢP HV TRÙNG
-========================= */
-
 function buildStudentConflictSummary() {
 
   const summary =
@@ -3684,11 +4634,11 @@ function buildStudentConflictSummary() {
 
         conflict.students
           .forEach(
-            function(studentName) {
+            function(name) {
 
               const key =
                 normalizeName(
-                  studentName
+                  name
                 );
 
 
@@ -3699,13 +4649,9 @@ function buildStudentConflictSummary() {
                 summary.set(
                   key,
                   {
-
-                    name:
-                      studentName,
-
+                    name,
                     courseIndexes:
                       new Set()
-
                   }
                 );
 
@@ -3741,11 +4687,6 @@ function buildStudentConflictSummary() {
 }
 
 
-
-/* =========================
-   POPUP HỌC VIÊN
-========================= */
-
 function openStudentConflictModal() {
 
   const summaries =
@@ -3756,10 +4697,6 @@ function openStudentConflictModal() {
     document.getElementById(
       "studentConflictModalBody"
     );
-
-
-  body.innerHTML =
-    "";
 
 
   if (
@@ -3796,24 +4733,13 @@ function openStudentConflictModal() {
     summaries.forEach(
       function(student) {
 
-        const item =
-          document.createElement(
-            "div"
-          );
-
-
-        item.className =
-          "modal-item modal-student-item";
-
-
-        let coursesHtml =
+        let courseHtml =
           "";
 
 
         Array.from(
           student.courseIndexes
         )
-
         .sort(
           function(a,b) {
 
@@ -3825,11 +4751,10 @@ function openStudentConflictModal() {
 
           }
         )
-
         .forEach(
           function(index) {
 
-            coursesHtml +=
+            courseHtml +=
               courseDetailHtml(
                 courses[index]
               );
@@ -3838,34 +4763,30 @@ function openStudentConflictModal() {
         );
 
 
-        item.innerHTML = `
+        body.innerHTML += `
 
-          <div class="modal-student-name">
+          <div class="modal-item modal-student-item">
 
-            👤
-            ${escapeHTML(
-              student.name
-            )}
+            <div class="modal-student-name">
+
+              👤 ${escapeHTML(
+                student.name
+              )}
+
+            </div>
+
+            <div class="modal-note">
+
+              Học viên đang đăng ký
+              các khóa có lịch chồng lấn:
+
+            </div>
+
+            ${courseHtml}
 
           </div>
-
-
-          <div class="modal-note">
-
-            Học viên đang đăng ký
-            các khóa có lịch chồng lấn:
-
-          </div>
-
-
-          ${coursesHtml}
 
         `;
-
-
-        body.appendChild(
-          item
-        );
 
       }
     );
@@ -3888,7 +4809,7 @@ function openStudentConflictModal() {
 
 
 /* =========================
-   CLOSE POPUP
+   CLOSE MODAL
 ========================= */
 
 function closeModal(id) {
@@ -3930,12 +4851,13 @@ document.addEventListener(
       event.key === "Escape"
     ) {
 
-      closeModal(
-        "courseConflictModal"
-      );
-
-      closeModal(
-        "studentConflictModal"
+      [
+        "courseConflictModal",
+        "studentConflictModal",
+        "courseDetailModal"
+      ]
+      .forEach(
+        closeModal
       );
 
     }
@@ -3945,16 +4867,13 @@ document.addEventListener(
 
 
 
-/* =========================
-   START
-========================= */
+/* START */
 
 saveCourses();
 
 showCurrentDate();
 
 renderCourses();
-
 
 </script>
 
