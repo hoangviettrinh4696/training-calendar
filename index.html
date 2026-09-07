@@ -19,8 +19,6 @@
       color: #24352b;
     }
 
-    /* HEADER */
-
     .header {
       background-color: #176b45;
       color: white;
@@ -36,8 +34,6 @@
       margin: 7px 0 0;
       opacity: 0.9;
     }
-
-    /* NỘI DUNG */
 
     .container {
       max-width: 1450px;
@@ -58,8 +54,6 @@
       color: #176b45;
       font-size: 21px;
     }
-
-    /* FORM */
 
     .form-grid {
       display: grid;
@@ -111,28 +105,62 @@
       margin-top: 5px;
     }
 
-    /* BUTTON */
-
     .button-area {
       margin-top: 22px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
     button {
-      background-color: #198754;
-      color: white;
       border: none;
-      padding: 12px 22px;
+      padding: 11px 18px;
       border-radius: 7px;
       cursor: pointer;
       font-size: 14px;
       font-weight: bold;
     }
 
-    button:hover {
+    .btn-primary {
+      background-color: #198754;
+      color: white;
+    }
+
+    .btn-primary:hover {
       background-color: #146c43;
     }
 
-    /* THỐNG KÊ */
+    .btn-secondary {
+      background-color: #e7eee9;
+      color: #244f38;
+    }
+
+    .btn-secondary:hover {
+      background-color: #d8e4dc;
+    }
+
+    .btn-edit {
+      background-color: #e6f4ec;
+      color: #176b45;
+      padding: 7px 11px;
+      font-size: 12px;
+      margin-right: 5px;
+    }
+
+    .btn-edit:hover {
+      background-color: #cfe8da;
+    }
+
+    .btn-delete {
+      background-color: #fde8e8;
+      color: #a12020;
+      padding: 7px 11px;
+      font-size: 12px;
+    }
+
+    .btn-delete:hover {
+      background-color: #f8d1d1;
+    }
 
     .stats {
       display: grid;
@@ -161,7 +189,16 @@
       font-size: 13px;
     }
 
-    /* TABLE */
+    .editing-notice {
+      display: none;
+      background-color: #fff8dd;
+      border-left: 4px solid #d2a500;
+      padding: 12px 15px;
+      border-radius: 7px;
+      margin-bottom: 20px;
+      color: #665200;
+      font-size: 14px;
+    }
 
     .table-wrapper {
       overflow-x: auto;
@@ -170,7 +207,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 1200px;
+      min-width: 1400px;
     }
 
     th {
@@ -193,7 +230,6 @@
     }
 
     .student-list {
-      white-space: pre-line;
       min-width: 190px;
     }
 
@@ -203,6 +239,7 @@
       border-radius: 15px;
       font-size: 12px;
       font-weight: bold;
+      white-space: nowrap;
     }
 
     .status-completed {
@@ -210,12 +247,25 @@
       color: #176b45;
     }
 
+    .status-progress {
+      background: #dceeff;
+      color: #175a91;
+    }
+
     .status-pending {
       background: #fff4cc;
       color: #806500;
     }
 
-    /* RESPONSIVE */
+    .status-cancelled {
+      background: #f4e2e2;
+      color: #8d2828;
+    }
+
+    .action-cell {
+      min-width: 125px;
+      white-space: nowrap;
+    }
 
     @media (max-width: 800px) {
 
@@ -239,205 +289,107 @@
   </style>
 </head>
 
-
 <body>
 
-
-  <!-- TIÊU ĐỀ -->
-
   <div class="header">
-
     <h1>Quản lý lịch đào tạo</h1>
 
     <p>
       Theo dõi kế hoạch đào tạo, lịch tổ chức và danh sách học viên
     </p>
-
   </div>
 
 
   <div class="container">
 
-
-    <!-- THỐNG KÊ -->
-
     <div class="stats">
 
       <div class="stat-box">
-
-        <div class="stat-number" id="totalCourses">
-          0
-        </div>
-
-        <div class="stat-label">
-          Tổng số khóa học
-        </div>
-
+        <div class="stat-number" id="totalCourses">0</div>
+        <div class="stat-label">Tổng số khóa học</div>
       </div>
 
-
       <div class="stat-box">
-
-        <div class="stat-number" id="totalStudents">
-          0
-        </div>
-
-        <div class="stat-label">
-          Tổng lượt học viên
-        </div>
-
+        <div class="stat-number" id="totalStudents">0</div>
+        <div class="stat-label">Tổng lượt học viên</div>
       </div>
 
-
       <div class="stat-box">
-
-        <div class="stat-number">
-          0
-        </div>
-
-        <div class="stat-label">
-          Cảnh báo trùng lịch
-        </div>
-
+        <div class="stat-number" id="totalWarnings">0</div>
+        <div class="stat-label">Cảnh báo trùng lịch</div>
       </div>
 
     </div>
 
 
-
-    <!-- FORM NHẬP -->
-
     <div class="card">
 
-      <h2>Thêm khóa đào tạo</h2>
+      <h2 id="formTitle">Thêm khóa đào tạo</h2>
 
+      <div class="editing-notice" id="editingNotice">
+        Bạn đang chỉnh sửa một khóa học. Sau khi sửa xong, bấm
+        <strong>Cập nhật khóa học</strong>.
+      </div>
 
       <div class="form-grid">
 
-
-        <!-- TÊN KHÓA -->
-
         <div class="form-group full-width">
-
-          <label>
-            Tên khóa đào tạo *
-          </label>
+          <label>Tên khóa đào tạo *</label>
 
           <input
             type="text"
             id="courseName"
             placeholder="Ví dụ: Kỹ năng giải quyết vấn đề và ra quyết định"
           >
-
-        </div>
-
-
-
-        <!-- NGÀY -->
-
-        <div class="form-group">
-
-          <label>
-            Ngày bắt đầu *
-          </label>
-
-          <input
-            type="date"
-            id="startDate"
-          >
-
         </div>
 
 
         <div class="form-group">
-
-          <label>
-            Ngày kết thúc *
-          </label>
-
-          <input
-            type="date"
-            id="endDate"
-          >
-
+          <label>Ngày bắt đầu *</label>
+          <input type="date" id="startDate">
         </div>
 
-
-
-        <!-- GIỜ -->
-
         <div class="form-group">
-
-          <label>
-            Giờ bắt đầu
-          </label>
-
-          <input
-            type="time"
-            id="startTime"
-          >
-
+          <label>Ngày kết thúc *</label>
+          <input type="date" id="endDate">
         </div>
 
 
         <div class="form-group">
+          <label>Giờ bắt đầu</label>
+          <input type="time" id="startTime">
+        </div>
 
-          <label>
-            Giờ kết thúc
-          </label>
-
-          <input
-            type="time"
-            id="endTime"
-          >
-
+        <div class="form-group">
+          <label>Giờ kết thúc</label>
+          <input type="time" id="endTime">
         </div>
 
 
-
-        <!-- BAN -->
-
         <div class="form-group">
-
-          <label>
-            Ban chức năng / Đối tượng
-          </label>
+          <label>Ban chức năng / Đối tượng</label>
 
           <input
             type="text"
             id="department"
-            placeholder="Ví dụ: CN TTKT, QTNNL, NVTN, All..."
+            placeholder="Ví dụ: QTNNL, TTKT, NVTN, All..."
           >
-
         </div>
 
 
-
-        <!-- ĐƠN VỊ ĐÀO TẠO -->
-
         <div class="form-group">
-
-          <label>
-            Đơn vị đào tạo
-          </label>
+          <label>Đơn vị đào tạo</label>
 
           <input
             type="text"
             id="provider"
             placeholder="Ví dụ: PVU, FSB, Brainwork..."
           >
-
         </div>
 
 
-
-        <!-- TÌNH TRẠNG -->
-
         <div class="form-group">
-
-          <label>
-            Tình trạng thực hiện
-          </label>
+          <label>Tình trạng thực hiện</label>
 
           <select id="status">
 
@@ -462,36 +414,23 @@
             </option>
 
           </select>
-
         </div>
 
 
-
-        <!-- NGƯỜI PHỤ TRÁCH -->
-
         <div class="form-group">
-
-          <label>
-            Nhân sự thực hiện
-          </label>
+          <label>Nhân sự thực hiện</label>
 
           <input
             type="text"
             id="personInCharge"
             placeholder="Ví dụ: Trinh"
           >
-
         </div>
 
 
-
-        <!-- DANH SÁCH HỌC VIÊN -->
-
         <div class="form-group full-width">
 
-          <label>
-            Danh sách học viên
-          </label>
+          <label>Danh sách học viên</label>
 
           <textarea
             id="students"
@@ -508,24 +447,32 @@ Lê Văn C"
 
         </div>
 
-
       </div>
-
 
 
       <div class="button-area">
 
-        <button onclick="addCourse()">
+        <button
+          class="btn-primary"
+          id="saveButton"
+          onclick="saveCourse()"
+        >
           + Thêm khóa học
+        </button>
+
+        <button
+          class="btn-secondary"
+          id="cancelButton"
+          onclick="cancelEdit()"
+          style="display:none;"
+        >
+          Hủy chỉnh sửa
         </button>
 
       </div>
 
     </div>
 
-
-
-    <!-- DANH SÁCH -->
 
     <div class="card">
 
@@ -538,33 +485,22 @@ Lê Văn C"
           <thead>
 
             <tr>
-
               <th>STT</th>
-
               <th>Tên khóa</th>
-
               <th>Thời gian</th>
-
               <th>Ban chức năng</th>
-
               <th>Đơn vị đào tạo</th>
-
               <th>Tình trạng</th>
-
               <th>Nhân sự thực hiện</th>
-
               <th>Số HV</th>
-
               <th>Danh sách học viên</th>
-
+              <th>Thao tác</th>
             </tr>
 
           </thead>
 
-
           <tbody id="courseTable">
           </tbody>
-
 
         </table>
 
@@ -572,22 +508,16 @@ Lê Văn C"
 
     </div>
 
-
   </div>
-
 
 
 <script>
 
-
-  /* LẤY DỮ LIỆU ĐÃ LƯU */
-
   let courses =
     JSON.parse(localStorage.getItem("trainingCourses")) || [];
 
+  let editingIndex = null;
 
-
-  /* ĐỔI NGÀY THÀNH DD/MM/YYYY */
 
   function formatDate(date) {
 
@@ -606,10 +536,9 @@ Lê Văn C"
   }
 
 
-
-  /* TÁCH DANH SÁCH HỌC VIÊN */
-
   function getStudentArray(text) {
+
+    if (!text) return [];
 
     return text
       .split("\n")
@@ -618,9 +547,6 @@ Lê Văn C"
 
   }
 
-
-
-  /* LƯU DỮ LIỆU */
 
   function saveCourses() {
 
@@ -632,8 +558,27 @@ Lê Văn C"
   }
 
 
+  function getStatusClass(status) {
 
-  /* HIỂN THỊ BẢNG */
+    if (status === "Hoàn thành") {
+      return "status-completed";
+    }
+
+    if (status === "Đang triển khai") {
+      return "status-progress";
+    }
+
+    if (
+      status === "Tạm hoãn" ||
+      status === "Hủy"
+    ) {
+      return "status-cancelled";
+    }
+
+    return "status-pending";
+
+  }
+
 
   function renderCourses() {
 
@@ -642,23 +587,19 @@ Lê Văn C"
 
     table.innerHTML = "";
 
-
     let totalStudents = 0;
 
 
     courses.forEach(function(course, index) {
 
-
       const students =
         getStudentArray(course.students);
-
 
       totalStudents += students.length;
 
 
       let timeText =
         formatDate(course.startDate);
-
 
       if (
         course.endDate &&
@@ -687,19 +628,8 @@ Lê Văn C"
       }
 
 
-      let statusClass =
-        "status-pending";
-
-
-      if (
-        course.status === "Hoàn thành"
-      ) {
-
-        statusClass =
-          "status-completed";
-
-      }
-
+      const statusClass =
+        getStatusClass(course.status);
 
 
       const row =
@@ -729,13 +659,9 @@ Lê Văn C"
         </td>
 
         <td>
-
           <span class="status ${statusClass}">
-
-            ${course.status}
-
+            ${course.status || "Chưa triển khai"}
           </span>
-
         </td>
 
         <td>
@@ -750,17 +676,33 @@ Lê Văn C"
           ${students.join("<br>")}
         </td>
 
+        <td class="action-cell">
+
+          <button
+            class="btn-edit"
+            onclick="editCourse(${index})"
+          >
+            Sửa
+          </button>
+
+          <button
+            class="btn-delete"
+            onclick="deleteCourse(${index})"
+          >
+            Xóa
+          </button>
+
+        </td>
+
       `;
 
     });
-
 
 
     document.getElementById(
       "totalCourses"
     ).innerText =
       courses.length;
-
 
 
     document.getElementById(
@@ -771,11 +713,7 @@ Lê Văn C"
   }
 
 
-
-  /* THÊM KHÓA */
-
-  function addCourse() {
-
+  function saveCourse() {
 
     const courseName =
       document.getElementById(
@@ -837,7 +775,6 @@ Lê Văn C"
       ).value.trim();
 
 
-
     if (
       courseName === "" ||
       startDate === "" ||
@@ -853,7 +790,6 @@ Lê Văn C"
     }
 
 
-
     if (
       endDate < startDate
     ) {
@@ -867,8 +803,23 @@ Lê Văn C"
     }
 
 
+    if (
+      startDate === endDate &&
+      startTime &&
+      endTime &&
+      endTime <= startTime
+    ) {
 
-    const newCourse = {
+      alert(
+        "Giờ kết thúc phải sau giờ bắt đầu."
+      );
+
+      return;
+
+    }
+
+
+    const courseData = {
 
       courseName,
       startDate,
@@ -884,74 +835,273 @@ Lê Văn C"
     };
 
 
-    courses.push(newCourse);
+    if (editingIndex === null) {
+
+      courses.push(courseData);
+
+      alert(
+        "Đã thêm khóa học thành công."
+      );
+
+    } else {
+
+      courses[editingIndex] =
+        courseData;
+
+      alert(
+        "Đã cập nhật khóa học thành công."
+      );
+
+    }
 
 
     saveCourses();
 
-
     renderCourses();
 
-
-    clearForm();
-
-
-    alert(
-      "Đã thêm khóa học thành công."
-    );
+    resetForm();
 
   }
 
 
+  function editCourse(index) {
 
-  /* XÓA FORM SAU KHI NHẬP */
+    const course =
+      courses[index];
 
-  function clearForm() {
+
+    editingIndex =
+      index;
+
+
+    document.getElementById(
+      "courseName"
+    ).value =
+      course.courseName || "";
+
+
+    document.getElementById(
+      "startDate"
+    ).value =
+      course.startDate || "";
+
+
+    document.getElementById(
+      "endDate"
+    ).value =
+      course.endDate || "";
+
+
+    document.getElementById(
+      "startTime"
+    ).value =
+      course.startTime || "";
+
+
+    document.getElementById(
+      "endTime"
+    ).value =
+      course.endTime || "";
+
+
+    document.getElementById(
+      "department"
+    ).value =
+      course.department || "";
+
+
+    document.getElementById(
+      "provider"
+    ).value =
+      course.provider || "";
+
+
+    document.getElementById(
+      "status"
+    ).value =
+      course.status || "Chưa triển khai";
+
+
+    document.getElementById(
+      "personInCharge"
+    ).value =
+      course.personInCharge || "";
+
+
+    document.getElementById(
+      "students"
+    ).value =
+      course.students || "";
+
+
+    document.getElementById(
+      "formTitle"
+    ).innerText =
+      "Chỉnh sửa khóa đào tạo";
+
+
+    document.getElementById(
+      "saveButton"
+    ).innerText =
+      "Cập nhật khóa học";
+
+
+    document.getElementById(
+      "cancelButton"
+    ).style.display =
+      "inline-block";
+
+
+    document.getElementById(
+      "editingNotice"
+    ).style.display =
+      "block";
+
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+  }
+
+
+  function deleteCourse(index) {
+
+    const courseName =
+      courses[index].courseName;
+
+
+    const confirmed =
+      confirm(
+        'Bạn có chắc muốn xóa khóa "' +
+        courseName +
+        '" không?'
+      );
+
+
+    if (!confirmed) {
+      return;
+    }
+
+
+    courses.splice(index, 1);
+
+
+    saveCourses();
+
+    renderCourses();
+
+
+    if (
+      editingIndex === index
+    ) {
+
+      resetForm();
+
+    } else if (
+      editingIndex !== null &&
+      editingIndex > index
+    ) {
+
+      editingIndex =
+        editingIndex - 1;
+
+    }
+
+  }
+
+
+  function cancelEdit() {
+
+    resetForm();
+
+  }
+
+
+  function resetForm() {
+
+    editingIndex = null;
+
 
     document.getElementById(
       "courseName"
     ).value = "";
 
+
     document.getElementById(
       "startDate"
     ).value = "";
+
 
     document.getElementById(
       "endDate"
     ).value = "";
 
+
     document.getElementById(
       "startTime"
     ).value = "";
+
 
     document.getElementById(
       "endTime"
     ).value = "";
 
+
     document.getElementById(
       "department"
     ).value = "";
+
 
     document.getElementById(
       "provider"
     ).value = "";
 
+
+    document.getElementById(
+      "status"
+    ).value =
+      "Chưa triển khai";
+
+
     document.getElementById(
       "personInCharge"
     ).value = "";
+
 
     document.getElementById(
       "students"
     ).value = "";
 
+
+    document.getElementById(
+      "formTitle"
+    ).innerText =
+      "Thêm khóa đào tạo";
+
+
+    document.getElementById(
+      "saveButton"
+    ).innerText =
+      "+ Thêm khóa học";
+
+
+    document.getElementById(
+      "cancelButton"
+    ).style.display =
+      "none";
+
+
+    document.getElementById(
+      "editingNotice"
+    ).style.display =
+      "none";
+
   }
 
 
-
-  /* CHẠY KHI MỞ WEBSITE */
-
   renderCourses();
-
 
 </script>
 
