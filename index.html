@@ -14,24 +14,16 @@
     :root {
       --green-dark: #075f3d;
       --green: #12834f;
-      --green-medium: #1b9a5b;
       --green-light: #e9f7ef;
       --green-soft: #f3faf6;
-
       --border: #d8e6dd;
-
       --text: #20352a;
       --text-light: #68776f;
-
-      --white: #ffffff;
-
       --red: #d93b3b;
-      --red-light: #fff1f1;
-
       --orange: #d78b00;
       --orange-light: #fff8e5;
+      --blue: #2875a8;
     }
-
 
     body {
       margin: 0;
@@ -39,11 +31,6 @@
       background: #f4f8f5;
       color: var(--text);
     }
-
-
-    /* =========================
-       HEADER
-    ========================= */
 
     .brand-header {
       background:
@@ -55,89 +42,60 @@
         );
 
       min-height: 135px;
-
       display: flex;
       align-items: center;
-
       padding: 18px 45px;
-
       border-bottom: 1px solid #dcebe1;
-
       position: relative;
       overflow: hidden;
     }
 
-
     .brand-header::after {
       content: "";
-
       position: absolute;
-
       width: 380px;
       height: 380px;
-
       border-radius: 50%;
-
       background: rgba(25, 135, 84, 0.06);
-
       right: -120px;
       top: -220px;
     }
-
 
     .brand-content {
       display: flex;
       align-items: center;
       gap: 25px;
-
       position: relative;
       z-index: 1;
     }
 
-
     .logo {
       width: 145px;
       max-height: 105px;
-
       object-fit: contain;
     }
-
 
     .brand-text {
       border-left: 1px solid #b9d7c4;
       padding-left: 25px;
     }
 
-
     .company-name {
       color: var(--green-dark);
-
       font-weight: bold;
       font-size: 16px;
-
       letter-spacing: 0.6px;
-
       text-transform: uppercase;
-
       margin-bottom: 7px;
     }
 
-
     .department-name {
       color: var(--green-dark);
-
       font-size: 32px;
       font-weight: 800;
-
       margin: 0;
-
       letter-spacing: 0.5px;
     }
-
-
-    /* =========================
-       THANH TIÊU ĐỀ
-    ========================= */
 
     .main-bar {
       background:
@@ -148,16 +106,12 @@
         );
 
       color: white;
-
       padding: 0 45px;
-
       min-height: 58px;
-
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-
 
     .main-title {
       display: flex;
@@ -165,175 +119,111 @@
       gap: 14px;
     }
 
-
     .home-icon {
       width: 36px;
       height: 36px;
-
       background: rgba(255,255,255,0.14);
-
       border-radius: 8px;
-
       display: flex;
       align-items: center;
       justify-content: center;
-
       font-size: 19px;
     }
-
 
     .main-title strong {
       font-size: 21px;
     }
 
-
     .main-subtitle {
       font-size: 13px;
-
       opacity: 0.88;
-
       margin-left: 8px;
     }
-
 
     .current-date {
       font-size: 13px;
       opacity: 0.95;
     }
 
-
-    /* =========================
-       CONTENT
-    ========================= */
-
     .container {
       max-width: 1500px;
-
       margin: 22px auto 40px;
-
       padding: 0 25px;
     }
 
-
-    /* =========================
-       DASHBOARD
-    ========================= */
-
     .stats {
       display: grid;
-
       grid-template-columns: repeat(4, 1fr);
-
       gap: 14px;
-
       margin-bottom: 20px;
     }
 
-
     .stat-card {
       background: white;
-
       border: 1px solid #cfe4d7;
-
       border-radius: 10px;
-
       padding: 18px 20px;
-
       display: flex;
       align-items: center;
-
       gap: 17px;
-
       box-shadow: 0 2px 8px rgba(0,0,0,0.035);
     }
-
 
     .stat-icon {
       width: 52px;
       height: 52px;
-
       border-radius: 10px;
-
       background: var(--green-light);
-
       color: var(--green);
-
       display: flex;
       align-items: center;
       justify-content: center;
-
       font-size: 25px;
-
       flex-shrink: 0;
     }
 
-
     .stat-card.warning {
       border-color: #efd79b;
-
       background: #fffefa;
     }
 
-
     .stat-card.warning .stat-icon {
       background: #fff2d6;
-
       color: #e07028;
     }
-
 
     .stat-number {
       font-size: 27px;
       font-weight: bold;
-
       color: var(--green-dark);
     }
-
 
     .warning .stat-number {
       color: #d94b2b;
     }
 
-
     .stat-label {
       font-size: 13px;
-
       color: var(--text-light);
-
       margin-top: 3px;
     }
 
-
-    /* =========================
-       CARD
-    ========================= */
-
     .card {
       background: white;
-
       border: 1px solid #dce9e1;
-
       border-radius: 11px;
-
       margin-bottom: 20px;
-
       padding: 22px;
-
       box-shadow: 0 3px 12px rgba(0,0,0,0.04);
     }
 
-
     .card-title-row {
       display: flex;
-
       justify-content: space-between;
       align-items: center;
-
       gap: 15px;
-
       margin-bottom: 20px;
     }
-
 
     .card-title {
       display: flex;
@@ -341,378 +231,279 @@
       gap: 11px;
     }
 
-
     .title-icon {
       width: 36px;
       height: 36px;
-
       border-radius: 8px;
-
       background: var(--green);
-
       color: white;
-
       display: flex;
       align-items: center;
       justify-content: center;
-
       font-size: 20px;
     }
-
 
     h2 {
       color: var(--green-dark);
-
       font-size: 20px;
-
       margin: 0;
     }
 
-
     .required-note {
       font-size: 12px;
-
       color: var(--text-light);
-
       background: var(--green-soft);
-
       padding: 8px 12px;
-
       border-radius: 7px;
     }
-
 
     .required {
       color: #df3434;
     }
 
-
-    /* =========================
-       CẢNH BÁO
-    ========================= */
-
     .warning-panel {
       display: none;
-
       background: #fffdfa;
-
       border: 1px solid #efd9a3;
-
       border-radius: 11px;
-
       margin-bottom: 20px;
-
       overflow: hidden;
     }
 
-
     .warning-panel-header {
       background: var(--orange-light);
-
       padding: 15px 20px;
-
       border-bottom: 1px solid #f0dfb8;
-
       display: flex;
       align-items: center;
-
       gap: 10px;
     }
 
-
     .warning-panel-header strong {
       color: #8b6300;
-
       font-size: 16px;
     }
-
 
     .warning-panel-body {
       padding: 15px 20px;
     }
 
-
     .warning-item {
       background: white;
-
       border: 1px solid #eee1c4;
-
       border-left: 4px solid #e0a526;
-
       border-radius: 7px;
-
       padding: 12px 14px;
-
       margin-bottom: 10px;
-
       line-height: 1.5;
-
       font-size: 13px;
     }
-
 
     .warning-item:last-child {
       margin-bottom: 0;
     }
 
-
     .warning-course {
       font-weight: bold;
-
       color: #725000;
     }
 
-
     .warning-date {
       color: #5f6963;
-
       margin-top: 4px;
     }
 
+    .student-warning-panel {
+      display: none;
+      background: #fffafa;
+      border: 1px solid #f0c7c7;
+      border-radius: 11px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
 
-    /* =========================
-       FORM
-    ========================= */
+    .student-warning-header {
+      background: #fff0f0;
+      padding: 15px 20px;
+      border-bottom: 1px solid #f0caca;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .student-warning-header strong {
+      color: #a62828;
+      font-size: 16px;
+    }
+
+    .student-warning-body {
+      padding: 15px 20px;
+    }
+
+    .student-warning-item {
+      background: white;
+      border: 1px solid #f1d3d3;
+      border-left: 4px solid #d93b3b;
+      border-radius: 7px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .student-warning-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .student-name-highlight {
+      font-weight: bold;
+      color: #b52525;
+    }
 
     .form-grid {
       display: grid;
-
       grid-template-columns: repeat(4, 1fr);
-
       gap: 17px;
     }
-
 
     .form-group {
       display: flex;
       flex-direction: column;
     }
 
-
     .span-2 {
       grid-column: span 2;
     }
-
 
     .span-4 {
       grid-column: 1 / -1;
     }
 
-
     label {
       font-size: 13px;
-
       font-weight: bold;
-
       margin-bottom: 7px;
-
       color: #263c30;
     }
-
 
     input,
     select,
     textarea {
       width: 100%;
-
       border: 1px solid #cad8cf;
-
       border-radius: 7px;
-
       padding: 11px 12px;
-
       font-family: Arial, sans-serif;
-
       font-size: 13px;
-
       color: var(--text);
-
       background: white;
-
       outline: none;
-
       transition: 0.2s;
     }
-
 
     input,
     select {
       height: 42px;
     }
 
-
     textarea {
       min-height: 115px;
-
       resize: vertical;
-
       line-height: 1.5;
     }
-
 
     input:focus,
     select:focus,
     textarea:focus {
       border-color: var(--green);
-
-      box-shadow:
-        0 0 0 3px rgba(25,135,84,0.09);
+      box-shadow: 0 0 0 3px rgba(25,135,84,0.09);
     }
-
 
     .hint {
       font-size: 11px;
-
       color: #78857e;
-
       margin-top: 6px;
     }
 
-
-    /* =========================
-       BUTTON
-    ========================= */
-
     .button-area {
       margin-top: 20px;
-
       display: flex;
-
       justify-content: flex-end;
-
       gap: 10px;
     }
 
-
     button {
       font-family: Arial, sans-serif;
-
       border: none;
-
       cursor: pointer;
-
       font-weight: bold;
-
       border-radius: 7px;
-
       transition: 0.15s;
     }
 
-
     .btn-primary {
       background: var(--green);
-
       color: white;
-
       padding: 11px 20px;
     }
-
 
     .btn-primary:hover {
       background: var(--green-dark);
     }
 
-
     .btn-secondary {
       background: #f5faf7;
-
       color: var(--green-dark);
-
       border: 1px solid #b9d8c5;
-
       padding: 10px 18px;
     }
 
-
-    .btn-secondary:hover {
-      background: #eaf5ee;
-    }
-
-
     .btn-edit {
       background: #e8f5ed;
-
       color: #087344;
-
       padding: 7px 11px;
-
       margin-right: 5px;
-
       font-size: 12px;
     }
-
 
     .btn-delete {
       background: #fdecec;
-
       color: #d52c2c;
-
       padding: 7px 11px;
-
       font-size: 12px;
     }
 
-
-    /* =========================
-       EDIT NOTICE
-    ========================= */
-
     .editing-notice {
       display: none;
-
       background: #fff8dd;
-
       border: 1px solid #efd993;
-
       border-left: 4px solid #d8a914;
-
       padding: 11px 14px;
-
       margin-bottom: 18px;
-
       border-radius: 7px;
-
       color: #665414;
-
       font-size: 13px;
     }
-
-
-    /* =========================
-       SEARCH
-    ========================= */
 
     .search-box {
       width: 330px;
     }
 
-
     .search-box input {
       height: 40px;
     }
 
-
-    /* =========================
-       TABLE
-    ========================= */
-
     .table-wrapper {
       overflow-x: auto;
-
       border: 1px solid #dce7e0;
-
       border-radius: 8px;
     }
 
-
     table {
       width: 100%;
-
       border-collapse: collapse;
-
       min-width: 1350px;
     }
-
 
     thead {
       background:
@@ -723,253 +514,168 @@
         );
     }
 
-
     th {
       color: white;
-
       text-align: left;
-
       padding: 12px 10px;
-
       font-size: 12px;
-
       white-space: nowrap;
-
-      border-right:
-        1px solid rgba(255,255,255,0.14);
+      border-right: 1px solid rgba(255,255,255,0.14);
     }
-
 
     td {
       padding: 11px 10px;
-
       font-size: 12px;
-
       vertical-align: top;
-
-      border-bottom:
-        1px solid #e2ebe5;
-
-      border-right:
-        1px solid #edf2ef;
+      border-bottom: 1px solid #e2ebe5;
+      border-right: 1px solid #edf2ef;
     }
-
 
     tbody tr:hover {
       background: #f5fbf7;
     }
 
-
     .conflict-row {
       background: #fffaf0;
     }
 
-
-    .conflict-row:hover {
-      background: #fff5df;
-    }
-
-
     .conflict-label {
       display: inline-block;
-
       background: #fff0c9;
-
       color: #946400;
-
       border-radius: 15px;
-
       padding: 4px 7px;
-
       font-size: 10px;
-
       font-weight: bold;
-
       margin-top: 6px;
     }
 
+    .student-conflict-label {
+      display: inline-block;
+      background: #fde8e8;
+      color: #b52222;
+      border-radius: 15px;
+      padding: 4px 7px;
+      font-size: 10px;
+      font-weight: bold;
+      margin-top: 6px;
+      margin-left: 4px;
+    }
 
     .course-name {
       font-weight: bold;
-
       color: #203a2c;
-
       min-width: 170px;
     }
-
 
     .time-cell {
       white-space: nowrap;
-
       line-height: 1.55;
     }
 
-
     .student-list {
       min-width: 170px;
-
       line-height: 1.5;
     }
 
-
     .action-cell {
       min-width: 125px;
-
       white-space: nowrap;
     }
-
-
-    /* =========================
-       STATUS
-    ========================= */
 
     .status {
       display: inline-block;
-
       border-radius: 20px;
-
       padding: 6px 10px;
-
       font-size: 11px;
-
       font-weight: bold;
-
       white-space: nowrap;
     }
 
-
     .status-completed {
       background: #dff3e7;
-
       color: #11683e;
     }
 
-
     .status-progress {
       background: #fff0c9;
-
       color: #926400;
     }
 
-
     .status-pending {
       background: #e8edf1;
-
       color: #455762;
     }
 
-
     .status-cancelled {
       background: #f7e2e2;
-
       color: #9d3131;
     }
 
-
     .empty-state {
       text-align: center;
-
       padding: 35px;
-
       color: #7a8780;
     }
 
-
-    /* =========================
-       RESPONSIVE
-    ========================= */
-
     @media (max-width: 1000px) {
-
       .stats {
-        grid-template-columns:
-          repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr);
       }
-
 
       .form-grid {
-        grid-template-columns:
-          repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr);
       }
-
 
       .span-4 {
         grid-column: 1 / -1;
       }
-
-
-      .brand-header {
-        padding: 18px 25px;
-      }
-
-
-      .main-bar {
-        padding: 0 25px;
-      }
-
     }
 
-
     @media (max-width: 650px) {
-
       .stats {
         grid-template-columns: 1fr;
       }
 
-
       .form-grid {
         grid-template-columns: 1fr;
       }
-
 
       .span-2,
       .span-4 {
         grid-column: 1;
       }
 
-
       .logo {
         width: 100px;
       }
-
 
       .department-name {
         font-size: 23px;
       }
 
-
       .company-name {
         font-size: 12px;
       }
-
 
       .main-subtitle,
       .current-date {
         display: none;
       }
 
-
       .card-title-row {
-        align-items: flex-start;
-
         flex-direction: column;
+        align-items: flex-start;
       }
-
 
       .search-box {
         width: 100%;
       }
-
     }
-
   </style>
 </head>
 
-
 <body>
-
-
-  <!-- HEADER -->
 
   <header class="brand-header">
 
@@ -997,8 +703,6 @@
 
   </header>
 
-
-  <!-- THANH TIÊU ĐỀ -->
 
   <div class="main-bar">
 
@@ -1028,11 +732,7 @@
 
   <main class="container">
 
-
-    <!-- DASHBOARD -->
-
     <section class="stats">
-
 
       <div class="stat-card">
 
@@ -1041,18 +741,8 @@
         </div>
 
         <div>
-
-          <div
-            class="stat-number"
-            id="totalCourses"
-          >
-            0
-          </div>
-
-          <div class="stat-label">
-            Tổng số khóa học
-          </div>
-
+          <div class="stat-number" id="totalCourses">0</div>
+          <div class="stat-label">Tổng số khóa học</div>
         </div>
 
       </div>
@@ -1065,18 +755,8 @@
         </div>
 
         <div>
-
-          <div
-            class="stat-number"
-            id="totalStudents"
-          >
-            0
-          </div>
-
-          <div class="stat-label">
-            Tổng lượt học viên
-          </div>
-
+          <div class="stat-number" id="totalStudents">0</div>
+          <div class="stat-label">Tổng lượt học viên</div>
         </div>
 
       </div>
@@ -1089,42 +769,22 @@
         </div>
 
         <div>
-
-          <div
-            class="stat-number"
-            id="totalWarnings"
-          >
-            0
-          </div>
-
-          <div class="stat-label">
-            Cặp khóa trùng lịch
-          </div>
-
+          <div class="stat-number" id="totalWarnings">0</div>
+          <div class="stat-label">Cặp khóa trùng lịch</div>
         </div>
 
       </div>
 
 
-      <div class="stat-card">
+      <div class="stat-card warning">
 
         <div class="stat-icon">
-          📅
+          👤
         </div>
 
         <div>
-
-          <div
-            class="stat-number"
-            id="activeCourses"
-          >
-            0
-          </div>
-
-          <div class="stat-label">
-            Khóa đang triển khai
-          </div>
-
+          <div class="stat-number" id="studentConflictCount">0</div>
+          <div class="stat-label">Học viên bị trùng lịch</div>
         </div>
 
       </div>
@@ -1132,37 +792,38 @@
     </section>
 
 
-
-    <!-- KHU VỰC CẢNH BÁO -->
-
-    <section
-      class="warning-panel"
-      id="warningPanel"
-    >
+    <section class="warning-panel" id="warningPanel">
 
       <div class="warning-panel-header">
-
-        <span>
-          ⚠️
-        </span>
-
-        <strong>
-          Phát hiện khóa đào tạo trùng thời gian
-        </strong>
-
+        <span>⚠️</span>
+        <strong>Phát hiện khóa đào tạo trùng thời gian</strong>
       </div>
 
       <div
         class="warning-panel-body"
         id="warningList"
-      >
-      </div>
+      ></div>
 
     </section>
 
 
+    <section
+      class="student-warning-panel"
+      id="studentWarningPanel"
+    >
 
-    <!-- FORM -->
+      <div class="student-warning-header">
+        <span>🚨</span>
+        <strong>Phát hiện học viên bị trùng lịch đào tạo</strong>
+      </div>
+
+      <div
+        class="student-warning-body"
+        id="studentWarningList"
+      ></div>
+
+    </section>
+
 
     <section class="card">
 
@@ -1181,15 +842,9 @@
         </div>
 
         <div class="required-note">
-
           Các trường có dấu
-
-          <span class="required">
-            *
-          </span>
-
+          <span class="required">*</span>
           là bắt buộc
-
         </div>
 
       </div>
@@ -1199,31 +854,19 @@
         class="editing-notice"
         id="editingNotice"
       >
-
         Bạn đang chỉnh sửa khóa học.
-
         Sau khi hoàn thành, bấm
-
-        <strong>
-          Cập nhật khóa học
-        </strong>.
-
+        <strong>Cập nhật khóa học</strong>.
       </div>
 
 
       <div class="form-grid">
 
-
         <div class="form-group span-2">
 
           <label>
-
             Tên khóa đào tạo
-
-            <span class="required">
-              *
-            </span>
-
+            <span class="required">*</span>
           </label>
 
           <input
@@ -1238,13 +881,8 @@
         <div class="form-group">
 
           <label>
-
             Ngày bắt đầu
-
-            <span class="required">
-              *
-            </span>
-
+            <span class="required">*</span>
           </label>
 
           <input
@@ -1258,13 +896,8 @@
         <div class="form-group">
 
           <label>
-
             Ngày kết thúc
-
-            <span class="required">
-              *
-            </span>
-
+            <span class="required">*</span>
           </label>
 
           <input
@@ -1396,11 +1029,8 @@ Lê Văn C"
           ></textarea>
 
           <div class="hint">
-
             Mỗi học viên nhập trên một dòng.
-
-            Website sẽ tự động đếm số lượng học viên.
-
+            Website sẽ tự động đếm số lượng học viên và kiểm tra trùng lịch.
           </div>
 
         </div>
@@ -1417,7 +1047,6 @@ Lê Văn C"
           ↻ Làm mới
         </button>
 
-
         <button
           class="btn-secondary"
           id="cancelButton"
@@ -1426,7 +1055,6 @@ Lê Văn C"
         >
           Hủy chỉnh sửa
         </button>
-
 
         <button
           class="btn-primary"
@@ -1440,9 +1068,6 @@ Lê Văn C"
 
     </section>
 
-
-
-    <!-- DANH SÁCH -->
 
     <section class="card">
 
@@ -1482,52 +1107,21 @@ Lê Văn C"
           <thead>
 
             <tr>
-
               <th>STT</th>
-
-              <th>
-                Tên khóa đào tạo
-              </th>
-
-              <th>
-                Thời gian
-              </th>
-
-              <th>
-                Ban chức năng
-              </th>
-
-              <th>
-                Đơn vị đào tạo
-              </th>
-
-              <th>
-                Tình trạng
-              </th>
-
-              <th>
-                Nhân sự thực hiện
-              </th>
-
-              <th>
-                Số HV
-              </th>
-
-              <th>
-                Danh sách học viên
-              </th>
-
-              <th>
-                Thao tác
-              </th>
-
+              <th>Tên khóa đào tạo</th>
+              <th>Thời gian</th>
+              <th>Ban chức năng</th>
+              <th>Đơn vị đào tạo</th>
+              <th>Tình trạng</th>
+              <th>Nhân sự thực hiện</th>
+              <th>Số HV</th>
+              <th>Danh sách học viên</th>
+              <th>Thao tác</th>
             </tr>
 
           </thead>
 
-
-          <tbody id="courseTable">
-          </tbody>
+          <tbody id="courseTable"></tbody>
 
         </table>
 
@@ -1540,32 +1134,18 @@ Lê Văn C"
 
 <script>
 
-
-  /* =========================
-     DỮ LIỆU
-  ========================= */
-
   let courses =
     JSON.parse(
-      localStorage.getItem(
-        "trainingCourses"
-      )
+      localStorage.getItem("trainingCourses")
     ) || [];
-
 
   let editingIndex = null;
 
-
-
-  /* =========================
-     NGÀY HIỆN TẠI
-  ========================= */
 
   function showCurrentDate() {
 
     const today =
       new Date();
-
 
     const text =
       today.toLocaleDateString(
@@ -1578,7 +1158,6 @@ Lê Văn C"
         }
       );
 
-
     document.getElementById(
       "currentDate"
     ).innerText =
@@ -1587,21 +1166,12 @@ Lê Văn C"
   }
 
 
-
-  /* =========================
-     FORMAT NGÀY
-  ========================= */
-
   function formatDate(date) {
 
-    if (!date) {
-      return "";
-    }
-
+    if (!date) return "";
 
     const parts =
       date.split("-");
-
 
     return (
       parts[2] +
@@ -1614,39 +1184,27 @@ Lê Văn C"
   }
 
 
+  function normalizeName(name) {
 
-  /* =========================
-     DANH SÁCH HỌC VIÊN
-  ========================= */
-
-  function getStudentArray(text) {
-
-    if (!text) {
-      return [];
-    }
-
-
-    return text
-
-      .split("\n")
-
-      .map(
-        name =>
-          name.trim()
-      )
-
-      .filter(
-        name =>
-          name !== ""
-      );
+    return name
+      .trim()
+      .replace(/\s+/g, " ")
+      .toLowerCase();
 
   }
 
 
+  function getStudentArray(text) {
 
-  /* =========================
-     LƯU DỮ LIỆU
-  ========================= */
+    if (!text) return [];
+
+    return text
+      .split("\n")
+      .map(name => name.trim())
+      .filter(name => name !== "");
+
+  }
+
 
   function saveCourses() {
 
@@ -1658,61 +1216,34 @@ Lê Văn C"
   }
 
 
-
-  /* =========================
-     TÌNH TRẠNG
-  ========================= */
-
   function getStatusClass(status) {
 
-    if (
-      status === "Hoàn thành"
-    ) {
-
+    if (status === "Hoàn thành") {
       return "status-completed";
-
     }
 
-
-    if (
-      status === "Đang triển khai"
-    ) {
-
+    if (status === "Đang triển khai") {
       return "status-progress";
-
     }
-
 
     if (
       status === "Tạm hoãn" ||
       status === "Hủy"
     ) {
-
       return "status-cancelled";
-
     }
-
 
     return "status-pending";
 
   }
 
 
-
-  /* =========================
-     CHUYỂN GIỜ THÀNH PHÚT
-  ========================= */
-
   function timeToMinutes(time) {
 
-    if (!time) {
-      return null;
-    }
-
+    if (!time) return null;
 
     const parts =
       time.split(":");
-
 
     return (
       Number(parts[0]) * 60 +
@@ -1722,43 +1253,17 @@ Lê Văn C"
   }
 
 
-
-  /* =========================
-     KIỂM TRA 2 KHOẢNG NGÀY
-  ========================= */
-
-  function datesOverlap(
-    courseA,
-    courseB
-  ) {
+  function datesOverlap(courseA, courseB) {
 
     return (
-      courseA.startDate <=
-        courseB.endDate
-      &&
-      courseB.startDate <=
-        courseA.endDate
+      courseA.startDate <= courseB.endDate &&
+      courseB.startDate <= courseA.endDate
     );
 
   }
 
 
-
-  /* =========================
-     KIỂM TRA GIỜ
-  ========================= */
-
-  function timesOverlap(
-    courseA,
-    courseB
-  ) {
-
-    /*
-      Nếu một trong hai khóa
-      không có giờ đầy đủ,
-      coi khóa đó là cả ngày.
-    */
-
+  function timesOverlap(courseA, courseB) {
 
     if (
       !courseA.startTime ||
@@ -1766,35 +1271,20 @@ Lê Văn C"
       !courseB.startTime ||
       !courseB.endTime
     ) {
-
       return true;
-
     }
 
-
     const startA =
-      timeToMinutes(
-        courseA.startTime
-      );
-
+      timeToMinutes(courseA.startTime);
 
     const endA =
-      timeToMinutes(
-        courseA.endTime
-      );
-
+      timeToMinutes(courseA.endTime);
 
     const startB =
-      timeToMinutes(
-        courseB.startTime
-      );
-
+      timeToMinutes(courseB.startTime);
 
     const endB =
-      timeToMinutes(
-        courseB.endTime
-      );
-
+      timeToMinutes(courseB.endTime);
 
     return (
       startA < endB &&
@@ -1804,71 +1294,35 @@ Lê Văn C"
   }
 
 
-
-  /* =========================
-     KIỂM TRA TRÙNG
-     GIỮA 2 KHÓA
-  ========================= */
-
-  function coursesOverlap(
-    courseA,
-    courseB
-  ) {
-
-    /*
-      Các khóa Hủy sẽ
-      không được tính cảnh báo.
-    */
-
+  function coursesOverlap(courseA, courseB) {
 
     if (
       courseA.status === "Hủy" ||
       courseB.status === "Hủy"
     ) {
-
       return false;
-
     }
-
 
     if (
-      !datesOverlap(
-        courseA,
-        courseB
-      )
+      !datesOverlap(courseA, courseB)
     ) {
-
       return false;
-
     }
-
 
     if (
-      !timesOverlap(
-        courseA,
-        courseB
-      )
+      !timesOverlap(courseA, courseB)
     ) {
-
       return false;
-
     }
-
 
     return true;
 
   }
 
 
-
-  /* =========================
-     TÌM TOÀN BỘ XUNG ĐỘT
-  ========================= */
-
   function findConflicts() {
 
     const conflicts = [];
-
 
     for (
       let i = 0;
@@ -1876,13 +1330,11 @@ Lê Văn C"
       i++
     ) {
 
-
       for (
         let j = i + 1;
         j < courses.length;
         j++
       ) {
-
 
         if (
           coursesOverlap(
@@ -1891,19 +1343,11 @@ Lê Văn C"
           )
         ) {
 
-
           conflicts.push({
-
             firstIndex: i,
-
             secondIndex: j,
-
-            firstCourse:
-              courses[i],
-
-            secondCourse:
-              courses[j]
-
+            firstCourse: courses[i],
+            secondCourse: courses[j]
           });
 
         }
@@ -1912,16 +1356,161 @@ Lê Văn C"
 
     }
 
-
     return conflicts;
 
   }
 
 
+  function findCommonStudents(courseA, courseB) {
 
-  /* =========================
-     HIỂN THỊ CẢNH BÁO
-  ========================= */
+    const studentsA =
+      getStudentArray(
+        courseA.students
+      );
+
+    const studentsB =
+      getStudentArray(
+        courseB.students
+      );
+
+
+    const mapB =
+      new Map();
+
+
+    studentsB.forEach(
+      function(name) {
+
+        mapB.set(
+          normalizeName(name),
+          name
+        );
+
+      }
+    );
+
+
+    const common = [];
+
+
+    studentsA.forEach(
+      function(nameA) {
+
+        const normalized =
+          normalizeName(nameA);
+
+
+        if (
+          mapB.has(normalized)
+        ) {
+
+          common.push(nameA);
+
+        }
+
+      }
+    );
+
+
+    return [
+      ...new Set(common)
+    ];
+
+  }
+
+
+  function findStudentConflicts() {
+
+    const conflicts =
+      findConflicts();
+
+    const studentConflicts = [];
+
+
+    conflicts.forEach(
+      function(conflict) {
+
+        const commonStudents =
+          findCommonStudents(
+            conflict.firstCourse,
+            conflict.secondCourse
+          );
+
+
+        if (
+          commonStudents.length > 0
+        ) {
+
+          studentConflicts.push({
+            firstIndex:
+              conflict.firstIndex,
+
+            secondIndex:
+              conflict.secondIndex,
+
+            firstCourse:
+              conflict.firstCourse,
+
+            secondCourse:
+              conflict.secondCourse,
+
+            students:
+              commonStudents
+          });
+
+        }
+
+      }
+    );
+
+
+    return studentConflicts;
+
+  }
+
+
+  function getUniqueConflictStudents() {
+
+    const studentConflicts =
+      findStudentConflicts();
+
+    const studentMap =
+      new Map();
+
+
+    studentConflicts.forEach(
+      function(conflict) {
+
+        conflict.students.forEach(
+          function(name) {
+
+            const key =
+              normalizeName(name);
+
+            if (
+              !studentMap.has(key)
+            ) {
+
+              studentMap.set(
+                key,
+                name
+              );
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+
+    return Array.from(
+      studentMap.values()
+    );
+
+  }
+
 
   function renderWarnings() {
 
@@ -1969,102 +1558,18 @@ Lê Văn C"
     conflicts.forEach(
       function(conflict) {
 
-
         const courseA =
           conflict.firstCourse;
-
 
         const courseB =
           conflict.secondCourse;
 
 
         const item =
-          document.createElement(
-            "div"
-          );
-
+          document.createElement("div");
 
         item.className =
           "warning-item";
-
-
-        let timeA =
-          formatDate(
-            courseA.startDate
-          );
-
-
-        if (
-          courseA.endDate !==
-          courseA.startDate
-        ) {
-
-          timeA +=
-            " - " +
-            formatDate(
-              courseA.endDate
-            );
-
-        }
-
-
-        if (
-          courseA.startTime &&
-          courseA.endTime
-        ) {
-
-          timeA +=
-            " | " +
-            courseA.startTime +
-            " - " +
-            courseA.endTime;
-
-        } else {
-
-          timeA +=
-            " | Chưa xác định giờ";
-
-        }
-
-
-
-        let timeB =
-          formatDate(
-            courseB.startDate
-          );
-
-
-        if (
-          courseB.endDate !==
-          courseB.startDate
-        ) {
-
-          timeB +=
-            " - " +
-            formatDate(
-              courseB.endDate
-            );
-
-        }
-
-
-        if (
-          courseB.startTime &&
-          courseB.endTime
-        ) {
-
-          timeB +=
-            " | " +
-            courseB.startTime +
-            " - " +
-            courseB.endTime;
-
-        } else {
-
-          timeB +=
-            " | Chưa xác định giờ";
-
-        }
 
 
         item.innerHTML = `
@@ -2083,16 +1588,37 @@ Lê Văn C"
 
           </div>
 
-
           <div class="warning-date">
 
             Khóa 1:
-            ${timeA}
+            ${formatDate(courseA.startDate)}
+            ${
+              courseA.endDate !== courseA.startDate
+                ? " - " + formatDate(courseA.endDate)
+                : ""
+            }
+            |
+            ${
+              courseA.startTime && courseA.endTime
+                ? courseA.startTime + " - " + courseA.endTime
+                : "Chưa xác định giờ"
+            }
 
             <br>
 
             Khóa 2:
-            ${timeB}
+            ${formatDate(courseB.startDate)}
+            ${
+              courseB.endDate !== courseB.startDate
+                ? " - " + formatDate(courseB.endDate)
+                : ""
+            }
+            |
+            ${
+              courseB.startTime && courseB.endTime
+                ? courseB.startTime + " - " + courseB.endTime
+                : "Chưa xác định giờ"
+            }
 
           </div>
 
@@ -2109,16 +1635,105 @@ Lê Văn C"
   }
 
 
+  function renderStudentWarnings() {
 
-  /* =========================
-     KHÓA NÀO BỊ TRÙNG
-  ========================= */
+    const conflicts =
+      findStudentConflicts();
+
+
+    const uniqueStudents =
+      getUniqueConflictStudents();
+
+
+    document.getElementById(
+      "studentConflictCount"
+    ).innerText =
+      uniqueStudents.length;
+
+
+    const panel =
+      document.getElementById(
+        "studentWarningPanel"
+      );
+
+
+    const list =
+      document.getElementById(
+        "studentWarningList"
+      );
+
+
+    list.innerHTML = "";
+
+
+    if (
+      conflicts.length === 0
+    ) {
+
+      panel.style.display =
+        "none";
+
+      return;
+
+    }
+
+
+    panel.style.display =
+      "block";
+
+
+    conflicts.forEach(
+      function(conflict) {
+
+        conflict.students.forEach(
+          function(student) {
+
+            const item =
+              document.createElement("div");
+
+
+            item.className =
+              "student-warning-item";
+
+
+            item.innerHTML = `
+
+              <span class="student-name-highlight">
+                ${student}
+              </span>
+
+              đang được đăng ký đồng thời tại
+
+              <strong>
+                ${conflict.firstCourse.courseName}
+              </strong>
+
+              và
+
+              <strong>
+                ${conflict.secondCourse.courseName}
+              </strong>.
+
+            `;
+
+
+            list.appendChild(
+              item
+            );
+
+          }
+        );
+
+      }
+    );
+
+  }
+
 
   function getConflictCourseIndexes() {
 
     const conflicts =
       findConflicts();
-
 
     const indexes =
       new Set();
@@ -2144,10 +1759,34 @@ Lê Văn C"
   }
 
 
+  function getStudentConflictCourseIndexes() {
 
-  /* =========================
-     HIỂN THỊ BẢNG
-  ========================= */
+    const conflicts =
+      findStudentConflicts();
+
+    const indexes =
+      new Set();
+
+
+    conflicts.forEach(
+      function(conflict) {
+
+        indexes.add(
+          conflict.firstIndex
+        );
+
+        indexes.add(
+          conflict.secondIndex
+        );
+
+      }
+    );
+
+
+    return indexes;
+
+  }
+
 
   function renderCourses() {
 
@@ -2165,12 +1804,7 @@ Lê Văn C"
 
     const keyword =
       searchInput
-
-        ? searchInput
-            .value
-            .trim()
-            .toLowerCase()
-
+        ? searchInput.value.trim().toLowerCase()
         : "";
 
 
@@ -2179,28 +1813,14 @@ Lê Văn C"
 
     let totalStudents = 0;
 
-    let activeCourses = 0;
-
 
     courses.forEach(
       function(course) {
 
-
         totalStudents +=
-
           getStudentArray(
             course.students
           ).length;
-
-
-        if (
-          course.status ===
-          "Đang triển khai"
-        ) {
-
-          activeCourses++;
-
-        }
 
       }
     );
@@ -2210,55 +1830,39 @@ Lê Văn C"
       getConflictCourseIndexes();
 
 
+    const studentConflictIndexes =
+      getStudentConflictCourseIndexes();
+
+
     const filteredCourses =
       courses
-
         .map(
-          (
+          (course, originalIndex) => ({
             course,
             originalIndex
-          ) => ({
-
-            course,
-            originalIndex
-
           })
         )
-
         .filter(
           function(item) {
-
 
             if (!keyword) {
               return true;
             }
 
-
             const course =
               item.course;
 
-
             const searchableText =
               [
-
                 course.courseName,
-
                 course.department,
-
                 course.provider,
-
                 course.status,
-
                 course.personInCharge,
-
                 course.students
-
               ]
-
               .join(" ")
-
               .toLowerCase();
-
 
             return searchableText
               .includes(keyword);
@@ -2271,48 +1875,33 @@ Lê Văn C"
       filteredCourses.length === 0
     ) {
 
-
       const row =
         table.insertRow();
 
-
       row.innerHTML = `
-
         <td
           colspan="10"
           class="empty-state"
         >
-
           ${
             courses.length === 0
-
               ? "Chưa có khóa đào tạo nào."
-
               : "Không tìm thấy dữ liệu phù hợp."
           }
-
         </td>
-
       `;
 
     }
 
 
-
     filteredCourses.forEach(
-      function(
-        item,
-        displayIndex
-      ) {
-
+      function(item, displayIndex) {
 
         const course =
           item.course;
 
-
         const index =
           item.originalIndex;
-
 
         const students =
           getStudentArray(
@@ -2328,10 +1917,8 @@ Lê Văn C"
 
         if (
           course.endDate &&
-          course.endDate !==
-            course.startDate
+          course.endDate !== course.startDate
         ) {
-
 
           timeText +=
             " - " +
@@ -2347,28 +1934,16 @@ Lê Văn C"
           course.endTime
         ) {
 
-
           timeText +=
             "<br>" +
-
-            (
-              course.startTime ||
-              ""
-            ) +
-
+            (course.startTime || "") +
             (
               course.startTime &&
               course.endTime
-
                 ? " - "
-
                 : ""
             ) +
-
-            (
-              course.endTime ||
-              ""
-            );
+            (course.endTime || "");
 
         }
 
@@ -2381,6 +1956,12 @@ Lê Văn C"
 
         const hasConflict =
           conflictIndexes.has(
+            index
+          );
+
+
+        const hasStudentConflict =
+          studentConflictIndexes.has(
             index
           );
 
@@ -2404,89 +1985,69 @@ Lê Văn C"
             ${displayIndex + 1}
           </td>
 
-
           <td class="course-name">
 
             ${course.courseName}
 
             ${
               hasConflict
-
                 ? `
                   <br>
-                  <span
-                    class="conflict-label"
-                  >
+                  <span class="conflict-label">
                     ⚠ Trùng lịch
                   </span>
                 `
+                : ""
+            }
 
+            ${
+              hasStudentConflict
+                ? `
+                  <span class="student-conflict-label">
+                    👤 Trùng học viên
+                  </span>
+                `
                 : ""
             }
 
           </td>
 
-
           <td class="time-cell">
             ${timeText}
           </td>
 
-
           <td>
-            ${
-              course.department ||
-              ""
-            }
+            ${course.department || ""}
           </td>
 
-
           <td>
-            ${
-              course.provider ||
-              ""
-            }
+            ${course.provider || ""}
           </td>
-
 
           <td>
 
             <span
               class="status ${statusClass}"
             >
-
               ${
                 course.status ||
                 "Chưa triển khai"
               }
-
             </span>
 
           </td>
 
-
           <td>
-
-            ${
-              course.personInCharge ||
-              ""
-            }
-
+            ${course.personInCharge || ""}
           </td>
-
 
           <td>
             ${students.length}
           </td>
 
-
           <td class="student-list">
-
-            ${
-              students.join("<br>")
-            }
-
+            ${students.join("<br>")}
           </td>
-
 
           <td class="action-cell">
 
@@ -2496,7 +2057,6 @@ Lê Văn C"
             >
               ✎ Sửa
             </button>
-
 
             <button
               class="btn-delete"
@@ -2525,29 +2085,18 @@ Lê Văn C"
       totalStudents;
 
 
-    document.getElementById(
-      "activeCourses"
-    ).innerText =
-      activeCourses;
-
-
     renderWarnings();
+
+    renderStudentWarnings();
 
   }
 
-
-
-  /* =========================
-     THÊM / CẬP NHẬT
-  ========================= */
 
   function saveCourse() {
 
     const courseName =
       document
-        .getElementById(
-          "courseName"
-        )
+        .getElementById("courseName")
         .value
         .trim();
 
@@ -2578,18 +2127,14 @@ Lê Văn C"
 
     const department =
       document
-        .getElementById(
-          "department"
-        )
+        .getElementById("department")
         .value
         .trim();
 
 
     const provider =
       document
-        .getElementById(
-          "provider"
-        )
+        .getElementById("provider")
         .value
         .trim();
 
@@ -2602,21 +2147,16 @@ Lê Văn C"
 
     const personInCharge =
       document
-        .getElementById(
-          "personInCharge"
-        )
+        .getElementById("personInCharge")
         .value
         .trim();
 
 
     const students =
       document
-        .getElementById(
-          "students"
-        )
+        .getElementById("students")
         .value
         .trim();
-
 
 
     if (
@@ -2625,32 +2165,26 @@ Lê Văn C"
       endDate === ""
     ) {
 
-
       alert(
         "Vui lòng nhập Tên khóa, Ngày bắt đầu và Ngày kết thúc."
       );
 
-
       return;
 
     }
-
 
 
     if (
       endDate < startDate
     ) {
 
-
       alert(
         "Ngày kết thúc không thể trước ngày bắt đầu."
       );
 
-
       return;
 
     }
-
 
 
     if (
@@ -2659,20 +2193,16 @@ Lê Văn C"
       endTime <= startTime
     ) {
 
-
       alert(
         "Giờ kết thúc phải sau giờ bắt đầu."
       );
-
 
       return;
 
     }
 
 
-
     const courseData = {
-
       courseName,
       startDate,
       endDate,
@@ -2683,34 +2213,27 @@ Lê Văn C"
       status,
       personInCharge,
       students
-
     };
-
 
 
     if (
       editingIndex === null
     ) {
 
-
       courses.push(
         courseData
       );
-
 
       alert(
         "Đã thêm khóa học thành công."
       );
 
-
     } else {
-
 
       courses[
         editingIndex
       ] =
         courseData;
-
 
       alert(
         "Đã cập nhật khóa học thành công."
@@ -2719,33 +2242,22 @@ Lê Văn C"
     }
 
 
-
     saveCourses();
 
-
     renderCourses();
-
 
     resetForm();
 
   }
 
 
-
-  /* =========================
-     SỬA
-  ========================= */
-
   function editCourse(index) {
-
 
     const course =
       courses[index];
 
-
     editingIndex =
       index;
-
 
 
     document.getElementById(
@@ -2800,15 +2312,13 @@ Lê Văn C"
     document.getElementById(
       "personInCharge"
     ).value =
-      course.personInCharge ||
-      "";
+      course.personInCharge || "";
 
 
     document.getElementById(
       "students"
     ).value =
       course.students || "";
-
 
 
     document.getElementById(
@@ -2835,49 +2345,31 @@ Lê Văn C"
       "block";
 
 
-
     window.scrollTo({
-
       top: 150,
-
       behavior: "smooth"
-
     });
 
   }
 
 
-
-  /* =========================
-     XÓA
-  ========================= */
-
   function deleteCourse(index) {
 
-
     const courseName =
-      courses[index]
-        .courseName;
-
+      courses[index].courseName;
 
 
     const confirmed =
       confirm(
-
         'Bạn có chắc muốn xóa khóa "' +
-
         courseName +
-
         '" không?'
-
       );
-
 
 
     if (!confirmed) {
       return;
     }
-
 
 
     courses.splice(
@@ -2888,27 +2380,19 @@ Lê Văn C"
 
     saveCourses();
 
-
     renderCourses();
-
 
 
     if (
       editingIndex === index
     ) {
 
-
       resetForm();
 
-
     } else if (
-
       editingIndex !== null &&
-
       editingIndex > index
-
     ) {
-
 
       editingIndex--;
 
@@ -2917,29 +2401,15 @@ Lê Văn C"
   }
 
 
-
-  /* =========================
-     HỦY CHỈNH SỬA
-  ========================= */
-
   function cancelEdit() {
-
     resetForm();
-
   }
 
 
-
-  /* =========================
-     RESET FORM
-  ========================= */
-
   function resetForm() {
-
 
     editingIndex =
       null;
-
 
 
     document.getElementById(
@@ -2993,7 +2463,6 @@ Lê Văn C"
     ).value = "";
 
 
-
     document.getElementById(
       "formTitle"
     ).innerText =
@@ -3020,18 +2489,11 @@ Lê Văn C"
   }
 
 
-
-  /* =========================
-     KHỞI ĐỘNG
-  ========================= */
-
   showCurrentDate();
 
   renderCourses();
 
-
 </script>
-
 
 </body>
 </html>
