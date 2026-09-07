@@ -4,61 +4,294 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Quản lý lịch đào tạo</title>
+  <title>Phòng Đào tạo - Quản lý lịch đào tạo</title>
 
   <style>
-
     * {
       box-sizing: border-box;
     }
 
+    :root {
+      --green-dark: #075f3d;
+      --green: #12834f;
+      --green-medium: #1b9a5b;
+      --green-light: #e9f7ef;
+      --green-soft: #f3faf6;
+      --border: #d8e6dd;
+      --text: #20352a;
+      --text-light: #68776f;
+      --white: #ffffff;
+      --red: #d93b3b;
+      --orange: #d78b00;
+      --blue: #2875a8;
+    }
+
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f4f8f5;
-      color: #24352b;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f4f8f5;
+      color: var(--text);
     }
 
-    .header {
-      background-color: #176b45;
-      color: white;
-      padding: 25px 40px;
+    /* =========================
+       HEADER
+    ========================= */
+
+    .brand-header {
+      background:
+        linear-gradient(
+          115deg,
+          #ffffff 0%,
+          #f5fbf7 48%,
+          #e1f4e8 100%
+        );
+
+      min-height: 135px;
+      display: flex;
+      align-items: center;
+      padding: 18px 45px;
+      border-bottom: 1px solid #dcebe1;
+      position: relative;
+      overflow: hidden;
     }
 
-    .header h1 {
+    .brand-header::after {
+      content: "";
+      position: absolute;
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      background: rgba(25, 135, 84, 0.06);
+      right: -120px;
+      top: -220px;
+    }
+
+    .brand-content {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      z-index: 1;
+    }
+
+    .logo {
+      width: 145px;
+      max-height: 105px;
+      object-fit: contain;
+    }
+
+    .brand-text {
+      border-left: 1px solid #b9d7c4;
+      padding-left: 25px;
+    }
+
+    .company-name {
+      color: var(--green-dark);
+      font-weight: bold;
+      font-size: 16px;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      margin-bottom: 7px;
+    }
+
+    .department-name {
+      color: var(--green-dark);
+      font-size: 32px;
+      font-weight: 800;
       margin: 0;
-      font-size: 27px;
+      letter-spacing: 0.5px;
     }
 
-    .header p {
-      margin: 7px 0 0;
-      opacity: 0.9;
+    /* =========================
+       THANH TIÊU ĐỀ
+    ========================= */
+
+    .main-bar {
+      background:
+        linear-gradient(
+          90deg,
+          #07623e,
+          #16844f
+        );
+
+      color: white;
+      padding: 0 45px;
+      min-height: 58px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
-    .container {
-      max-width: 1450px;
-      margin: 30px auto;
-      padding: 0 25px;
+    .main-title {
+      display: flex;
+      align-items: center;
+      gap: 14px;
     }
 
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 25px;
-      margin-bottom: 25px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    .home-icon {
+      width: 36px;
+      height: 36px;
+      background: rgba(255,255,255,0.14);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
     }
 
-    h2 {
-      margin-top: 0;
-      color: #176b45;
+    .main-title strong {
       font-size: 21px;
     }
 
+    .main-subtitle {
+      font-size: 13px;
+      opacity: 0.88;
+      margin-left: 8px;
+    }
+
+    .current-date {
+      font-size: 13px;
+      opacity: 0.95;
+    }
+
+    /* =========================
+       CONTENT
+    ========================= */
+
+    .container {
+      max-width: 1500px;
+      margin: 22px auto 40px;
+      padding: 0 25px;
+    }
+
+    /* =========================
+       DASHBOARD
+    ========================= */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: white;
+      border: 1px solid #cfe4d7;
+      border-radius: 10px;
+      padding: 18px 20px;
+
+      display: flex;
+      align-items: center;
+      gap: 17px;
+
+      box-shadow: 0 2px 8px rgba(0,0,0,0.035);
+    }
+
+    .stat-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 10px;
+      background: var(--green-light);
+      color: var(--green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 25px;
+      flex-shrink: 0;
+    }
+
+    .stat-card.warning {
+      border-color: #efd79b;
+      background: #fffefa;
+    }
+
+    .stat-card.warning .stat-icon {
+      background: #fff2d6;
+      color: #e07028;
+    }
+
+    .stat-number {
+      font-size: 27px;
+      font-weight: bold;
+      color: var(--green-dark);
+    }
+
+    .warning .stat-number {
+      color: #d94b2b;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-top: 3px;
+    }
+
+    /* =========================
+       CARD
+    ========================= */
+
+    .card {
+      background: white;
+      border: 1px solid #dce9e1;
+      border-radius: 11px;
+      margin-bottom: 20px;
+      padding: 22px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.04);
+    }
+
+    .card-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .title-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: var(--green);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    h2 {
+      color: var(--green-dark);
+      font-size: 20px;
+      margin: 0;
+    }
+
+    .required-note {
+      font-size: 12px;
+      color: var(--text-light);
+      background: var(--green-soft);
+      padding: 8px 12px;
+      border-radius: 7px;
+    }
+
+    .required {
+      color: #df3434;
+    }
+
+    /* =========================
+       FORM
+    ========================= */
+
     .form-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 18px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 17px;
     }
 
     .form-group {
@@ -66,200 +299,204 @@
       flex-direction: column;
     }
 
-    .full-width {
+    .span-2 {
+      grid-column: span 2;
+    }
+
+    .span-4 {
       grid-column: 1 / -1;
     }
 
     label {
+      font-size: 13px;
       font-weight: bold;
       margin-bottom: 7px;
-      font-size: 14px;
+      color: #263c30;
     }
 
     input,
     select,
     textarea {
-      border: 1px solid #cbd8cf;
+      width: 100%;
+      border: 1px solid #cad8cf;
       border-radius: 7px;
-      padding: 11px;
-      font-size: 14px;
-      outline: none;
+      padding: 11px 12px;
       font-family: Arial, sans-serif;
+      font-size: 13px;
+      color: var(--text);
+      background: white;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    input,
+    select {
+      height: 42px;
+    }
+
+    textarea {
+      min-height: 115px;
+      resize: vertical;
+      line-height: 1.5;
     }
 
     input:focus,
     select:focus,
     textarea:focus {
-      border-color: #2e8b57;
-      box-shadow: 0 0 0 2px rgba(46,139,87,0.12);
-    }
-
-    textarea {
-      min-height: 150px;
-      resize: vertical;
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(25,135,84,0.09);
     }
 
     .hint {
-      font-size: 12px;
-      color: #6b756e;
-      margin-top: 5px;
+      font-size: 11px;
+      color: #78857e;
+      margin-top: 6px;
     }
 
+    /* =========================
+       BUTTONS
+    ========================= */
+
     .button-area {
-      margin-top: 22px;
+      margin-top: 20px;
       display: flex;
+      justify-content: flex-end;
       gap: 10px;
-      flex-wrap: wrap;
     }
 
     button {
+      font-family: Arial, sans-serif;
       border: none;
-      padding: 11px 18px;
-      border-radius: 7px;
       cursor: pointer;
-      font-size: 14px;
       font-weight: bold;
+      border-radius: 7px;
+      transition: 0.15s;
     }
 
     .btn-primary {
-      background-color: #198754;
+      background: var(--green);
       color: white;
+      padding: 11px 20px;
     }
 
     .btn-primary:hover {
-      background-color: #146c43;
+      background: var(--green-dark);
     }
 
     .btn-secondary {
-      background-color: #e7eee9;
-      color: #244f38;
+      background: #f5faf7;
+      color: var(--green-dark);
+      border: 1px solid #b9d8c5;
+      padding: 10px 18px;
     }
 
     .btn-secondary:hover {
-      background-color: #d8e4dc;
+      background: #eaf5ee;
     }
 
     .btn-edit {
-      background-color: #e6f4ec;
-      color: #176b45;
+      background: #e8f5ed;
+      color: #087344;
       padding: 7px 11px;
-      font-size: 12px;
       margin-right: 5px;
-    }
-
-    .btn-edit:hover {
-      background-color: #cfe8da;
+      font-size: 12px;
     }
 
     .btn-delete {
-      background-color: #fde8e8;
-      color: #a12020;
+      background: #fdecec;
+      color: #d52c2c;
       padding: 7px 11px;
       font-size: 12px;
     }
 
-    .btn-delete:hover {
-      background-color: #f8d1d1;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-      margin-bottom: 25px;
-    }
-
-    .stat-box {
-      background: white;
-      border-left: 5px solid #198754;
-      border-radius: 10px;
-      padding: 18px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-
-    .stat-number {
-      font-size: 28px;
-      font-weight: bold;
-      color: #176b45;
-    }
-
-    .stat-label {
-      margin-top: 5px;
-      color: #68746d;
-      font-size: 13px;
-    }
+    /* =========================
+       EDIT NOTICE
+    ========================= */
 
     .editing-notice {
       display: none;
-      background-color: #fff8dd;
-      border-left: 4px solid #d2a500;
-      padding: 12px 15px;
+      background: #fff8dd;
+      border: 1px solid #efd993;
+      border-left: 4px solid #d8a914;
+      padding: 11px 14px;
+      margin-bottom: 18px;
       border-radius: 7px;
-      margin-bottom: 20px;
-      color: #665200;
-      font-size: 14px;
+      color: #665414;
+      font-size: 13px;
     }
+
+    /* =========================
+       SEARCH
+    ========================= */
+
+    .search-box {
+      width: 330px;
+    }
+
+    .search-box input {
+      height: 40px;
+    }
+
+    /* =========================
+       TABLE
+    ========================= */
 
     .table-wrapper {
       overflow-x: auto;
+      border: 1px solid #dce7e0;
+      border-radius: 8px;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 1400px;
+      min-width: 1350px;
+    }
+
+    thead {
+      background:
+        linear-gradient(
+          90deg,
+          #087043,
+          #168751
+        );
     }
 
     th {
-      background-color: #176b45;
       color: white;
-      padding: 12px 10px;
       text-align: left;
-      font-size: 13px;
+      padding: 12px 10px;
+      font-size: 12px;
+      white-space: nowrap;
+      border-right: 1px solid rgba(255,255,255,0.14);
     }
 
     td {
-      border-bottom: 1px solid #e3ebe6;
       padding: 11px 10px;
+      font-size: 12px;
       vertical-align: top;
-      font-size: 13px;
+      border-bottom: 1px solid #e2ebe5;
+      border-right: 1px solid #edf2ef;
     }
 
-    tr:hover {
-      background-color: #f3faf6;
+    tbody tr:hover {
+      background: #f5fbf7;
+    }
+
+    .course-name {
+      font-weight: bold;
+      color: #203a2c;
+      min-width: 170px;
+    }
+
+    .time-cell {
+      white-space: nowrap;
+      line-height: 1.55;
     }
 
     .student-list {
-      min-width: 190px;
-    }
-
-    .status {
-      display: inline-block;
-      padding: 5px 9px;
-      border-radius: 15px;
-      font-size: 12px;
-      font-weight: bold;
-      white-space: nowrap;
-    }
-
-    .status-completed {
-      background: #d8f3e3;
-      color: #176b45;
-    }
-
-    .status-progress {
-      background: #dceeff;
-      color: #175a91;
-    }
-
-    .status-pending {
-      background: #fff4cc;
-      color: #806500;
-    }
-
-    .status-cancelled {
-      background: #f4e2e2;
-      color: #8d2828;
+      min-width: 170px;
+      line-height: 1.5;
     }
 
     .action-cell {
@@ -267,129 +504,430 @@
       white-space: nowrap;
     }
 
-    @media (max-width: 800px) {
+    /* =========================
+       STATUS
+    ========================= */
+
+    .status {
+      display: inline-block;
+      border-radius: 20px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .status-completed {
+      background: #dff3e7;
+      color: #11683e;
+    }
+
+    .status-progress {
+      background: #fff0c9;
+      color: #926400;
+    }
+
+    .status-pending {
+      background: #e8edf1;
+      color: #455762;
+    }
+
+    .status-cancelled {
+      background: #f7e2e2;
+      color: #9d3131;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 35px;
+      color: #7a8780;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 1000px) {
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .span-4 {
+        grid-column: 1 / -1;
+      }
+
+      .brand-header {
+        padding: 18px 25px;
+      }
+
+      .main-bar {
+        padding: 0 25px;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .stats {
+        grid-template-columns: 1fr;
+      }
 
       .form-grid {
         grid-template-columns: 1fr;
       }
 
-      .stats {
-        grid-template-columns: 1fr;
+      .span-2,
+      .span-4 {
+        grid-column: 1;
       }
 
-      .header {
-        padding: 20px;
+      .logo {
+        width: 100px;
       }
 
-      .container {
-        padding: 0 15px;
+      .department-name {
+        font-size: 23px;
+      }
+
+      .company-name {
+        font-size: 12px;
+      }
+
+      .main-subtitle,
+      .current-date {
+        display: none;
+      }
+
+      .card-title-row {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .search-box {
+        width: 100%;
       }
     }
 
   </style>
 </head>
 
+
 <body>
 
-  <div class="header">
-    <h1>Quản lý lịch đào tạo</h1>
+  <!-- HEADER THƯƠNG HIỆU -->
 
-    <p>
-      Theo dõi kế hoạch đào tạo, lịch tổ chức và danh sách học viên
-    </p>
-  </div>
+  <header class="brand-header">
 
+    <div class="brand-content">
 
-  <div class="container">
+      <img
+        src="logo-pvep.png"
+        alt="PVEP"
+        class="logo"
+      >
 
-    <div class="stats">
+      <div class="brand-text">
 
-      <div class="stat-box">
-        <div class="stat-number" id="totalCourses">0</div>
-        <div class="stat-label">Tổng số khóa học</div>
-      </div>
+        <div class="company-name">
+          TỔNG CÔNG TY THĂM DÒ KHAI THÁC DẦU KHÍ
+        </div>
 
-      <div class="stat-box">
-        <div class="stat-number" id="totalStudents">0</div>
-        <div class="stat-label">Tổng lượt học viên</div>
-      </div>
+        <h1 class="department-name">
+          PHÒNG ĐÀO TẠO
+        </h1>
 
-      <div class="stat-box">
-        <div class="stat-number" id="totalWarnings">0</div>
-        <div class="stat-label">Cảnh báo trùng lịch</div>
       </div>
 
     </div>
 
+  </header>
 
-    <div class="card">
 
-      <h2 id="formTitle">Thêm khóa đào tạo</h2>
+  <!-- THANH ĐIỀU HƯỚNG -->
 
-      <div class="editing-notice" id="editingNotice">
-        Bạn đang chỉnh sửa một khóa học. Sau khi sửa xong, bấm
+  <div class="main-bar">
+
+    <div class="main-title">
+
+      <div class="home-icon">
+        🏠
+      </div>
+
+      <strong>
+        Quản lý lịch đào tạo
+      </strong>
+
+      <span class="main-subtitle">
+        Theo dõi kế hoạch đào tạo, lịch tổ chức và danh sách học viên
+      </span>
+
+    </div>
+
+    <div
+      class="current-date"
+      id="currentDate"
+    ></div>
+
+  </div>
+
+
+  <main class="container">
+
+
+    <!-- DASHBOARD -->
+
+    <section class="stats">
+
+      <div class="stat-card">
+
+        <div class="stat-icon">
+          📚
+        </div>
+
+        <div>
+
+          <div
+            class="stat-number"
+            id="totalCourses"
+          >
+            0
+          </div>
+
+          <div class="stat-label">
+            Tổng số khóa học
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon">
+          👥
+        </div>
+
+        <div>
+
+          <div
+            class="stat-number"
+            id="totalStudents"
+          >
+            0
+          </div>
+
+          <div class="stat-label">
+            Tổng lượt học viên
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="stat-card warning">
+
+        <div class="stat-icon">
+          ⚠
+        </div>
+
+        <div>
+
+          <div
+            class="stat-number"
+            id="totalWarnings"
+          >
+            0
+          </div>
+
+          <div class="stat-label">
+            Cảnh báo trùng lịch
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon">
+          📅
+        </div>
+
+        <div>
+
+          <div
+            class="stat-number"
+            id="activeCourses"
+          >
+            0
+          </div>
+
+          <div class="stat-label">
+            Khóa đang triển khai
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- FORM -->
+
+    <section class="card">
+
+      <div class="card-title-row">
+
+        <div class="card-title">
+
+          <div class="title-icon">
+            +
+          </div>
+
+          <h2 id="formTitle">
+            Thêm khóa đào tạo
+          </h2>
+
+        </div>
+
+        <div class="required-note">
+          Các trường có dấu
+          <span class="required">*</span>
+          là bắt buộc
+        </div>
+
+      </div>
+
+
+      <div
+        class="editing-notice"
+        id="editingNotice"
+      >
+        Bạn đang chỉnh sửa khóa học.
+        Sau khi hoàn thành, bấm
         <strong>Cập nhật khóa học</strong>.
       </div>
 
+
       <div class="form-grid">
 
-        <div class="form-group full-width">
-          <label>Tên khóa đào tạo *</label>
+
+        <div class="form-group span-2">
+
+          <label>
+            Tên khóa đào tạo
+            <span class="required">*</span>
+          </label>
 
           <input
             type="text"
             id="courseName"
             placeholder="Ví dụ: Kỹ năng giải quyết vấn đề và ra quyết định"
           >
+
         </div>
 
 
         <div class="form-group">
-          <label>Ngày bắt đầu *</label>
-          <input type="date" id="startDate">
-        </div>
 
-        <div class="form-group">
-          <label>Ngày kết thúc *</label>
-          <input type="date" id="endDate">
-        </div>
+          <label>
+            Ngày bắt đầu
+            <span class="required">*</span>
+          </label>
 
+          <input
+            type="date"
+            id="startDate"
+          >
 
-        <div class="form-group">
-          <label>Giờ bắt đầu</label>
-          <input type="time" id="startTime">
-        </div>
-
-        <div class="form-group">
-          <label>Giờ kết thúc</label>
-          <input type="time" id="endTime">
         </div>
 
 
         <div class="form-group">
-          <label>Ban chức năng / Đối tượng</label>
+
+          <label>
+            Ngày kết thúc
+            <span class="required">*</span>
+          </label>
+
+          <input
+            type="date"
+            id="endDate"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Giờ bắt đầu
+          </label>
+
+          <input
+            type="time"
+            id="startTime"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Giờ kết thúc
+          </label>
+
+          <input
+            type="time"
+            id="endTime"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Ban chức năng / Đối tượng
+          </label>
 
           <input
             type="text"
             id="department"
             placeholder="Ví dụ: QTNNL, TTKT, NVTN, All..."
           >
+
         </div>
 
 
         <div class="form-group">
-          <label>Đơn vị đào tạo</label>
+
+          <label>
+            Đơn vị đào tạo
+          </label>
 
           <input
             type="text"
             id="provider"
             placeholder="Ví dụ: PVU, FSB, Brainwork..."
           >
+
         </div>
 
 
-        <div class="form-group">
-          <label>Tình trạng thực hiện</label>
+        <div class="form-group span-2">
+
+          <label>
+            Tình trạng thực hiện
+          </label>
 
           <select id="status">
 
@@ -414,35 +952,42 @@
             </option>
 
           </select>
+
         </div>
 
 
-        <div class="form-group">
-          <label>Nhân sự thực hiện</label>
+        <div class="form-group span-2">
+
+          <label>
+            Nhân sự thực hiện
+          </label>
 
           <input
             type="text"
             id="personInCharge"
             placeholder="Ví dụ: Trinh"
           >
+
         </div>
 
 
-        <div class="form-group full-width">
+        <div class="form-group span-4">
 
-          <label>Danh sách học viên</label>
+          <label>
+            Danh sách học viên
+          </label>
 
           <textarea
             id="students"
             placeholder="Nhập mỗi học viên trên một dòng. Ví dụ:
-
 Nguyễn Văn A
 Trần Thị B
 Lê Văn C"
           ></textarea>
 
           <div class="hint">
-            Mỗi học viên nhập trên một dòng. Website sẽ tự động đếm số lượng học viên.
+            Mỗi học viên nhập trên một dòng.
+            Website sẽ tự động đếm số lượng học viên.
           </div>
 
         </div>
@@ -453,11 +998,10 @@ Lê Văn C"
       <div class="button-area">
 
         <button
-          class="btn-primary"
-          id="saveButton"
-          onclick="saveCourse()"
+          class="btn-secondary"
+          onclick="resetForm()"
         >
-          + Thêm khóa học
+          ↻ Làm mới
         </button>
 
         <button
@@ -469,14 +1013,52 @@ Lê Văn C"
           Hủy chỉnh sửa
         </button>
 
+        <button
+          class="btn-primary"
+          id="saveButton"
+          onclick="saveCourse()"
+        >
+          ＋ Thêm khóa học
+        </button>
+
       </div>
 
-    </div>
+    </section>
 
 
-    <div class="card">
 
-      <h2>Danh sách khóa đào tạo</h2>
+    <!-- DANH SÁCH -->
+
+    <section class="card">
+
+      <div class="card-title-row">
+
+        <div class="card-title">
+
+          <div class="title-icon">
+            ☷
+          </div>
+
+          <h2>
+            Danh sách khóa đào tạo
+          </h2>
+
+        </div>
+
+
+        <div class="search-box">
+
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="🔍  Tìm tên khóa, học viên, đơn vị..."
+            oninput="renderCourses()"
+          >
+
+        </div>
+
+      </div>
+
 
       <div class="table-wrapper">
 
@@ -485,19 +1067,49 @@ Lê Văn C"
           <thead>
 
             <tr>
+
               <th>STT</th>
-              <th>Tên khóa</th>
-              <th>Thời gian</th>
-              <th>Ban chức năng</th>
-              <th>Đơn vị đào tạo</th>
-              <th>Tình trạng</th>
-              <th>Nhân sự thực hiện</th>
-              <th>Số HV</th>
-              <th>Danh sách học viên</th>
-              <th>Thao tác</th>
+
+              <th>
+                Tên khóa đào tạo
+              </th>
+
+              <th>
+                Thời gian
+              </th>
+
+              <th>
+                Ban chức năng
+              </th>
+
+              <th>
+                Đơn vị đào tạo
+              </th>
+
+              <th>
+                Tình trạng
+              </th>
+
+              <th>
+                Nhân sự thực hiện
+              </th>
+
+              <th>
+                Số HV
+              </th>
+
+              <th>
+                Danh sách học viên
+              </th>
+
+              <th>
+                Thao tác
+              </th>
+
             </tr>
 
           </thead>
+
 
           <tbody id="courseTable">
           </tbody>
@@ -506,24 +1118,63 @@ Lê Văn C"
 
       </div>
 
-    </div>
+    </section>
 
-  </div>
+  </main>
 
 
 <script>
 
+  /* =========================
+     DỮ LIỆU
+  ========================= */
+
   let courses =
-    JSON.parse(localStorage.getItem("trainingCourses")) || [];
+    JSON.parse(
+      localStorage.getItem("trainingCourses")
+    ) || [];
 
   let editingIndex = null;
 
+
+  /* =========================
+     NGÀY HIỆN TẠI
+  ========================= */
+
+  function showCurrentDate() {
+
+    const today =
+      new Date();
+
+    const text =
+      today.toLocaleDateString(
+        "vi-VN",
+        {
+          weekday: "long",
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric"
+        }
+      );
+
+    document.getElementById(
+      "currentDate"
+    ).innerText =
+      "📅 " + text;
+
+  }
+
+
+  /* =========================
+     FORMAT NGÀY
+  ========================= */
 
   function formatDate(date) {
 
     if (!date) return "";
 
-    const parts = date.split("-");
+    const parts =
+      date.split("-");
 
     return (
       parts[2] +
@@ -536,17 +1187,29 @@ Lê Văn C"
   }
 
 
+  /* =========================
+     HỌC VIÊN
+  ========================= */
+
   function getStudentArray(text) {
 
     if (!text) return [];
 
     return text
       .split("\n")
-      .map(name => name.trim())
-      .filter(name => name !== "");
+      .map(
+        name => name.trim()
+      )
+      .filter(
+        name => name !== ""
+      );
 
   }
 
+
+  /* =========================
+     LƯU LOCAL STORAGE
+  ========================= */
 
   function saveCourses() {
 
@@ -558,13 +1221,21 @@ Lê Văn C"
   }
 
 
+  /* =========================
+     MÀU TÌNH TRẠNG
+  ========================= */
+
   function getStatusClass(status) {
 
-    if (status === "Hoàn thành") {
+    if (
+      status === "Hoàn thành"
+    ) {
       return "status-completed";
     }
 
-    if (status === "Đang triển khai") {
+    if (
+      status === "Đang triển khai"
+    ) {
       return "status-progress";
     }
 
@@ -580,123 +1251,251 @@ Lê Văn C"
   }
 
 
+  /* =========================
+     HIỂN THỊ DANH SÁCH
+  ========================= */
+
   function renderCourses() {
 
     const table =
-      document.getElementById("courseTable");
+      document.getElementById(
+        "courseTable"
+      );
+
+    const searchInput =
+      document.getElementById(
+        "searchInput"
+      );
+
+    const keyword =
+      searchInput
+        ? searchInput.value
+            .trim()
+            .toLowerCase()
+        : "";
 
     table.innerHTML = "";
 
     let totalStudents = 0;
 
-
-    courses.forEach(function(course, index) {
-
-      const students =
-        getStudentArray(course.students);
-
-      totalStudents += students.length;
+    let activeCourses = 0;
 
 
-      let timeText =
-        formatDate(course.startDate);
+    courses.forEach(
+      function(course) {
 
-      if (
-        course.endDate &&
-        course.endDate !== course.startDate
-      ) {
+        totalStudents +=
+          getStudentArray(
+            course.students
+          ).length;
 
-        timeText +=
-          " - " +
-          formatDate(course.endDate);
+        if (
+          course.status ===
+          "Đang triển khai"
+        ) {
+          activeCourses++;
+        }
 
       }
+    );
 
 
-      if (
-        course.startTime ||
-        course.endTime
-      ) {
+    const filteredCourses =
+      courses
+        .map(
+          (course, originalIndex) => ({
+            course,
+            originalIndex
+          })
+        )
+        .filter(
+          function(item) {
 
-        timeText += "<br>";
+            if (!keyword) {
+              return true;
+            }
 
-        timeText +=
-          (course.startTime || "") +
-          " - " +
-          (course.endTime || "");
+            const course =
+              item.course;
 
-      }
+            const searchableText = [
+              course.courseName,
+              course.department,
+              course.provider,
+              course.status,
+              course.personInCharge,
+              course.students
+            ]
+              .join(" ")
+              .toLowerCase();
+
+            return searchableText
+              .includes(keyword);
+
+          }
+        );
 
 
-      const statusClass =
-        getStatusClass(course.status);
-
+    if (
+      filteredCourses.length === 0
+    ) {
 
       const row =
         table.insertRow();
 
-
       row.innerHTML = `
-
-        <td>${index + 1}</td>
-
-        <td>
-          <strong>
-            ${course.courseName}
-          </strong>
+        <td
+          colspan="10"
+          class="empty-state"
+        >
+          ${
+            courses.length === 0
+              ? "Chưa có khóa đào tạo nào."
+              : "Không tìm thấy dữ liệu phù hợp."
+          }
         </td>
-
-        <td>
-          ${timeText}
-        </td>
-
-        <td>
-          ${course.department || ""}
-        </td>
-
-        <td>
-          ${course.provider || ""}
-        </td>
-
-        <td>
-          <span class="status ${statusClass}">
-            ${course.status || "Chưa triển khai"}
-          </span>
-        </td>
-
-        <td>
-          ${course.personInCharge || ""}
-        </td>
-
-        <td>
-          ${students.length}
-        </td>
-
-        <td class="student-list">
-          ${students.join("<br>")}
-        </td>
-
-        <td class="action-cell">
-
-          <button
-            class="btn-edit"
-            onclick="editCourse(${index})"
-          >
-            Sửa
-          </button>
-
-          <button
-            class="btn-delete"
-            onclick="deleteCourse(${index})"
-          >
-            Xóa
-          </button>
-
-        </td>
-
       `;
 
-    });
+    }
+
+
+    filteredCourses.forEach(
+      function(item, displayIndex) {
+
+        const course =
+          item.course;
+
+        const index =
+          item.originalIndex;
+
+        const students =
+          getStudentArray(
+            course.students
+          );
+
+
+        let timeText =
+          formatDate(
+            course.startDate
+          );
+
+
+        if (
+          course.endDate &&
+          course.endDate !==
+          course.startDate
+        ) {
+
+          timeText +=
+            " - " +
+            formatDate(
+              course.endDate
+            );
+
+        }
+
+
+        if (
+          course.startTime ||
+          course.endTime
+        ) {
+
+          timeText +=
+            "<br>" +
+            (course.startTime || "") +
+            (
+              course.startTime &&
+              course.endTime
+                ? " - "
+                : ""
+            ) +
+            (course.endTime || "");
+
+        }
+
+
+        const statusClass =
+          getStatusClass(
+            course.status
+          );
+
+
+        const row =
+          table.insertRow();
+
+
+        row.innerHTML = `
+
+          <td>
+            ${displayIndex + 1}
+          </td>
+
+          <td class="course-name">
+            ${course.courseName}
+          </td>
+
+          <td class="time-cell">
+            ${timeText}
+          </td>
+
+          <td>
+            ${course.department || ""}
+          </td>
+
+          <td>
+            ${course.provider || ""}
+          </td>
+
+          <td>
+
+            <span
+              class="status ${statusClass}"
+            >
+              ${
+                course.status ||
+                "Chưa triển khai"
+              }
+            </span>
+
+          </td>
+
+          <td>
+            ${
+              course.personInCharge ||
+              ""
+            }
+          </td>
+
+          <td>
+            ${students.length}
+          </td>
+
+          <td class="student-list">
+            ${students.join("<br>")}
+          </td>
+
+          <td class="action-cell">
+
+            <button
+              class="btn-edit"
+              onclick="editCourse(${index})"
+            >
+              ✎ Sửa
+            </button>
+
+            <button
+              class="btn-delete"
+              onclick="deleteCourse(${index})"
+            >
+              🗑 Xóa
+            </button>
+
+          </td>
+
+        `;
+
+      }
+    );
 
 
     document.getElementById(
@@ -710,15 +1509,28 @@ Lê Văn C"
     ).innerText =
       totalStudents;
 
+
+    document.getElementById(
+      "activeCourses"
+    ).innerText =
+      activeCourses;
+
   }
 
+
+  /* =========================
+     THÊM / CẬP NHẬT KHÓA
+  ========================= */
 
   function saveCourse() {
 
     const courseName =
-      document.getElementById(
-        "courseName"
-      ).value.trim();
+      document
+        .getElementById(
+          "courseName"
+        )
+        .value
+        .trim();
 
 
     const startDate =
@@ -746,15 +1558,21 @@ Lê Văn C"
 
 
     const department =
-      document.getElementById(
-        "department"
-      ).value.trim();
+      document
+        .getElementById(
+          "department"
+        )
+        .value
+        .trim();
 
 
     const provider =
-      document.getElementById(
-        "provider"
-      ).value.trim();
+      document
+        .getElementById(
+          "provider"
+        )
+        .value
+        .trim();
 
 
     const status =
@@ -764,15 +1582,21 @@ Lê Văn C"
 
 
     const personInCharge =
-      document.getElementById(
-        "personInCharge"
-      ).value.trim();
+      document
+        .getElementById(
+          "personInCharge"
+        )
+        .value
+        .trim();
 
 
     const students =
-      document.getElementById(
-        "students"
-      ).value.trim();
+      document
+        .getElementById(
+          "students"
+        )
+        .value
+        .trim();
 
 
     if (
@@ -835,9 +1659,13 @@ Lê Văn C"
     };
 
 
-    if (editingIndex === null) {
+    if (
+      editingIndex === null
+    ) {
 
-      courses.push(courseData);
+      courses.push(
+        courseData
+      );
 
       alert(
         "Đã thêm khóa học thành công."
@@ -864,11 +1692,14 @@ Lê Văn C"
   }
 
 
+  /* =========================
+     SỬA
+  ========================= */
+
   function editCourse(index) {
 
     const course =
       courses[index];
-
 
     editingIndex =
       index;
@@ -919,13 +1750,15 @@ Lê Văn C"
     document.getElementById(
       "status"
     ).value =
-      course.status || "Chưa triển khai";
+      course.status ||
+      "Chưa triển khai";
 
 
     document.getElementById(
       "personInCharge"
     ).value =
-      course.personInCharge || "";
+      course.personInCharge ||
+      "";
 
 
     document.getElementById(
@@ -943,7 +1776,7 @@ Lê Văn C"
     document.getElementById(
       "saveButton"
     ).innerText =
-      "Cập nhật khóa học";
+      "✓ Cập nhật khóa học";
 
 
     document.getElementById(
@@ -959,17 +1792,22 @@ Lê Văn C"
 
 
     window.scrollTo({
-      top: 0,
+      top: 150,
       behavior: "smooth"
     });
 
   }
 
 
+  /* =========================
+     XÓA
+  ========================= */
+
   function deleteCourse(index) {
 
     const courseName =
-      courses[index].courseName;
+      courses[index]
+        .courseName;
 
 
     const confirmed =
@@ -985,7 +1823,10 @@ Lê Văn C"
     }
 
 
-    courses.splice(index, 1);
+    courses.splice(
+      index,
+      1
+    );
 
 
     saveCourses();
@@ -1004,24 +1845,30 @@ Lê Văn C"
       editingIndex > index
     ) {
 
-      editingIndex =
-        editingIndex - 1;
+      editingIndex--;
 
     }
 
   }
 
 
+  /* =========================
+     HỦY SỬA
+  ========================= */
+
   function cancelEdit() {
-
     resetForm();
-
   }
 
 
+  /* =========================
+     RESET FORM
+  ========================= */
+
   function resetForm() {
 
-    editingIndex = null;
+    editingIndex =
+      null;
 
 
     document.getElementById(
@@ -1084,7 +1931,7 @@ Lê Văn C"
     document.getElementById(
       "saveButton"
     ).innerText =
-      "+ Thêm khóa học";
+      "＋ Thêm khóa học";
 
 
     document.getElementById(
@@ -1100,6 +1947,12 @@ Lê Văn C"
 
   }
 
+
+  /* =========================
+     KHỞI ĐỘNG
+  ========================= */
+
+  showCurrentDate();
 
   renderCourses();
 
