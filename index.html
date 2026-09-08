@@ -2610,6 +2610,7 @@ Lê Văn C"
 
           <tr>
             <th>STT</th>
+            <th>Mã khóa</th>
             <th>Tên khóa đào tạo</th>
             <th>Thời gian</th>
             <th>Địa điểm</th>
@@ -3548,6 +3549,15 @@ function dbToCourse(row) {
     id:
       row.id,
 
+    courseCode:
+      row.course_code || "",
+
+    trainingYear:
+      row.training_year || null,
+
+    personInChargeId:
+      row.person_in_charge_id || null,
+
     courseName:
       row.course_name || "",
 
@@ -3643,6 +3653,12 @@ function courseToDb(course) {
     person_in_charge:
       course.personInCharge || null,
 
+    training_year:
+      course.trainingYear || null,
+
+    person_in_charge_id:
+      course.personInChargeId || null,
+
     students:
       course.students || null
 
@@ -3679,7 +3695,7 @@ async function loadPersonnel() {
     await supabaseClient
       .from("personnel")
       .select(
-        "full_name, personnel_code, job_title, is_active"
+        "id, full_name, personnel_code, job_title, is_active"
       )
       .eq(
         "is_active",
@@ -3722,7 +3738,8 @@ async function loadPersonnel() {
 
 
 function renderPersonnelOptions(
-  selectedValue = ""
+  selectedValue = "",
+  selectedPersonnelId = null
 ) {
 
   const select =
@@ -3752,6 +3769,9 @@ function renderPersonnelOptions(
         );
 
       option.value =
+        String(person.id);
+
+      option.dataset.fullName =
         person.full_name || "";
 
       option.textContent =
@@ -3770,44 +3790,134 @@ function renderPersonnelOptions(
   );
 
 
-  if (selectedValue) {
+  let resolvedId =
+    selectedPersonnelId
+      ? String(selectedPersonnelId)
+      : "";
 
-    const exists =
-      personnel.some(
+
+  if (
+    !resolvedId &&
+    selectedValue
+  ) {
+
+    const match =
+      personnel.find(
         person =>
           person.full_name ===
           selectedValue
       );
 
-
-    if (!exists) {
-
-      const legacyOption =
-        document.createElement(
-          "option"
-        );
-
-      legacyOption.value =
-        selectedValue;
-
-      legacyOption.textContent =
-        selectedValue +
-        " (đã lưu)";
-
-      select.appendChild(
-        legacyOption
-      );
-
+    if (match) {
+      resolvedId = String(match.id);
     }
 
+  }
+
+
+  if (
+    resolvedId &&
+    personnel.some(
+      person =>
+        String(person.id) ===
+        resolvedId
+    )
+  ) {
 
     select.value =
+      resolvedId;
+
+    return;
+
+  }
+
+
+  if (selectedValue) {
+
+    const legacyOption =
+      document.createElement(
+        "option"
+      );
+
+    legacyOption.value =
+      "legacy:" + selectedValue;
+
+    legacyOption.dataset.fullName =
       selectedValue;
+
+    legacyOption.textContent =
+      selectedValue +
+      " (đã lưu)";
+
+    select.appendChild(
+      legacyOption
+    );
+
+    select.value =
+      legacyOption.value;
 
   }
 
 }
 
+
+function getSelectedPersonnel() {
+
+  const select =
+    document.getElementById(
+      "personInCharge"
+    );
+
+
+  if (!select || !select.value) {
+    return null;
+  }
+
+
+  const id =
+    Number(select.value);
+
+
+  if (!Number.isInteger(id)) {
+    return null;
+  }
+
+
+  return personnel.find(
+    person =>
+      Number(person.id) === id
+  ) || null;
+
+}
+
+
+function getSelectedPersonnelName() {
+
+  const select =
+    document.getElementById(
+      "personInCharge"
+    );
+
+
+  if (!select || !select.value) {
+    return "";
+  }
+
+
+  const selectedOption =
+    select.options[
+      select.selectedIndex
+    ];
+
+
+  return (
+    selectedOption &&
+    selectedOption.dataset.fullName
+  )
+    ? selectedOption.dataset.fullName
+    : "";
+
+}
 
 async function loadCourses() {
 
@@ -4065,13 +4175,60 @@ async function migrateLocalCourses() {
   }
 
 
+  const unmatchedPersonnel =
+    [
+      ...new Set(
+        oldCourses
+          .map(course => course.personInCharge)
+          .filter(Boolean)
+          .filter(
+            name =>
+              !personnel.some(
+                person =>
+                  person.full_name === name
+              )
+          )
+      )
+    ];
+
+
+  if (unmatchedPersonnel.length) {
+
+    alert(
+      "Chưa thể chuyển dữ liệu cũ vì có Nhân sự thực hiện chưa có trong danh mục:\n\n" +
+      unmatchedPersonnel.join("\n") +
+      "\n\nVui lòng bổ sung nhân sự vào Supabase trước."
+    );
+
+    return;
+
+  }
+
+
   const rows =
     oldCourses.map(
       function(course) {
 
+        const matchedPersonnel =
+          personnel.find(
+            person =>
+              person.full_name ===
+              course.personInCharge
+          );
+
         return {
 
-          ...courseToDb(course),
+          ...courseToDb({
+            ...course,
+            trainingYear:
+              Number(
+                String(course.startDate).slice(0,4)
+              ),
+            personInChargeId:
+              matchedPersonnel
+                ? Number(matchedPersonnel.id)
+                : null
+          }),
 
           created_by:
             currentUser.id,
@@ -4227,6 +4384,34 @@ async function saveCourse() {
   }
 
 
+  const selectedPersonnel =
+    getSelectedPersonnel();
+
+
+  const selectedPersonnelName =
+    getSelectedPersonnelName();
+
+
+  if (
+    editingCourseId === null &&
+    !selectedPersonnel
+  ) {
+
+    alert(
+      "Vui lòng chọn Nhân sự thực hiện trong danh mục."
+    );
+
+    return;
+
+  }
+
+
+  const trainingYear =
+    Number(
+      startDate.slice(0,4)
+    );
+
+
   const courseData = {
 
     courseName,
@@ -4277,12 +4462,14 @@ async function saveCourse() {
       ).value,
 
     personInCharge:
-      document
-        .getElementById(
-          "personInCharge"
-        )
-        .value
-        .trim(),
+      selectedPersonnelName,
+
+    personInChargeId:
+      selectedPersonnel
+        ? Number(selectedPersonnel.id)
+        : null,
+
+    trainingYear,
 
     students:
       document
@@ -4529,9 +4716,6 @@ function editCourse(id) {
     status:
       course.status,
 
-    personInCharge:
-      course.personInCharge,
-
     students:
       course.students
 
@@ -4544,26 +4728,18 @@ function editCourse(id) {
   .forEach(
     function([id,value]) {
 
-      if (
-        id ===
-        "personInCharge"
-      ) {
-
-        renderPersonnelOptions(
-          value || ""
-        );
-
-        return;
-
-      }
-
-
       document.getElementById(
         id
       ).value =
         value || "";
 
     }
+  );
+
+
+  renderPersonnelOptions(
+    course.personInCharge || "",
+    course.personInChargeId
   );
 
 
@@ -5594,7 +5770,7 @@ function renderCourses() {
     row.innerHTML = `
 
       <td
-        colspan="12"
+        colspan="13"
         class="empty-state"
       >
         Chưa có khóa đào tạo phù hợp.
@@ -5756,6 +5932,14 @@ function renderCourses() {
         </td>
 
 
+        <td>
+          ${escapeHTML(
+            course.courseCode ||
+            "—"
+          )}
+        </td>
+
+
         <td class="course-name">
 
           ${escapeHTML(
@@ -5778,16 +5962,6 @@ function renderCourses() {
               ? `
                 <span class="student-conflict-label">
                   👤 Trùng học viên
-                </span>
-              `
-              : ""
-          }
-
-          ${
-            course.createdBy === currentUser.id
-              ? `
-                <span class="owner-label">
-                  Khóa của tôi
                 </span>
               `
               : ""
@@ -5904,6 +6078,12 @@ function buildExcelData(
 
         "STT":
           index + 1,
+
+        "Mã khóa":
+          course.courseCode || "",
+
+        "Năm đào tạo":
+          course.trainingYear || "",
 
         "Tên khóa đào tạo":
           course.courseName || "",
@@ -6076,6 +6256,8 @@ function exportCoursesToExcel(
 
   worksheet["!cols"] = [
     {wch:6},
+    {wch:18},
+    {wch:12},
     {wch:38},
     {wch:14},
     {wch:14},
@@ -6871,6 +7053,23 @@ function openCourseDetail(id) {
 
       <div style="height:10px;"></div>
 
+
+      ${detailRow(
+        "Mã khóa",
+        escapeHTML(
+          course.courseCode ||
+          "Chưa cấp mã"
+        )
+      )}
+
+      ${detailRow(
+        "Năm đào tạo",
+        escapeHTML(
+          course.trainingYear
+            ? String(course.trainingYear)
+            : "Chưa cập nhật"
+        )
+      )}
 
       ${detailRow(
         "Thời gian",
