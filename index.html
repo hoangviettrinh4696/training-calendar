@@ -1618,6 +1618,180 @@ tbody tr:hover {
   line-height: 1.45;
 }
 
+
+/* =====================================================
+   EXCEL IMPORT PREVIEW
+===================================================== */
+.import-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.import-card {
+  background: #ffffff;
+  border: 1px solid #dfe9e3;
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 8px 24px rgba(20, 77, 45, 0.06);
+}
+
+.import-card h3 {
+  margin: 0 0 8px;
+  color: #174d31;
+  font-size: 18px;
+}
+
+.import-help {
+  color: #64736b;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.import-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.import-download {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.import-file-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+#importExcelFile {
+  display: none;
+}
+
+.import-file-name {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #66756d;
+  word-break: break-word;
+}
+
+.import-status-box {
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  line-height: 1.55;
+}
+
+.import-status-neutral {
+  background: #f5f7f6;
+  color: #526158;
+  border: 1px solid #e1e7e3;
+}
+
+.import-status-success {
+  background: #edf8f1;
+  color: #17643a;
+  border: 1px solid #bfe0ca;
+}
+
+.import-status-error {
+  background: #fff2f1;
+  color: #9c2e26;
+  border: 1px solid #efc4bf;
+}
+
+.import-errors {
+  margin: 0 0 18px;
+  padding-left: 22px;
+  color: #8f3028;
+  line-height: 1.55;
+}
+
+.import-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.import-summary-item {
+  border: 1px solid #e0e8e3;
+  border-radius: 14px;
+  padding: 14px;
+  background: #fbfdfb;
+}
+
+.import-summary-number {
+  display: block;
+  font-size: 24px;
+  font-weight: 800;
+  color: #185a37;
+  margin-bottom: 4px;
+}
+
+.import-summary-label {
+  color: #6b786f;
+  font-size: 13px;
+}
+
+.import-preview-wrap {
+  overflow-x: auto;
+  border: 1px solid #e0e7e2;
+  border-radius: 14px;
+  margin-bottom: 18px;
+}
+
+.import-preview-table {
+  width: 100%;
+  min-width: 980px;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.import-preview-table th,
+.import-preview-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #edf1ee;
+  text-align: left;
+  vertical-align: top;
+  font-size: 13px;
+}
+
+.import-preview-table th {
+  background: #185b37;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.import-preview-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.import-preview-section-title {
+  margin: 18px 0 10px;
+  font-weight: 800;
+  color: #174d31;
+}
+
+.import-disabled-note {
+  margin-top: 10px;
+  color: #738078;
+  font-size: 13px;
+}
+
+@media (max-width: 850px) {
+  .import-grid,
+  .import-summary {
+    grid-template-columns: 1fr;
+  }
+}
+
 .placeholder-card {
   background: white;
   border: 1px solid #dce9e1;
@@ -2717,14 +2891,128 @@ Lê Văn C"
         <div class="page-heading">
           <div>
             <h2>Nhập từ Excel</h2>
-            <div class="page-description">Nhập nhiều khóa đào tạo từ một file Excel chuẩn hóa.</div>
+            <div class="page-description">Tải file mẫu, kiểm tra dữ liệu và xem trước trước khi nhập vào hệ thống.</div>
           </div>
         </div>
-        <div class="placeholder-card">
-          <div class="placeholder-icon">⇧</div>
-          <div class="placeholder-title">Khu vực nhập dữ liệu từ Excel</div>
-          <div class="placeholder-text">
-            Ở bước hiện tại, màn hình này mới được tạo để hoàn thiện cấu trúc website. Sau khi chốt năm đào tạo, mã khóa và mã người thực hiện, chúng ta sẽ bổ sung file Excel mẫu, xem trước dữ liệu, kiểm tra lỗi và nút xác nhận nhập vào Supabase.
+
+        <div class="import-grid">
+          <div class="import-card">
+            <h3>1. Tải file Excel mẫu</h3>
+            <div class="import-help">
+              Sử dụng đúng cấu trúc mẫu để website nhận diện khóa đào tạo và danh sách học viên.
+            </div>
+            <div class="import-actions">
+              <a
+                class="btn-primary import-download"
+                href="Mau_nhap_khoa_dao_tao.xlsx"
+                download
+              >
+                ↓ Tải file Excel mẫu
+              </a>
+            </div>
+          </div>
+
+          <div class="import-card">
+            <h3>2. Chọn file cần kiểm tra</h3>
+            <div class="import-help">
+              File được đọc ngay trên trình duyệt. Ở bước này chưa có dữ liệu nào được ghi vào Supabase và chưa sinh mã khóa.
+            </div>
+            <div class="import-actions">
+              <label class="btn-secondary import-file-label" for="importExcelFile">
+                Chọn file Excel
+              </label>
+              <input
+                id="importExcelFile"
+                type="file"
+                accept=".xlsx,.xls"
+                onchange="handleExcelFile(event)"
+              >
+              <button
+                class="btn-secondary"
+                type="button"
+                onclick="clearExcelPreview()"
+              >
+                Xóa file đã chọn
+              </button>
+            </div>
+            <div class="import-file-name" id="importFileName">Chưa chọn file.</div>
+          </div>
+        </div>
+
+        <div class="import-card">
+          <h3>3. Kiểm tra và xem trước</h3>
+          <div
+            id="importStatus"
+            class="import-status-box import-status-neutral"
+          >
+            Chọn một file Excel để bắt đầu kiểm tra.
+          </div>
+
+          <div id="importErrorsContainer" style="display:none;">
+            <div class="import-preview-section-title">Các lỗi cần xử lý</div>
+            <ul class="import-errors" id="importErrors"></ul>
+          </div>
+
+          <div id="importPreviewContainer" style="display:none;">
+            <div class="import-summary">
+              <div class="import-summary-item">
+                <span class="import-summary-number" id="importCourseCount">0</span>
+                <span class="import-summary-label">Khóa đào tạo</span>
+              </div>
+              <div class="import-summary-item">
+                <span class="import-summary-number" id="importStudentCount">0</span>
+                <span class="import-summary-label">Lượt học viên</span>
+              </div>
+              <div class="import-summary-item">
+                <span class="import-summary-number" id="importErrorCount">0</span>
+                <span class="import-summary-label">Lỗi phát hiện</span>
+              </div>
+            </div>
+
+            <div class="import-preview-section-title">Khóa đào tạo</div>
+            <div class="import-preview-wrap">
+              <table class="import-preview-table">
+                <thead>
+                  <tr>
+                    <th>Mã tạm</th>
+                    <th>Tên khóa</th>
+                    <th>Thời gian</th>
+                    <th>Địa điểm</th>
+                    <th>Giảng viên</th>
+                    <th>Cơ sở đào tạo</th>
+                    <th>Tình trạng</th>
+                    <th>Nhân sự thực hiện</th>
+                    <th>Số HV</th>
+                  </tr>
+                </thead>
+                <tbody id="importCoursePreviewBody"></tbody>
+              </table>
+            </div>
+
+            <div class="import-preview-section-title">Học viên</div>
+            <div class="import-preview-wrap">
+              <table class="import-preview-table">
+                <thead>
+                  <tr>
+                    <th>Mã tạm khóa</th>
+                    <th>Họ và tên</th>
+                    <th>Chức danh</th>
+                    <th>Ban/Đơn vị</th>
+                    <th>Email</th>
+                    <th>SĐT</th>
+                    <th>Nơi công tác</th>
+                  </tr>
+                </thead>
+                <tbody id="importStudentPreviewBody"></tbody>
+              </table>
+            </div>
+
+            <button class="btn-primary" type="button" disabled>
+              Xác nhận nhập vào hệ thống
+            </button>
+            <div class="import-disabled-note">
+              Nút xác nhận đang được khóa ở bước thử nghiệm này. Dữ liệu chỉ được xem trước, chưa được lưu vào Supabase.
+            </div>
           </div>
         </div>
       </section>
@@ -7597,6 +7885,455 @@ document.addEventListener(
 
   }
 );
+
+
+/* =====================================================
+   EXCEL IMPORT - READ, VALIDATE, PREVIEW ONLY
+===================================================== */
+
+const IMPORT_COURSE_SHEET = "KHOA_DAO_TAO";
+const IMPORT_STUDENT_SHEET = "HOC_VIEN";
+
+const IMPORT_COURSE_REQUIRED_HEADERS = [
+  "Mã tạm khóa (*)",
+  "Tên khóa đào tạo (*)",
+  "Ngày bắt đầu (*)",
+  "Ngày kết thúc (*)",
+  "Tình trạng (*)",
+  "Mã nhân sự thực hiện (*)"
+];
+
+const IMPORT_STUDENT_REQUIRED_HEADERS = [
+  "Mã tạm khóa (*)",
+  "Họ và tên (*)"
+];
+
+const IMPORT_VALID_STATUSES = [
+  "Chưa triển khai",
+  "Đang triển khai",
+  "Hoàn thành",
+  "Tạm hoãn",
+  "Hủy"
+];
+
+let excelPreviewData = null;
+
+function importEscapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function importCleanText(value) {
+  if (value === null || value === undefined) {
+    return "";
+  }
+  return String(value).trim();
+}
+
+function importNormalizeDate(value) {
+  if (value === null || value === undefined || value === "") {
+    return null;
+  }
+
+  if (value instanceof Date && !Number.isNaN(value.getTime())) {
+    return value.toISOString().slice(0, 10);
+  }
+
+  if (typeof value === "number" && typeof XLSX !== "undefined") {
+    const parsed = XLSX.SSF.parse_date_code(value);
+    if (parsed) {
+      const month = String(parsed.m).padStart(2, "0");
+      const day = String(parsed.d).padStart(2, "0");
+      return `${parsed.y}-${month}-${day}`;
+    }
+  }
+
+  const text = importCleanText(value);
+  let match = text.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);
+  if (match) {
+    const day = Number(match[1]);
+    const month = Number(match[2]);
+    const year = Number(match[3]);
+    const date = new Date(Date.UTC(year, month - 1, day));
+    if (
+      date.getUTCFullYear() === year &&
+      date.getUTCMonth() === month - 1 &&
+      date.getUTCDate() === day
+    ) {
+      return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    }
+    return null;
+  }
+
+  match = text.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+  if (match) {
+    const year = Number(match[1]);
+    const month = Number(match[2]);
+    const day = Number(match[3]);
+    const date = new Date(Date.UTC(year, month - 1, day));
+    if (
+      date.getUTCFullYear() === year &&
+      date.getUTCMonth() === month - 1 &&
+      date.getUTCDate() === day
+    ) {
+      return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    }
+  }
+
+  return null;
+}
+
+function importNormalizeTime(value) {
+  if (value === null || value === undefined || value === "") {
+    return "";
+  }
+
+  if (typeof value === "number") {
+    const totalMinutes = Math.round((value % 1) * 24 * 60);
+    const hours = Math.floor(totalMinutes / 60) % 24;
+    const minutes = totalMinutes % 60;
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+  }
+
+  const text = importCleanText(value);
+  const match = text.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
+  if (!match) {
+    return null;
+  }
+
+  const hours = Number(match[1]);
+  const minutes = Number(match[2]);
+  if (hours > 23 || minutes > 59) {
+    return null;
+  }
+
+  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+}
+
+function importDisplayDate(value) {
+  if (!value) return "—";
+  const parts = value.split("-");
+  if (parts.length !== 3) return value;
+  return `${parts[2]}/${parts[1]}/${parts[0]}`;
+}
+
+function importGetHeaderSet(sheet) {
+  const rows = XLSX.utils.sheet_to_json(sheet, {
+    header: 1,
+    defval: "",
+    raw: false
+  });
+  const firstRow = rows[0] || [];
+  return new Set(firstRow.map(importCleanText));
+}
+
+function importMissingHeaders(sheet, requiredHeaders) {
+  const headers = importGetHeaderSet(sheet);
+  return requiredHeaders.filter(header => !headers.has(header));
+}
+
+function importRowsFromSheet(sheet) {
+  return XLSX.utils.sheet_to_json(sheet, {
+    defval: "",
+    raw: true
+  });
+}
+
+function setImportStatus(message, type = "neutral") {
+  const box = document.getElementById("importStatus");
+  if (!box) return;
+  box.className = `import-status-box import-status-${type}`;
+  box.textContent = message;
+}
+
+function clearExcelPreview() {
+  excelPreviewData = null;
+
+  const input = document.getElementById("importExcelFile");
+  if (input) input.value = "";
+
+  const fileName = document.getElementById("importFileName");
+  if (fileName) fileName.textContent = "Chưa chọn file.";
+
+  const errorsContainer = document.getElementById("importErrorsContainer");
+  const previewContainer = document.getElementById("importPreviewContainer");
+  if (errorsContainer) errorsContainer.style.display = "none";
+  if (previewContainer) previewContainer.style.display = "none";
+
+  const errors = document.getElementById("importErrors");
+  const courseBody = document.getElementById("importCoursePreviewBody");
+  const studentBody = document.getElementById("importStudentPreviewBody");
+  if (errors) errors.innerHTML = "";
+  if (courseBody) courseBody.innerHTML = "";
+  if (studentBody) studentBody.innerHTML = "";
+
+  setImportStatus("Chọn một file Excel để bắt đầu kiểm tra.", "neutral");
+}
+
+async function handleExcelFile(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) {
+    clearExcelPreview();
+    return;
+  }
+
+  const fileName = document.getElementById("importFileName");
+  if (fileName) fileName.textContent = `Đã chọn: ${file.name}`;
+
+  setImportStatus("Đang đọc và kiểm tra file Excel...", "neutral");
+
+  if (typeof XLSX === "undefined") {
+    setImportStatus("Không tải được thư viện đọc Excel. Hãy tải lại trang và thử lại.", "error");
+    return;
+  }
+
+  try {
+    const buffer = await file.arrayBuffer();
+    const workbook = XLSX.read(buffer, {
+      type: "array",
+      cellDates: true
+    });
+
+    validateAndPreviewWorkbook(workbook);
+  } catch (error) {
+    console.error(error);
+    setImportStatus("Không thể đọc file Excel. Hãy kiểm tra lại file và thử lại.", "error");
+  }
+}
+
+function validateAndPreviewWorkbook(workbook) {
+  const errors = [];
+  const courseSheet = workbook.Sheets[IMPORT_COURSE_SHEET];
+  const studentSheet = workbook.Sheets[IMPORT_STUDENT_SHEET];
+
+  if (!courseSheet) {
+    errors.push(`Thiếu sheet ${IMPORT_COURSE_SHEET}.`);
+  }
+  if (!studentSheet) {
+    errors.push(`Thiếu sheet ${IMPORT_STUDENT_SHEET}.`);
+  }
+
+  if (!courseSheet || !studentSheet) {
+    renderExcelPreview([], [], errors);
+    return;
+  }
+
+  importMissingHeaders(courseSheet, IMPORT_COURSE_REQUIRED_HEADERS)
+    .forEach(header => errors.push(`Sheet ${IMPORT_COURSE_SHEET}: thiếu cột “${header}”.`));
+
+  importMissingHeaders(studentSheet, IMPORT_STUDENT_REQUIRED_HEADERS)
+    .forEach(header => errors.push(`Sheet ${IMPORT_STUDENT_SHEET}: thiếu cột “${header}”.`));
+
+  if (errors.length) {
+    renderExcelPreview([], [], errors);
+    return;
+  }
+
+  const courseRows = importRowsFromSheet(courseSheet);
+  const studentRows = importRowsFromSheet(studentSheet);
+  const courseMap = new Map();
+  const parsedCourses = [];
+  const parsedStudents = [];
+
+  courseRows.forEach((row, index) => {
+    const excelRow = index + 2;
+    const tempCode = importCleanText(row["Mã tạm khóa (*)"]);
+    const name = importCleanText(row["Tên khóa đào tạo (*)"]);
+    const startDate = importNormalizeDate(row["Ngày bắt đầu (*)"]);
+    const endDate = importNormalizeDate(row["Ngày kết thúc (*)"]);
+    const startTime = importNormalizeTime(row["Giờ bắt đầu"]);
+    const endTime = importNormalizeTime(row["Giờ kết thúc"]);
+    const status = importCleanText(row["Tình trạng (*)"]);
+    const personnelCode = importCleanText(row["Mã nhân sự thực hiện (*)"]).toUpperCase();
+
+    const rowIsEmpty = !tempCode && !name && !importCleanText(row["Ngày bắt đầu (*)"]) && !importCleanText(row["Ngày kết thúc (*)"]);
+    if (rowIsEmpty) return;
+
+    if (!tempCode) errors.push(`${IMPORT_COURSE_SHEET} dòng ${excelRow}: thiếu Mã tạm khóa.`);
+    if (!name) errors.push(`${IMPORT_COURSE_SHEET} dòng ${excelRow}: thiếu Tên khóa đào tạo.`);
+    if (!startDate) errors.push(`${IMPORT_COURSE_SHEET} dòng ${excelRow}: Ngày bắt đầu không hợp lệ.`);
+    if (!endDate) errors.push(`${IMPORT_COURSE_SHEET} dòng ${excelRow}: Ngày kết thúc không hợp lệ.`);
+    if (startDate && endDate && endDate < startDate) {
+      errors.push(`${IMPORT_COURSE_SHEET} dòng ${excelRow}: Ngày kết thúc trước Ngày bắt đầu.`);
+    }
+    if (startTime === null) errors.push(`${IMPORT_COURSE_SHEET} dòng ${excelRow}: Giờ bắt đầu không hợp lệ.`);
+    if (endTime === null) errors.push(`${IMPORT_COURSE_SHEET} dòng ${excelRow}: Giờ kết thúc không hợp lệ.`);
+    if (startTime && endTime && startDate === endDate && endTime <= startTime) {
+      errors.push(`${IMPORT_COURSE_SHEET} dòng ${excelRow}: Giờ kết thúc phải sau Giờ bắt đầu.`);
+    }
+    if (!IMPORT_VALID_STATUSES.includes(status)) {
+      errors.push(`${IMPORT_COURSE_SHEET} dòng ${excelRow}: Tình trạng “${status || "trống"}” không hợp lệ.`);
+    }
+    if (!personnelCode) {
+      errors.push(`${IMPORT_COURSE_SHEET} dòng ${excelRow}: thiếu Mã nhân sự thực hiện.`);
+    }
+
+    const matchedPerson = personnel.find(person =>
+      importCleanText(person.personnel_code).toUpperCase() === personnelCode
+    );
+    if (personnelCode && !matchedPerson) {
+      errors.push(`${IMPORT_COURSE_SHEET} dòng ${excelRow}: mã nhân sự “${personnelCode}” không tồn tại hoặc không hoạt động.`);
+    }
+
+    if (tempCode) {
+      if (courseMap.has(tempCode)) {
+        errors.push(`${IMPORT_COURSE_SHEET} dòng ${excelRow}: Mã tạm khóa “${tempCode}” bị trùng.`);
+      } else {
+        courseMap.set(tempCode, true);
+      }
+    }
+
+    parsedCourses.push({
+      excelRow,
+      tempCode,
+      name,
+      startDate,
+      endDate,
+      startTime: startTime || "",
+      endTime: endTime || "",
+      location: importCleanText(row["Địa điểm"]),
+      lecturer: importCleanText(row["Giảng viên"]),
+      provider: importCleanText(row["Cơ sở đào tạo"]),
+      status,
+      personnelCode,
+      personnelName: matchedPerson ? matchedPerson.full_name : "",
+      studentCount: 0
+    });
+  });
+
+  const studentNameByCourse = new Map();
+
+  studentRows.forEach((row, index) => {
+    const excelRow = index + 2;
+    const tempCode = importCleanText(row["Mã tạm khóa (*)"]);
+    const fullName = importCleanText(row["Họ và tên (*)"]);
+
+    const rowIsEmpty = !tempCode && !fullName;
+    if (rowIsEmpty) return;
+
+    if (!tempCode) errors.push(`${IMPORT_STUDENT_SHEET} dòng ${excelRow}: thiếu Mã tạm khóa.`);
+    if (!fullName) errors.push(`${IMPORT_STUDENT_SHEET} dòng ${excelRow}: thiếu Họ và tên.`);
+    if (tempCode && !courseMap.has(tempCode)) {
+      errors.push(`${IMPORT_STUDENT_SHEET} dòng ${excelRow}: Mã tạm khóa “${tempCode}” không có trong sheet ${IMPORT_COURSE_SHEET}.`);
+    }
+
+    const duplicateKey = `${tempCode}|||${fullName.toLocaleLowerCase("vi-VN")}`;
+    if (tempCode && fullName) {
+      if (studentNameByCourse.has(duplicateKey)) {
+        errors.push(`${IMPORT_STUDENT_SHEET} dòng ${excelRow}: học viên “${fullName}” bị lặp trong khóa ${tempCode}.`);
+      } else {
+        studentNameByCourse.set(duplicateKey, true);
+      }
+    }
+
+    parsedStudents.push({
+      excelRow,
+      tempCode,
+      fullName,
+      jobTitle: importCleanText(row["Chức danh"]),
+      department: importCleanText(row["Ban/Đơn vị"]),
+      email: importCleanText(row["Email"]),
+      phone: importCleanText(row["SĐT"]),
+      workplace: importCleanText(row["Nơi công tác"])
+    });
+  });
+
+  const counts = new Map();
+  parsedStudents.forEach(student => {
+    if (student.tempCode) {
+      counts.set(student.tempCode, (counts.get(student.tempCode) || 0) + 1);
+    }
+  });
+  parsedCourses.forEach(course => {
+    course.studentCount = counts.get(course.tempCode) || 0;
+  });
+
+  if (!parsedCourses.length) {
+    errors.push(`Sheet ${IMPORT_COURSE_SHEET} chưa có khóa đào tạo nào.`);
+  }
+
+  excelPreviewData = {
+    courses: parsedCourses,
+    students: parsedStudents,
+    errors
+  };
+
+  renderExcelPreview(parsedCourses, parsedStudents, errors);
+}
+
+function renderExcelPreview(coursesToPreview, studentsToPreview, errors) {
+  const errorsContainer = document.getElementById("importErrorsContainer");
+  const errorsList = document.getElementById("importErrors");
+  const previewContainer = document.getElementById("importPreviewContainer");
+  const courseBody = document.getElementById("importCoursePreviewBody");
+  const studentBody = document.getElementById("importStudentPreviewBody");
+
+  document.getElementById("importCourseCount").textContent = coursesToPreview.length;
+  document.getElementById("importStudentCount").textContent = studentsToPreview.length;
+  document.getElementById("importErrorCount").textContent = errors.length;
+
+  if (errors.length) {
+    errorsContainer.style.display = "block";
+    errorsList.innerHTML = errors
+      .map(error => `<li>${importEscapeHtml(error)}</li>`)
+      .join("");
+    setImportStatus(
+      `Đã đọc file nhưng phát hiện ${errors.length} lỗi. Hãy sửa file Excel trước khi nhập.`,
+      "error"
+    );
+  } else {
+    errorsContainer.style.display = "none";
+    errorsList.innerHTML = "";
+    setImportStatus(
+      `File hợp lệ: ${coursesToPreview.length} khóa đào tạo và ${studentsToPreview.length} lượt học viên. Chưa có dữ liệu nào được lưu.`,
+      "success"
+    );
+  }
+
+  courseBody.innerHTML = coursesToPreview.length
+    ? coursesToPreview.map(course => {
+        const dateText = course.startDate === course.endDate
+          ? importDisplayDate(course.startDate)
+          : `${importDisplayDate(course.startDate)} – ${importDisplayDate(course.endDate)}`;
+        const timeText = course.startTime || course.endTime
+          ? `<br><span style="color:#728078;">${importEscapeHtml(course.startTime || "—")} – ${importEscapeHtml(course.endTime || "—")}</span>`
+          : "";
+        return `
+          <tr>
+            <td>${importEscapeHtml(course.tempCode)}</td>
+            <td>${importEscapeHtml(course.name)}</td>
+            <td>${importEscapeHtml(dateText)}${timeText}</td>
+            <td>${importEscapeHtml(course.location || "—")}</td>
+            <td>${importEscapeHtml(course.lecturer || "—")}</td>
+            <td>${importEscapeHtml(course.provider || "—")}</td>
+            <td>${importEscapeHtml(course.status)}</td>
+            <td>${importEscapeHtml(course.personnelName || course.personnelCode || "—")}</td>
+            <td>${course.studentCount}</td>
+          </tr>
+        `;
+      }).join("")
+    : `<tr><td colspan="9">Chưa có dữ liệu khóa đào tạo để xem trước.</td></tr>`;
+
+  studentBody.innerHTML = studentsToPreview.length
+    ? studentsToPreview.slice(0, 200).map(student => `
+        <tr>
+          <td>${importEscapeHtml(student.tempCode)}</td>
+          <td>${importEscapeHtml(student.fullName)}</td>
+          <td>${importEscapeHtml(student.jobTitle || "—")}</td>
+          <td>${importEscapeHtml(student.department || "—")}</td>
+          <td>${importEscapeHtml(student.email || "—")}</td>
+          <td>${importEscapeHtml(student.phone || "—")}</td>
+          <td>${importEscapeHtml(student.workplace || "—")}</td>
+        </tr>
+      `).join("")
+    : `<tr><td colspan="7">Chưa có dữ liệu học viên để xem trước.</td></tr>`;
+
+  previewContainer.style.display = "block";
+}
 
 
 /* =====================================================
