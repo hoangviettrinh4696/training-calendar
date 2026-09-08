@@ -32,7 +32,7 @@
 
 body {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
   background: #f4f8f5;
   color: var(--text);
 }
@@ -1880,6 +1880,18 @@ tbody tr:hover {
   }
 }
 
+
+/* Font safeguard for Vietnamese UI text */
+.department-name,
+.login-title,
+.company-name,
+.user-name,
+.user-role {
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  font-variant-ligatures: none;
+  text-rendering: optimizeLegibility;
+}
+
 </style>
 </head>
 
@@ -2345,30 +2357,22 @@ tbody tr:hover {
       </div>
 
 
-      <div class="form-group">
+      <div class="form-group span-2">
 
         <label>
-          Giờ bắt đầu
+          Ngày học thực tế
         </label>
 
         <input
-          type="time"
-          id="startTime"
+          type="text"
+          id="actualTrainingDates"
+          placeholder="Ví dụ: 05/09/2026; 07/09/2026; 10/09/2026"
         >
 
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Giờ kết thúc
-        </label>
-
-        <input
-          type="time"
-          id="endTime"
-        >
+        <div class="field-help" style="margin-top:6px;color:#728078;font-size:13px;">
+          Chỉ nhập khi các ngày học không liền nhau. Định dạng: dd/mm/yyyy, cách nhau bằng dấu chấm phẩy (;).
+          Nếu để trống, hệ thống tính liên tục từ Ngày bắt đầu đến Ngày kết thúc.
+        </div>
 
       </div>
 
@@ -2759,6 +2763,7 @@ Lê Văn C"
             <th>Mã khóa</th>
             <th>Tên khóa đào tạo</th>
             <th>Thời gian</th>
+            <th>Số ngày ĐT</th>
             <th>Địa điểm</th>
             <th>Giảng viên</th>
             <th>Cơ sở đào tạo</th>
@@ -2977,6 +2982,8 @@ Lê Văn C"
                     <th>Mã tạm</th>
                     <th>Tên khóa</th>
                     <th>Thời gian</th>
+                    <th>Ngày học thực tế</th>
+                    <th>Số ngày ĐT</th>
                     <th>Địa điểm</th>
                     <th>Giảng viên</th>
                     <th>Cơ sở đào tạo</th>
@@ -3270,6 +3277,91 @@ function formatDate(date) {
 }
 
 
+
+function parseDisplayDate(text) {
+  const value = String(text || "").trim();
+  const match = value.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (!match) return null;
+
+  const day = Number(match[1]);
+  const month = Number(match[2]);
+  const year = Number(match[3]);
+  const date = new Date(Date.UTC(year, month - 1, day));
+
+  if (
+    date.getUTCFullYear() !== year ||
+    date.getUTCMonth() !== month - 1 ||
+    date.getUTCDate() !== day
+  ) return null;
+
+  return `${year}-${String(month).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+}
+
+function parseActualTrainingDatesText(text) {
+  const raw = String(text || "").trim();
+  if (!raw) return { dates: [], invalid: [] };
+
+  const parts = raw
+    .split(/[;\n]+/)
+    .map(value => value.trim())
+    .filter(Boolean);
+
+  const dates = [];
+  const invalid = [];
+
+  parts.forEach(value => {
+    const normalized = parseDisplayDate(value);
+    if (!normalized) {
+      invalid.push(value);
+    } else if (!dates.includes(normalized)) {
+      dates.push(normalized);
+    }
+  });
+
+  dates.sort();
+  return { dates, invalid };
+}
+
+function enumerateDateRange(startDate, endDate) {
+  if (!startDate || !endDate || endDate < startDate) return [];
+  const result = [];
+  const current = new Date(`${startDate}T00:00:00Z`);
+  const end = new Date(`${endDate}T00:00:00Z`);
+
+  while (current <= end) {
+    result.push(current.toISOString().slice(0,10));
+    current.setUTCDate(current.getUTCDate() + 1);
+  }
+  return result;
+}
+
+function getCourseTrainingDates(course) {
+  if (
+    course &&
+    Array.isArray(course.actualTrainingDates) &&
+    course.actualTrainingDates.length
+  ) {
+    return [...new Set(course.actualTrainingDates)].sort();
+  }
+  return enumerateDateRange(course.startDate, course.endDate);
+}
+
+function getTrainingDayCount(course) {
+  return getCourseTrainingDates(course).length;
+}
+
+function formatActualTrainingDates(course) {
+  if (
+    !course ||
+    !Array.isArray(course.actualTrainingDates) ||
+    !course.actualTrainingDates.length
+  ) {
+    return "Học liên tục";
+  }
+  return course.actualTrainingDates.map(formatDate).join("; ");
+}
+
+
 function getStudentArray(text) {
 
   if (!text) {
@@ -3288,44 +3380,22 @@ function getStudentArray(text) {
 
 function formatCourseTime(course) {
 
-  let text =
-    formatDate(
-      course.startDate
-    );
+  let text = formatDate(course.startDate);
 
-  if (
-    course.endDate &&
-    course.endDate !== course.startDate
-  ) {
-
-    text +=
-      " - " +
-      formatDate(
-        course.endDate
-      );
-
+  if (course.endDate && course.endDate !== course.startDate) {
+    text += " - " + formatDate(course.endDate);
   }
 
   if (
-    course.startTime &&
-    course.endTime
+    Array.isArray(course.actualTrainingDates) &&
+    course.actualTrainingDates.length
   ) {
-
-    text +=
-      " | " +
-      course.startTime +
-      " - " +
-      course.endTime;
-
+    text += " | " + getTrainingDayCount(course) + " ngày không liên tục";
   } else {
-
-    text +=
-      " | Chưa xác định giờ";
-
+    text += " | " + getTrainingDayCount(course) + " ngày";
   }
 
   return text;
-
 }
 
 
@@ -3826,6 +3896,11 @@ function dbToCourse(row) {
     endDate:
       row.end_date || "",
 
+    actualTrainingDates:
+      Array.isArray(row.actual_training_dates)
+        ? row.actual_training_dates
+        : [],
+
     startTime:
       row.start_time
         ? String(row.start_time).slice(0,5)
@@ -3887,6 +3962,11 @@ function courseToDb(course) {
 
     end_date:
       course.endDate,
+
+    actual_training_dates:
+      Array.isArray(course.actualTrainingDates) && course.actualTrainingDates.length
+        ? course.actualTrainingDates
+        : null,
 
     start_time:
       course.startTime || null,
@@ -4588,19 +4668,13 @@ async function saveCourse() {
     ).value;
 
 
-  const startTime =
-    document.getElementById(
-      "startTime"
-    ).value;
+  const actualTrainingDatesText =
+    document.getElementById("actualTrainingDates").value.trim();
 
+  const parsedActualDates =
+    parseActualTrainingDatesText(actualTrainingDatesText);
 
-  const endTime =
-    document.getElementById(
-      "endTime"
-    ).value;
-
-
-  if (
+if (
     !courseName ||
     !startDate ||
     !endDate
@@ -4628,22 +4702,39 @@ async function saveCourse() {
   }
 
 
-  if (
-    startTime &&
-    endTime &&
-    endTime <= startTime
-  ) {
-
+  if (parsedActualDates.invalid.length) {
     alert(
-      "Giờ kết thúc phải sau giờ bắt đầu."
+      "Ngày học thực tế chưa đúng định dạng dd/mm/yyyy: " +
+      parsedActualDates.invalid.join("; ")
     );
-
     return;
-
   }
 
+  if (
+    parsedActualDates.dates.some(
+      date => date < startDate || date > endDate
+    )
+  ) {
+    alert(
+      "Tất cả Ngày học thực tế phải nằm trong khoảng từ Ngày bắt đầu đến Ngày kết thúc."
+    );
+    return;
+  }
 
-  const selectedPersonnel =
+  if (
+    parsedActualDates.dates.length &&
+    (
+      parsedActualDates.dates[0] !== startDate ||
+      parsedActualDates.dates[parsedActualDates.dates.length - 1] !== endDate
+    )
+  ) {
+    alert(
+      "Khi nhập Ngày học thực tế, ngày đầu tiên phải trùng Ngày bắt đầu và ngày cuối cùng phải trùng Ngày kết thúc."
+    );
+    return;
+  }
+
+const selectedPersonnel =
     getSelectedPersonnel();
 
 
@@ -4679,9 +4770,12 @@ async function saveCourse() {
 
     endDate,
 
-    startTime,
+    actualTrainingDates:
+      parsedActualDates.dates,
 
-    endTime,
+    startTime: "",
+
+    endTime: "",
 
     location:
       document
@@ -4946,11 +5040,10 @@ function editCourse(id) {
     endDate:
       course.endDate,
 
-    startTime:
-      course.startTime,
-
-    endTime:
-      course.endTime,
+    actualTrainingDates:
+      Array.isArray(course.actualTrainingDates)
+        ? course.actualTrainingDates.map(formatDate).join("; ")
+        : "",
 
     location:
       course.location,
@@ -5112,8 +5205,7 @@ function resetForm() {
     "courseName",
     "startDate",
     "endDate",
-    "startTime",
-    "endTime",
+    "actualTrainingDates",
     "location",
     "lecturer",
     "provider",
@@ -5189,60 +5281,12 @@ function datesOverlap(
   courseB
 ) {
 
-  return (
-    courseA.startDate <=
-      courseB.endDate
-    &&
-    courseB.startDate <=
-      courseA.endDate
+  const datesB = new Set(
+    getCourseTrainingDates(courseB)
   );
 
-}
-
-
-function timesOverlap(
-  courseA,
-  courseB
-) {
-
-  if (
-    !courseA.startTime ||
-    !courseA.endTime ||
-    !courseB.startTime ||
-    !courseB.endTime
-  ) {
-
-    return true;
-
-  }
-
-
-  const startA =
-    timeToMinutes(
-      courseA.startTime
-    );
-
-  const endA =
-    timeToMinutes(
-      courseA.endTime
-    );
-
-  const startB =
-    timeToMinutes(
-      courseB.startTime
-    );
-
-  const endB =
-    timeToMinutes(
-      courseB.endTime
-    );
-
-
-  return (
-    startA < endB &&
-    startB < endA
-  );
-
+  return getCourseTrainingDates(courseA)
+    .some(date => datesB.has(date));
 }
 
 
@@ -5255,24 +5299,10 @@ function coursesOverlap(
     courseA.status === "Hủy" ||
     courseB.status === "Hủy"
   ) {
-
     return false;
-
   }
 
-
-  return (
-    datesOverlap(
-      courseA,
-      courseB
-    )
-    &&
-    timesOverlap(
-      courseA,
-      courseB
-    )
-  );
-
+  return datesOverlap(courseA, courseB);
 }
 
 
@@ -6084,31 +6114,6 @@ function renderCourses() {
       }
 
 
-      if (
-        course.startTime ||
-        course.endTime
-      ) {
-
-        timeText +=
-          "<br>" +
-          escapeHTML(
-            course.startTime ||
-            ""
-          ) +
-          (
-            course.startTime &&
-            course.endTime
-              ? " - "
-              : ""
-          ) +
-          escapeHTML(
-            course.endTime ||
-            ""
-          );
-
-      }
-
-
       let actionHtml =
         "";
 
@@ -6198,8 +6203,17 @@ function renderCourses() {
 
         <td class="time-cell">
           ${timeText}
+          ${
+            Array.isArray(course.actualTrainingDates) &&
+            course.actualTrainingDates.length
+              ? `<br><span style="color:#728078;">${escapeHTML(formatActualTrainingDates(course))}</span>`
+              : ""
+          }
         </td>
 
+        <td>
+          ${getTrainingDayCount(course)}
+        </td>
 
         <td>
           ${escapeHTML(
@@ -6317,11 +6331,13 @@ function buildExcelData(
             course.endDate
           ),
 
-        "Giờ bắt đầu":
-          course.startTime || "",
+        "Ngày học thực tế":
+          Array.isArray(course.actualTrainingDates) && course.actualTrainingDates.length
+            ? course.actualTrainingDates.map(formatDate).join("; ")
+            : "",
 
-        "Giờ kết thúc":
-          course.endTime || "",
+        "Số ngày đào tạo":
+          getTrainingDayCount(course),
 
         "Địa điểm":
           course.location || "",
@@ -6826,14 +6842,8 @@ function courseOccursOnDate(
   dateString
 ) {
 
-  return (
-    course.startDate <=
-      dateString
-    &&
-    course.endDate >=
-      dateString
-  );
-
+  return getCourseTrainingDates(course)
+    .includes(dateString);
 }
 
 
@@ -7045,15 +7055,10 @@ function renderCalendar() {
 
         .sort(
           function(a,b) {
-
-            return (
-              a.course.startTime ||
-              "99:99"
-            ).localeCompare(
-              b.course.startTime ||
-              "99:99"
+            return a.course.courseName.localeCompare(
+              b.course.courseName,
+              "vi"
             );
-
           }
         );
 
@@ -7095,45 +7100,7 @@ function renderCalendar() {
         }
 
 
-        let timeText = "";
-
-
-        if (
-          course.startTime
-        ) {
-
-          timeText =
-            escapeHTML(
-              course.startTime
-            );
-
-
-          if (
-            course.endTime
-          ) {
-
-            timeText +=
-              "–" +
-              escapeHTML(
-                course.endTime
-              );
-
-          }
-
-        }
-
-
         button.innerHTML = `
-
-          ${
-            timeText
-              ? `
-                <div class="calendar-time">
-                  ${timeText}
-                </div>
-              `
-              : ""
-          }
 
           <div class="calendar-course-name">
 
@@ -7293,6 +7260,20 @@ function openCourseDetail(id) {
           formatCourseTime(
             course
           )
+        )
+      )}
+
+      ${detailRow(
+        "Ngày học thực tế",
+        escapeHTML(
+          formatActualTrainingDates(course)
+        )
+      )}
+
+      ${detailRow(
+        "Số ngày đào tạo",
+        escapeHTML(
+          String(getTrainingDayCount(course))
         )
       )}
 
@@ -7940,7 +7921,10 @@ function importNormalizeDate(value) {
   }
 
   if (value instanceof Date && !Number.isNaN(value.getTime())) {
-    return value.toISOString().slice(0, 10);
+    const year = value.getFullYear();
+    const month = String(value.getMonth() + 1).padStart(2, "0");
+    const day = String(value.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   }
 
   if (typeof value === "number" && typeof XLSX !== "undefined") {
@@ -8145,8 +8129,25 @@ function validateAndPreviewWorkbook(workbook) {
     const name = importCleanText(row["Tên khóa đào tạo (*)"]);
     const startDate = importNormalizeDate(row["Ngày bắt đầu (*)"]);
     const endDate = importNormalizeDate(row["Ngày kết thúc (*)"]);
-    const startTime = importNormalizeTime(row["Giờ bắt đầu"]);
-    const endTime = importNormalizeTime(row["Giờ kết thúc"]);
+    const actualTrainingDatesText = importCleanText(row["Ngày học thực tế"]);
+    const actualTrainingDates = [];
+    const invalidActualDates = [];
+
+    if (actualTrainingDatesText) {
+      actualTrainingDatesText
+        .split(/[;\n]+/)
+        .map(value => value.trim())
+        .filter(Boolean)
+        .forEach(value => {
+          const normalized = importNormalizeDate(value);
+          if (!normalized) {
+            invalidActualDates.push(value);
+          } else if (!actualTrainingDates.includes(normalized)) {
+            actualTrainingDates.push(normalized);
+          }
+        });
+      actualTrainingDates.sort();
+    }
     const status = importCleanText(row["Tình trạng (*)"]);
     const personnelCode = importCleanText(row["Mã nhân sự thực hiện (*)"]).toUpperCase();
 
@@ -8160,10 +8161,28 @@ function validateAndPreviewWorkbook(workbook) {
     if (startDate && endDate && endDate < startDate) {
       errors.push(`${IMPORT_COURSE_SHEET} dòng ${excelRow}: Ngày kết thúc trước Ngày bắt đầu.`);
     }
-    if (startTime === null) errors.push(`${IMPORT_COURSE_SHEET} dòng ${excelRow}: Giờ bắt đầu không hợp lệ.`);
-    if (endTime === null) errors.push(`${IMPORT_COURSE_SHEET} dòng ${excelRow}: Giờ kết thúc không hợp lệ.`);
-    if (startTime && endTime && startDate === endDate && endTime <= startTime) {
-      errors.push(`${IMPORT_COURSE_SHEET} dòng ${excelRow}: Giờ kết thúc phải sau Giờ bắt đầu.`);
+    if (invalidActualDates.length) {
+      errors.push(
+        `${IMPORT_COURSE_SHEET} dòng ${excelRow}: Ngày học thực tế không đúng dd/mm/yyyy: ${invalidActualDates.join("; ")}.`
+      );
+    }
+    if (
+      startDate &&
+      endDate &&
+      actualTrainingDates.some(date => date < startDate || date > endDate)
+    ) {
+      errors.push(`${IMPORT_COURSE_SHEET} dòng ${excelRow}: có Ngày học thực tế nằm ngoài khoảng Ngày bắt đầu - Ngày kết thúc.`);
+    }
+    if (
+      startDate &&
+      endDate &&
+      actualTrainingDates.length &&
+      (
+        actualTrainingDates[0] !== startDate ||
+        actualTrainingDates[actualTrainingDates.length - 1] !== endDate
+      )
+    ) {
+      errors.push(`${IMPORT_COURSE_SHEET} dòng ${excelRow}: ngày đầu/cuối trong Ngày học thực tế phải trùng Ngày bắt đầu/Ngày kết thúc.`);
     }
     if (!IMPORT_VALID_STATUSES.includes(status)) {
       errors.push(`${IMPORT_COURSE_SHEET} dòng ${excelRow}: Tình trạng “${status || "trống"}” không hợp lệ.`);
@@ -8193,8 +8212,10 @@ function validateAndPreviewWorkbook(workbook) {
       name,
       startDate,
       endDate,
-      startTime: startTime || "",
-      endTime: endTime || "",
+      actualTrainingDates,
+      trainingDayCount:
+        actualTrainingDates.length ||
+        enumerateDateRange(startDate, endDate).length,
       location: importCleanText(row["Địa điểm"]),
       lecturer: importCleanText(row["Giảng viên"]),
       provider: importCleanText(row["Cơ sở đào tạo"]),
@@ -8299,14 +8320,17 @@ function renderExcelPreview(coursesToPreview, studentsToPreview, errors) {
         const dateText = course.startDate === course.endDate
           ? importDisplayDate(course.startDate)
           : `${importDisplayDate(course.startDate)} – ${importDisplayDate(course.endDate)}`;
-        const timeText = course.startTime || course.endTime
-          ? `<br><span style="color:#728078;">${importEscapeHtml(course.startTime || "—")} – ${importEscapeHtml(course.endTime || "—")}</span>`
-          : "";
         return `
           <tr>
             <td>${importEscapeHtml(course.tempCode)}</td>
             <td>${importEscapeHtml(course.name)}</td>
-            <td>${importEscapeHtml(dateText)}${timeText}</td>
+            <td>${importEscapeHtml(dateText)}</td>
+            <td>${importEscapeHtml(
+              course.actualTrainingDates.length
+                ? course.actualTrainingDates.map(importDisplayDate).join("; ")
+                : "Học liên tục"
+            )}</td>
+            <td>${course.trainingDayCount}</td>
             <td>${importEscapeHtml(course.location || "—")}</td>
             <td>${importEscapeHtml(course.lecturer || "—")}</td>
             <td>${importEscapeHtml(course.provider || "—")}</td>
@@ -8316,7 +8340,7 @@ function renderExcelPreview(coursesToPreview, studentsToPreview, errors) {
           </tr>
         `;
       }).join("")
-    : `<tr><td colspan="9">Chưa có dữ liệu khóa đào tạo để xem trước.</td></tr>`;
+    : `<tr><td colspan="11">Chưa có dữ liệu khóa đào tạo để xem trước.</td></tr>`;
 
   studentBody.innerHTML = studentsToPreview.length
     ? studentsToPreview.slice(0, 200).map(student => `
