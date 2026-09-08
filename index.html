@@ -32,7 +32,7 @@
 
 body {
   margin: 0;
-  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
   background: #f4f8f5;
   color: var(--text);
 }
@@ -264,10 +264,7 @@ textarea {
   margin-bottom: 7px;
 }
 
-.department-name {
-  color: var(--green-dark);
-  font-size: 32px;
-  font-weight: 800;
+x0;
   margin: 0;
 }
 
@@ -1887,9 +1884,23 @@ tbody tr:hover {
 .company-name,
 .user-name,
 .user-role {
-  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
   font-variant-ligatures: none;
   text-rendering: optimizeLegibility;
+}
+
+
+/* Vietnamese font fix */
+.department-name,
+.login-title,
+.company-name {
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif !important;
+  font-synthesis: none;
+}
+
+.department-name {
+  font-weight: 700 !important;
+  letter-spacing: 0.5px;
 }
 
 </style>
@@ -8079,7 +8090,8 @@ async function handleExcelFile(event) {
     const buffer = await file.arrayBuffer();
     const workbook = XLSX.read(buffer, {
       type: "array",
-      cellDates: true
+      cellDates: false,
+      raw: true
     });
 
     validateAndPreviewWorkbook(workbook);
