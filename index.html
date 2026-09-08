@@ -2152,6 +2152,24 @@ textarea:focus {
   }
 }
 
+
+/* Exact conflict-date emphasis */
+.conflict-date-box {
+  margin: 10px 0 14px;
+  padding: 10px 12px;
+  border-radius: 9px;
+  background: #fff4d8;
+  border-left: 4px solid #d39514;
+  color: #6f520d;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.conflict-date-text {
+  color: #9a5f00;
+  font-weight: 700;
+}
+
 </style>
 </head>
 
@@ -2458,7 +2476,7 @@ textarea:focus {
 
     <div>
       <div class="stat-number" id="totalWarnings">0</div>
-      <div class="stat-label">Khóa học trùng lịch</div>
+      <div class="stat-label">Khóa trùng ngày học</div>
       <div class="stat-click-hint">Bấm để xem chi tiết</div>
     </div>
 
@@ -2476,7 +2494,7 @@ textarea:focus {
 
     <div>
       <div class="stat-number" id="studentConflictCount">0</div>
-      <div class="stat-label">Học viên trùng lịch</div>
+      <div class="stat-label">Học viên trùng ngày học</div>
       <div class="stat-click-hint">Bấm để xem chi tiết</div>
     </div>
 
@@ -2501,7 +2519,7 @@ textarea:focus {
             <span class="quick-action-icon">⇧</span>
             <span>
               <span class="quick-action-title">Nhập từ Excel</span><br>
-              <span class="quick-action-text">Dành cho kế hoạch có nhiều khóa. Chức năng import sẽ được xây ở bước sau.</span>
+              <span class="quick-action-text">Dành cho kế hoạch có nhiều khóa. Có thể tải file mẫu, kiểm tra dữ liệu và nhập trực tiếp vào hệ thống.</span>
             </span>
           </button>
         </div>
@@ -3330,7 +3348,7 @@ Lê Văn C"
     <div class="modal-header">
 
       <div class="modal-title">
-        ⚠️ Khóa học trùng lịch
+        ⚠️ Khóa trùng ngày học
       </div>
 
       <button
@@ -3366,7 +3384,7 @@ Lê Văn C"
     <div class="modal-header">
 
       <div class="modal-title">
-        👤 Học viên trùng lịch
+        👤 Học viên trùng ngày học
       </div>
 
       <button
@@ -3511,11 +3529,7 @@ function normalizeText(value) {
 
 function normalizeName(value) {
 
-  return String(value || "")
-    .normalize("NFC")
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g," ");
+  return normalizeText(value);
 
 }
 
@@ -5591,7 +5605,7 @@ function timeToMinutes(time) {
 }
 
 
-function datesOverlap(
+function getOverlappingTrainingDates(
   courseA,
   courseB
 ) {
@@ -5601,7 +5615,20 @@ function datesOverlap(
   );
 
   return getCourseTrainingDates(courseA)
-    .some(date => datesB.has(date));
+    .filter(date => datesB.has(date))
+    .sort();
+}
+
+
+function datesOverlap(
+  courseA,
+  courseB
+) {
+
+  return getOverlappingTrainingDates(
+    courseA,
+    courseB
+  ).length > 0;
 }
 
 
@@ -5650,7 +5677,12 @@ function findConflicts() {
           firstIndex: i,
           secondIndex: j,
           firstCourse: courses[i],
-          secondCourse: courses[j]
+          secondCourse: courses[j],
+          overlapDates:
+            getOverlappingTrainingDates(
+              courses[i],
+              courses[j]
+            )
 
         });
 
@@ -7805,7 +7837,8 @@ function openCourseConflictModal() {
 
         Hệ thống phát hiện
         <strong>${conflicts.length}</strong>
-        cặp khóa có thời gian chồng lấn.
+        cặp khóa có ngày học thực tế trùng nhau.
+        Khóa có tình trạng <strong>Hủy</strong> không được tính cảnh báo.
 
       </div>
 
@@ -7824,6 +7857,15 @@ function openCourseConflictModal() {
 
             <div class="modal-item-title">
               Cảnh báo ${index + 1}
+            </div>
+
+            <div class="conflict-date-box">
+              <strong>Ngày trùng:</strong>
+              ${escapeHTML(
+                (conflict.overlapDates || [])
+                  .map(formatDate)
+                  .join("; ")
+              )}
             </div>
 
             ${courseDetailHtml(
@@ -7860,6 +7902,40 @@ function openCourseConflictModal() {
 /* =====================================================
    STUDENT CONFLICT
 ===================================================== */
+
+function getStudentConflictDatesForCourse(
+  studentName,
+  courseIndex
+) {
+
+  const key = normalizeName(studentName);
+  const dates = new Set();
+
+  findStudentConflicts()
+    .forEach(conflict => {
+
+      const includesStudent =
+        conflict.students.some(
+          name => normalizeName(name) === key
+        );
+
+      if (!includesStudent) {
+        return;
+      }
+
+      if (
+        conflict.firstIndex === courseIndex ||
+        conflict.secondIndex === courseIndex
+      ) {
+        (conflict.overlapDates || [])
+          .forEach(date => dates.add(date));
+      }
+
+    });
+
+  return Array.from(dates).sort();
+}
+
 
 function buildStudentConflictSummary() {
 
@@ -8072,6 +8148,24 @@ function openStudentConflictModal() {
                 </div>
 
                 ${
+                  isConflict
+                    ? `
+                      <div class="course-detail-time conflict-date-text">
+                        Ngày bị trùng:
+                        ${escapeHTML(
+                          getStudentConflictDatesForCourse(
+                            student.name,
+                            item.index
+                          )
+                          .map(formatDate)
+                          .join("; ")
+                        )}
+                      </div>
+                    `
+                    : ""
+                }
+
+                ${
                   item.course.location
                     ? `
                       <div class="course-detail-time">
@@ -8184,7 +8278,7 @@ document.addEventListener(
 
 
 /* =====================================================
-   EXCEL IMPORT - READ, VALIDATE, PREVIEW ONLY
+   EXCEL IMPORT - VALIDATE, PREVIEW AND SAVE
 ===================================================== */
 
 const IMPORT_COURSE_SHEET = "KHOA_DAO_TAO";
