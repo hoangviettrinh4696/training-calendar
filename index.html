@@ -3522,6 +3522,38 @@ body.demo-mode #navAdmin {
   .lookup-course-top{flex-direction:column}
 }
 
+
+/* Public lookup student modal — isolated from administrator modals */
+.public-student-modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:10050;
+  padding:24px;
+  background:rgba(8,38,25,.52);
+  align-items:center;
+  justify-content:center;
+}
+.public-student-modal.show{display:flex}
+.public-student-modal .modal-content{
+  width:min(920px,96vw);
+  max-height:88vh;
+  margin:0;
+  overflow:hidden;
+  border-radius:16px;
+  background:#fff;
+  box-shadow:0 24px 70px rgba(0,0,0,.28);
+}
+.public-student-modal .modal-body{
+  max-height:calc(88vh - 70px);
+  overflow:auto;
+}
+@media(max-width:700px){
+  .public-student-modal{padding:10px}
+  .public-student-modal .modal-content{width:100%;max-height:92vh}
+  .public-student-modal .modal-body{max-height:calc(92vh - 64px)}
+}
+
 </style>
 </head>
 
@@ -3762,11 +3794,11 @@ body.demo-mode #navAdmin {
 
 </div>
 
-<div id="publicStudentListModal" class="modal">
+<div id="publicStudentListModal" class="public-student-modal" aria-hidden="true">
   <div class="modal-content student-detail-modal-content">
     <div class="modal-header">
       <div class="modal-title">👥 Danh sách học viên</div>
-      <button class="modal-close" onclick="closeModal('publicStudentListModal')">×</button>
+      <button class="modal-close" onclick="closePublicStudentList()">×</button>
     </div>
     <div class="modal-body" id="publicStudentListModalBody"></div>
   </div>
@@ -5452,6 +5484,13 @@ function switchLookupTab(tab) {
   });
 }
 
+function closePublicStudentList() {
+  const modal = document.getElementById("publicStudentListModal");
+  if (!modal) return;
+  modal.classList.remove("show");
+  modal.setAttribute("aria-hidden", "true");
+}
+
 function openPublicStudentList(courseIndex) {
   const course = publicLookupHistory[courseIndex];
   if (!course) return;
@@ -5489,7 +5528,9 @@ function openPublicStudentList(courseIndex) {
     </div>
   `;
 
-  document.getElementById("publicStudentListModal").classList.add("show");
+  const modal = document.getElementById("publicStudentListModal");
+  modal.classList.add("show");
+  modal.setAttribute("aria-hidden", "false");
 }
 
 function parsePublicProposedDates(text) {
