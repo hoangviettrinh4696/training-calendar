@@ -2170,6 +2170,503 @@ textarea:focus {
   font-weight: 700;
 }
 
+
+/* Demo mode */
+.demo-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0 12px;
+  color: #789087;
+  font-size: 12px;
+}
+
+.demo-divider::before,
+.demo-divider::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: #d9e7df;
+}
+
+.demo-login-button {
+  width: 100%;
+  border: 1px solid #0a6a45;
+  border-radius: 10px;
+  padding: 12px 16px;
+  background: #eef9f3;
+  color: #075437;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+.demo-login-button:hover {
+  background: #dff3e8;
+  transform: translateY(-1px);
+}
+
+.demo-login-note {
+  margin-top: 9px;
+  color: #6d8078;
+  font-size: 11px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.demo-mode-badge {
+  display: none;
+  max-width: 250px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: #fff3cd;
+  color: #765a00;
+  border: 1px solid #eed78a;
+  font-size: 10px;
+  line-height: 1.25;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: .25px;
+}
+
+body.demo-mode .demo-mode-badge {
+  display: block;
+}
+
+body.demo-mode #navAdmin {
+  display: none !important;
+}
+
+@media (max-width: 900px) {
+  .demo-mode-badge {
+    max-width: 180px;
+    font-size: 9px;
+  }
+}
+
+
+/* =====================================================
+   MOBILE RESPONSIVE
+===================================================== */
+
+.mobile-menu-button,
+.mobile-sidebar-overlay,
+.mobile-course-list {
+  display: none;
+}
+
+@media (max-width: 900px) {
+
+  body {
+    overflow-x: hidden;
+  }
+
+  .brand-header {
+    min-height: 88px;
+    padding: 12px 16px;
+  }
+
+  .brand-content {
+    gap: 12px;
+  }
+
+  .logo {
+    width: 82px;
+    max-height: 65px;
+  }
+
+  .brand-text {
+    padding-left: 12px;
+  }
+
+  .company-name {
+    font-size: 10px;
+    line-height: 1.35;
+    letter-spacing: .25px;
+  }
+
+  .department-name {
+    font-size: 20px;
+  }
+
+  .main-bar {
+    min-height: 58px;
+    padding: 8px 12px;
+    gap: 9px;
+  }
+
+  .mobile-menu-button {
+    display: inline-flex;
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255,255,255,.35);
+    background: rgba(255,255,255,.12);
+    color: white;
+    font-size: 21px;
+    border-radius: 8px;
+  }
+
+  .main-title {
+    min-width: 0;
+    flex: 1;
+    gap: 7px;
+  }
+
+  .home-icon,
+  .main-subtitle {
+    display: none;
+  }
+
+  .main-title strong {
+    font-size: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .user-area {
+    gap: 6px;
+  }
+
+  .user-info {
+    display: none;
+  }
+
+  .logout-button {
+    padding: 7px 8px;
+    font-size: 9px;
+  }
+
+  body.demo-mode .demo-mode-badge {
+    display: none;
+  }
+
+  .app-shell {
+    display: block;
+    min-height: calc(100vh - 146px);
+  }
+
+  .sidebar {
+    position: fixed;
+    z-index: 1200;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: min(82vw, 300px);
+    padding: 24px 14px;
+    transform: translateX(-105%);
+    transition: transform .22s ease;
+    overflow-y: auto;
+    box-shadow: 12px 0 35px rgba(0,0,0,.18);
+  }
+
+  body.mobile-menu-open .sidebar {
+    transform: translateX(0);
+  }
+
+  .mobile-sidebar-overlay {
+    position: fixed;
+    z-index: 1190;
+    inset: 0;
+    background: rgba(3,38,25,.46);
+  }
+
+  body.mobile-menu-open .mobile-sidebar-overlay {
+    display: block;
+  }
+
+  .sidebar-title::after {
+    content: " · chạm bên ngoài để đóng";
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 500;
+  }
+
+  .workspace {
+    width: 100%;
+  }
+
+  .page-container {
+    padding: 16px 12px 30px;
+  }
+
+  .page-heading {
+    margin-bottom: 13px;
+  }
+
+  .page-heading h2 {
+    font-size: 20px;
+  }
+
+  .page-description {
+    font-size: 11px;
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 9px;
+    margin-bottom: 14px;
+  }
+
+  .stat-card {
+    min-width: 0;
+    padding: 13px 10px;
+    gap: 9px;
+  }
+
+  .stat-icon {
+    width: 38px;
+    height: 38px;
+    font-size: 18px;
+  }
+
+  .stat-number {
+    font-size: 21px;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    line-height: 1.25;
+  }
+
+  .stat-click-hint {
+    display: none;
+  }
+
+  .quick-actions,
+  .import-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .quick-action-card {
+    padding: 13px;
+  }
+
+  .card,
+  .import-card {
+    padding: 15px 12px;
+    border-radius: 12px;
+  }
+
+  .card-title-row,
+  .calendar-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .required-note {
+    text-align: left;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 13px;
+  }
+
+  .span-2,
+  .span-4 {
+    grid-column: 1;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 16px; /* prevents iOS auto zoom */
+  }
+
+  .button-area {
+    flex-direction: column;
+  }
+
+  .button-area button {
+    width: 100%;
+  }
+
+  .filter-row-primary,
+  .filter-row-secondary {
+    grid-template-columns: 1fr;
+    gap: 9px;
+  }
+
+  .btn-clear-filter {
+    width: 100%;
+  }
+
+  /* Desktop table becomes mobile cards. */
+  .table-wrapper {
+    display: none;
+  }
+
+  .mobile-course-list {
+    display: grid;
+    gap: 11px;
+  }
+
+  .mobile-course-empty {
+    padding: 25px 15px;
+    background: white;
+    border: 1px solid #dce7e0;
+    border-radius: 11px;
+    text-align: center;
+    color: #718078;
+  }
+
+  .mobile-course-card {
+    background: white;
+    border: 1px solid #d9e8df;
+    border-radius: 13px;
+    padding: 14px;
+    box-shadow: 0 3px 12px rgba(8,80,48,.05);
+  }
+
+  .mobile-course-card.has-conflict {
+    border-left: 4px solid #dfa422;
+  }
+
+  .mobile-course-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    padding-bottom: 11px;
+    border-bottom: 1px solid #e7eee9;
+  }
+
+  .mobile-course-code {
+    color: #168451;
+    font-size: 10px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  .mobile-course-name {
+    color: #173c29;
+    font-size: 14px;
+    line-height: 1.35;
+    font-weight: 800;
+  }
+
+  .mobile-course-top .status {
+    flex-shrink: 0;
+    font-size: 9px;
+    padding: 5px 7px;
+  }
+
+  .mobile-course-alerts {
+    padding-top: 8px;
+  }
+
+  .mobile-course-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 11px 12px;
+    padding-top: 12px;
+  }
+
+  .mobile-course-grid .wide {
+    grid-column: 1 / -1;
+  }
+
+  .mobile-course-grid span {
+    display: block;
+    color: #7a8981;
+    font-size: 9px;
+    margin-bottom: 3px;
+  }
+
+  .mobile-course-grid strong {
+    display: block;
+    color: #344a3e;
+    font-size: 11px;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+  }
+
+  .calendar-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+  }
+
+  .calendar-button {
+    padding: 8px 4px;
+    font-size: 10px;
+  }
+
+  .calendar-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .calendar-weekdays,
+  .calendar-grid {
+    min-width: 700px;
+  }
+
+  .calendar-day {
+    min-height: 105px;
+  }
+
+  .modal-overlay {
+    padding: 10px;
+  }
+
+  .modal {
+    width: 100%;
+    max-height: 92vh;
+    border-radius: 12px;
+  }
+
+  .modal-header {
+    padding: 13px 14px;
+  }
+
+  .modal-title {
+    font-size: 15px;
+  }
+
+  .modal-body {
+    padding: 12px;
+    max-height: calc(92vh - 60px);
+  }
+
+  .login-card {
+    width: min(94vw, 430px);
+    padding: 24px 18px;
+  }
+
+  .login-company {
+    font-size: 11px;
+  }
+
+  .login-title {
+    font-size: 23px;
+  }
+}
+
+@media (max-width: 430px) {
+  .stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .stat-card {
+    align-items: flex-start;
+  }
+
+  .mobile-course-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mobile-course-grid .wide {
+    grid-column: 1;
+  }
+}
+
 </style>
 </head>
 
@@ -2273,6 +2770,22 @@ textarea:focus {
       Đăng nhập
     </button>
 
+    <div class="demo-divider">
+      <span>hoặc</span>
+    </div>
+
+    <button
+      class="demo-login-button"
+      id="demoLoginButton"
+      onclick="startDemoMode()"
+    >
+      👀 Trải nghiệm giao diện
+    </button>
+
+    <div class="demo-login-note">
+      Xem hệ thống bằng dữ liệu minh họa, không cần tài khoản và không truy cập dữ liệu thật.
+    </div>
+
   </div>
 
 </div>
@@ -2316,6 +2829,15 @@ textarea:focus {
 
 <div class="main-bar">
 
+  <button
+    class="mobile-menu-button"
+    id="mobileMenuButton"
+    onclick="toggleMobileMenu()"
+    aria-label="Mở menu"
+  >
+    ☰
+  </button>
+
   <div class="main-title">
 
     <div class="home-icon">
@@ -2349,8 +2871,13 @@ textarea:focus {
 
     </div>
 
+    <div class="demo-mode-badge" id="demoModeBadge">
+      CHẾ ĐỘ TRẢI NGHIỆM · DỮ LIỆU MINH HỌA
+    </div>
+
     <button
       class="logout-button"
+      id="logoutButton"
       onclick="logout()"
     >
       Đăng xuất
@@ -2407,6 +2934,12 @@ textarea:focus {
     </div>
 
   </aside>
+
+  <div
+    class="mobile-sidebar-overlay"
+    id="mobileSidebarOverlay"
+    onclick="closeMobileMenu()"
+  ></div>
 
   <div class="workspace">
 
@@ -3060,6 +3593,11 @@ Lê Văn C"
 
     </div>
 
+    <div
+      class="mobile-course-list"
+      id="mobileCourseList"
+    ></div>
+
   </div>
 
 
@@ -3482,6 +4020,8 @@ let currentUser = null;
 
 let currentProfile = null;
 
+let demoMode = false;
+
 let editingCourseId = null;
 
 let saving = false;
@@ -3784,6 +4324,222 @@ async function initializeApp() {
 }
 
 
+function getDemoPersonnel() {
+
+  return [
+    { id: -1, full_name: "Nguyễn Thu Hà", personnel_code: "NTH", job_title: "Chuyên viên đào tạo", is_active: true },
+    { id: -2, full_name: "Trần Minh Anh", personnel_code: "TMA", job_title: "Chuyên viên đào tạo", is_active: true },
+    { id: -3, full_name: "Lê Hoàng Nam", personnel_code: "LHN", job_title: "Chuyên viên đào tạo", is_active: true }
+  ];
+
+}
+
+
+function getDemoCourses() {
+
+  return [
+    {
+      id: -101,
+      courseCode: "2026-NTH-001",
+      trainingYear: 2026,
+      personInChargeId: -1,
+      courseName: "Kỹ năng phân tích dữ liệu trong công việc",
+      startDate: "2026-09-14",
+      endDate: "2026-09-16",
+      actualTrainingDates: [],
+      startTime: "",
+      endTime: "",
+      location: "Hà Nội",
+      lecturer: "Nguyễn Quốc Hưng",
+      department: "",
+      provider: "Học viện Đào tạo Minh họa",
+      status: "Chưa triển khai",
+      personInCharge: "Nguyễn Thu Hà",
+      students: "Nguyễn Minh Anh\nTrần Thu Trang\nLê Quốc Bảo",
+      studentDetails: [
+        { fullName: "Nguyễn Minh Anh", jobTitle: "Chuyên viên", department: "Ban Kỹ thuật" },
+        { fullName: "Trần Thu Trang", jobTitle: "Kỹ sư", department: "Ban Thăm dò" },
+        { fullName: "Lê Quốc Bảo", jobTitle: "Chuyên viên", department: "Ban Dự án" }
+      ],
+      createdBy: "demo",
+      updatedBy: "demo"
+    },
+    {
+      id: -102,
+      courseCode: "2026-TMA-001",
+      trainingYear: 2026,
+      personInChargeId: -2,
+      courseName: "Ứng dụng AI trong quản trị và điều hành",
+      startDate: "2026-09-15",
+      endDate: "2026-09-18",
+      actualTrainingDates: ["2026-09-15", "2026-09-18"],
+      startTime: "",
+      endTime: "",
+      location: "Hà Nội",
+      lecturer: "Trần Hoàng Minh",
+      department: "",
+      provider: "Trung tâm Công nghệ Minh họa",
+      status: "Đang triển khai",
+      personInCharge: "Trần Minh Anh",
+      students: "Nguyễn Minh Anh\nPhạm Đức Long\nĐỗ Thanh Mai",
+      studentDetails: [
+        { fullName: "Nguyễn Minh Anh", jobTitle: "Chuyên viên", department: "Ban Kỹ thuật" },
+        { fullName: "Phạm Đức Long", jobTitle: "Chuyên viên", department: "Văn phòng" },
+        { fullName: "Đỗ Thanh Mai", jobTitle: "Kỹ sư", department: "Ban Phát triển Khai thác" }
+      ],
+      createdBy: "demo",
+      updatedBy: "demo"
+    },
+    {
+      id: -103,
+      courseCode: "2026-LHN-001",
+      trainingYear: 2026,
+      personInChargeId: -3,
+      courseName: "Quản trị rủi ro trong hoạt động doanh nghiệp",
+      startDate: "2026-09-21",
+      endDate: "2026-09-23",
+      actualTrainingDates: [],
+      startTime: "",
+      endTime: "",
+      location: "Hà Nội",
+      lecturer: "Lê Minh Quân",
+      department: "",
+      provider: "Viện Quản trị Minh họa",
+      status: "Chưa triển khai",
+      personInCharge: "Lê Hoàng Nam",
+      students: "Vũ Anh Tuấn\nNguyễn Hoài Phương",
+      studentDetails: [
+        { fullName: "Vũ Anh Tuấn", jobTitle: "Chuyên viên", department: "Ban CL&QTRR" },
+        { fullName: "Nguyễn Hoài Phương", jobTitle: "Chuyên viên", department: "Ban Tài chính" }
+      ],
+      createdBy: "demo",
+      updatedBy: "demo"
+    },
+    {
+      id: -104,
+      courseCode: "2026-NTH-002",
+      trainingYear: 2026,
+      personInChargeId: -1,
+      courseName: "Kỹ năng giao tiếp và làm việc nhóm",
+      startDate: "2026-09-22",
+      endDate: "2026-09-24",
+      actualTrainingDates: ["2026-09-22", "2026-09-24"],
+      startTime: "",
+      endTime: "",
+      location: "Hà Nội",
+      lecturer: "Phạm Thu Hương",
+      department: "",
+      provider: "Học viện Kỹ năng Minh họa",
+      status: "Chưa triển khai",
+      personInCharge: "Nguyễn Thu Hà",
+      students: "Hoàng Hải Yến\nĐặng Minh Đức",
+      studentDetails: [
+        { fullName: "Hoàng Hải Yến", jobTitle: "Chuyên viên", department: "Ban QTNNL" },
+        { fullName: "Đặng Minh Đức", jobTitle: "Kỹ sư", department: "Ban Kỹ thuật" }
+      ],
+      createdBy: "demo",
+      updatedBy: "demo"
+    },
+    {
+      id: -105,
+      courseCode: "2026-TMA-002",
+      trainingYear: 2026,
+      personInChargeId: -2,
+      courseName: "Chuyên đề chuyển đổi số",
+      startDate: "2026-08-25",
+      endDate: "2026-08-26",
+      actualTrainingDates: [],
+      startTime: "",
+      endTime: "",
+      location: "Trực tuyến",
+      lecturer: "Đỗ Quang Huy",
+      department: "",
+      provider: "Đơn vị Đào tạo Minh họa",
+      status: "Hoàn thành",
+      personInCharge: "Trần Minh Anh",
+      students: "Lê Thanh Tùng\nNguyễn Phương Linh\nTrần Khánh An",
+      studentDetails: [
+        { fullName: "Lê Thanh Tùng", jobTitle: "Chuyên viên", department: "Ban CNTT" },
+        { fullName: "Nguyễn Phương Linh", jobTitle: "Chuyên viên", department: "Ban QTNNL" },
+        { fullName: "Trần Khánh An", jobTitle: "Kỹ sư", department: "Ban Dự án" }
+      ],
+      createdBy: "demo",
+      updatedBy: "demo"
+    },
+    {
+      id: -106,
+      courseCode: "2026-LHN-002",
+      trainingYear: 2026,
+      personInChargeId: -3,
+      courseName: "Chương trình minh họa đã hủy",
+      startDate: "2026-09-15",
+      endDate: "2026-09-16",
+      actualTrainingDates: [],
+      startTime: "",
+      endTime: "",
+      location: "Hà Nội",
+      lecturer: "Giảng viên minh họa",
+      department: "",
+      provider: "Đơn vị Đào tạo Minh họa",
+      status: "Hủy",
+      personInCharge: "Lê Hoàng Nam",
+      students: "Nguyễn Minh Anh",
+      studentDetails: [
+        { fullName: "Nguyễn Minh Anh", jobTitle: "Chuyên viên", department: "Ban Kỹ thuật" }
+      ],
+      createdBy: "demo",
+      updatedBy: "demo"
+    }
+  ];
+
+}
+
+
+function startDemoMode() {
+
+  demoMode = true;
+
+  currentUser = {
+    id: "demo-user",
+    email: "demo@local"
+  };
+
+  currentProfile = {
+    id: "demo-user",
+    full_name: "Khách trải nghiệm",
+    email: "demo@local",
+    role: "viewer"
+  };
+
+  personnel = getDemoPersonnel();
+  courses = getDemoCourses();
+  editingCourseId = null;
+
+  document.body.classList.add("demo-mode");
+
+  document.getElementById("loginScreen").style.display = "none";
+  document.getElementById("app").style.display = "block";
+
+  document.getElementById("userName").innerText = "Khách trải nghiệm";
+  document.getElementById("userRole").innerText = "Chỉ xem · Dữ liệu minh họa";
+
+  const logoutButton = document.getElementById("logoutButton");
+  if (logoutButton) {
+    logoutButton.innerText = "Thoát trải nghiệm";
+  }
+
+  applyRoleToInterface();
+  renderPersonnelOptions();
+  renderCourses();
+
+  showSystemMessage(
+    "👀 Chế độ trải nghiệm · Toàn bộ dữ liệu đang hiển thị là dữ liệu minh họa"
+  );
+
+  switchPage("overview");
+}
+
+
 async function login() {
 
   const email =
@@ -3893,7 +4649,9 @@ async function logout() {
 
   const confirmed =
     confirm(
-      "Bạn có chắc muốn đăng xuất không?"
+      demoMode
+        ? "Bạn có muốn thoát chế độ trải nghiệm không?"
+        : "Bạn có chắc muốn đăng xuất không?"
     );
 
   if (!confirmed) {
@@ -3901,18 +4659,28 @@ async function logout() {
   }
 
 
-  await supabaseClient
-    .auth
-    .signOut();
+  if (!demoMode) {
+    await supabaseClient
+      .auth
+      .signOut();
+  }
 
 
   courses = [];
-
+  personnel = [];
   currentUser = null;
-
   currentProfile = null;
-
   editingCourseId = null;
+  demoMode = false;
+
+  document.body.classList.remove("demo-mode");
+
+  const logoutButton =
+    document.getElementById("logoutButton");
+
+  if (logoutButton) {
+    logoutButton.innerText = "Đăng xuất";
+  }
 
 
   document.getElementById(
@@ -3944,6 +4712,16 @@ function showLoginScreen() {
 async function startAuthenticatedApp(
   user
 ) {
+
+  demoMode = false;
+  document.body.classList.remove("demo-mode");
+
+  const logoutButton =
+    document.getElementById("logoutButton");
+
+  if (logoutButton) {
+    logoutButton.innerText = "Đăng xuất";
+  }
 
   currentUser =
     user;
@@ -6362,6 +7140,13 @@ function renderCourses() {
     " khóa đào tạo";
 
 
+  renderMobileCourseCards(
+    filtered,
+    conflictIndexes,
+    studentConflictIndexes
+  );
+
+
   if (
     filtered.length === 0
   ) {
@@ -6904,10 +7689,116 @@ function exportFilteredCourses() {
 
 
 /* =====================================================
+   MOBILE NAVIGATION
+===================================================== */
+
+function toggleMobileMenu() {
+  document.body.classList.toggle("mobile-menu-open");
+}
+
+function closeMobileMenu() {
+  document.body.classList.remove("mobile-menu-open");
+}
+
+function renderMobileCourseCards(filtered, conflictIndexes, studentConflictIndexes) {
+
+  const container =
+    document.getElementById("mobileCourseList");
+
+  if (!container) {
+    return;
+  }
+
+  if (!filtered.length) {
+    container.innerHTML =
+      '<div class="mobile-course-empty">Chưa có khóa đào tạo phù hợp.</div>';
+    return;
+  }
+
+  container.innerHTML = filtered.map(function(item) {
+
+    const course = item.course;
+    const originalIndex = item.originalIndex;
+    const students = getStudentArray(course.students);
+    const hasConflict = conflictIndexes.has(originalIndex);
+    const hasStudentConflict = studentConflictIndexes.has(originalIndex);
+
+    const actualDates =
+      Array.isArray(course.actualTrainingDates) &&
+      course.actualTrainingDates.length
+        ? formatActualTrainingDates(course)
+        : "Học liên tục";
+
+    return `
+      <article class="mobile-course-card ${hasConflict ? "has-conflict" : ""}">
+        <div class="mobile-course-top">
+          <div>
+            <div class="mobile-course-code">
+              ${escapeHTML(course.courseCode || "Chưa có mã")}
+            </div>
+            <div class="mobile-course-name">
+              ${escapeHTML(course.courseName)}
+            </div>
+          </div>
+          <span class="status ${getStatusClass(course.status)}">
+            ${escapeHTML(course.status)}
+          </span>
+        </div>
+
+        ${
+          hasConflict || hasStudentConflict
+            ? `
+              <div class="mobile-course-alerts">
+                ${hasConflict ? '<span class="conflict-label">⚠ Trùng lịch</span>' : ""}
+                ${hasStudentConflict ? '<span class="student-conflict-label">👤 Trùng học viên</span>' : ""}
+              </div>
+            `
+            : ""
+        }
+
+        <div class="mobile-course-grid">
+          <div>
+            <span>Thời gian</span>
+            <strong>${escapeHTML(formatDate(course.startDate))}${course.endDate !== course.startDate ? " – " + escapeHTML(formatDate(course.endDate)) : ""}</strong>
+          </div>
+          <div>
+            <span>Số ngày</span>
+            <strong>${getTrainingDayCount(course)} ngày</strong>
+          </div>
+          <div class="wide">
+            <span>Ngày học thực tế</span>
+            <strong>${escapeHTML(actualDates)}</strong>
+          </div>
+          <div>
+            <span>Địa điểm</span>
+            <strong>${escapeHTML(course.location || "—")}</strong>
+          </div>
+          <div>
+            <span>Nhân sự thực hiện</span>
+            <strong>${escapeHTML(course.personInCharge || "—")}</strong>
+          </div>
+          <div class="wide">
+            <span>Giảng viên · Cơ sở đào tạo</span>
+            <strong>${escapeHTML(course.lecturer || "—")}${course.provider ? " · " + escapeHTML(course.provider) : ""}</strong>
+          </div>
+          <div class="wide">
+            <span>Học viên (${students.length})</span>
+            <strong>${students.length ? students.map(escapeHTML).join(", ") : "—"}</strong>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join("");
+}
+
+
+/* =====================================================
    PAGE NAVIGATION
 ===================================================== */
 
 function switchPage(page) {
+
+  closeMobileMenu();
 
   if (
     page === "admin" &&
