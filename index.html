@@ -3357,6 +3357,171 @@ body.demo-mode #navAdmin {
   }
 }
 
+
+/* =====================================================
+   PUBLIC TRAINING LOOKUP
+===================================================== */
+.public-lookup-button{
+  width:100%;
+  margin-bottom:7px;
+  padding:13px 16px;
+  border:0;
+  border-radius:10px;
+  background:#087747;
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+}
+.public-lookup-button:hover{background:#06653c}
+.public-lookup-note{
+  margin:-1px 0 13px;
+  color:#687970;
+  font-size:11px;
+  line-height:1.45;
+  text-align:center;
+}
+.public-lookup-screen{
+  display:none;
+  min-height:100vh;
+  background:#f3f7f4;
+  color:#173b2a;
+}
+.public-lookup-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  padding:16px 28px;
+  background:linear-gradient(135deg,#064e32,#087747);
+  color:#fff;
+  box-shadow:0 4px 18px rgba(0,0,0,.12);
+}
+.public-lookup-brand{display:flex;align-items:center;gap:14px}
+.public-lookup-logo{
+  width:54px;height:54px;object-fit:contain;background:#fff;border-radius:12px;padding:6px;
+}
+.public-lookup-company{font-size:11px;font-weight:700;opacity:.88;letter-spacing:.3px}
+.public-lookup-title{margin-top:3px;font-size:21px;font-weight:900}
+.public-login-link{
+  border:1px solid rgba(255,255,255,.5);
+  border-radius:9px;
+  padding:9px 12px;
+  background:rgba(255,255,255,.1);
+  color:#fff;
+  font-weight:800;
+  cursor:pointer;
+}
+.public-lookup-main{max-width:1180px;margin:0 auto;padding:30px 20px 60px}
+.lookup-hero{
+  padding:30px;
+  border:1px solid #dce9e1;
+  border-radius:18px;
+  background:#fff;
+  box-shadow:0 8px 28px rgba(17,83,52,.07);
+}
+.lookup-eyebrow{color:#087747;font-size:11px;font-weight:900;letter-spacing:1.1px}
+.lookup-hero h2{margin:7px 0 8px;font-size:28px}
+.lookup-hero>p{max-width:760px;margin:0 0 20px;color:#607168;line-height:1.6}
+.lookup-search-row{display:flex;gap:9px}
+.lookup-search-row input{
+  flex:1;min-width:0;padding:13px 14px;border:1px solid #cbdcd2;border-radius:10px;font:inherit;
+}
+.lookup-search-row input:focus{outline:2px solid rgba(8,119,71,.16);border-color:#087747}
+.lookup-search-row button,.lookup-check-button{
+  border:0;border-radius:10px;padding:0 20px;background:#087747;color:#fff;font-weight:900;cursor:pointer;
+}
+.lookup-search-hint{margin-top:9px;color:#7b8b82;font-size:11px}
+.lookup-search-results{display:grid;gap:8px;margin-top:14px}
+.lookup-person-result{
+  display:flex;align-items:center;justify-content:space-between;gap:15px;
+  padding:12px 14px;border:1px solid #dce8e1;border-radius:11px;background:#fbfdfc;cursor:pointer;text-align:left;
+}
+.lookup-person-result:hover{border-color:#9ccbb2;background:#f1f9f5}
+.lookup-person-name{font-weight:900;color:#173b2a}
+.lookup-person-meta{margin-top:3px;color:#687970;font-size:11px}
+.lookup-person-arrow{color:#087747;font-weight:900}
+.public-training-profile{margin-top:20px}
+.lookup-profile-head{
+  display:flex;justify-content:space-between;gap:15px;padding:20px 22px;border-radius:16px;background:#0b5f3d;color:#fff;
+}
+.lookup-back-search{padding:0;border:0;background:transparent;color:#dff5e9;font-weight:800;cursor:pointer}
+.lookup-profile-head h2{margin:9px 0 4px;font-size:24px}
+.lookup-profile-meta{font-size:12px;color:#e0f1e8}
+.lookup-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}
+.lookup-stat{
+  padding:15px;border:1px solid #dce8e1;border-radius:13px;background:#fff;
+}
+.lookup-stat-value{font-size:22px;font-weight:900;color:#087747}
+.lookup-stat-label{margin-top:3px;color:#6c7c73;font-size:11px}
+.lookup-conflict{
+  margin:12px 0;padding:13px 15px;border-radius:12px;background:#fff2d6;color:#744d00;font-weight:700;
+}
+.lookup-no-conflict{
+  margin:12px 0;padding:13px 15px;border-radius:12px;background:#e9f7ef;color:#17643e;font-weight:700;
+}
+.lookup-tabs{
+  display:flex;gap:6px;margin:14px 0 10px;padding:5px;border:1px solid #dce8e1;border-radius:12px;background:#fff;overflow:auto;
+}
+.lookup-tab{
+  flex:1;min-width:150px;padding:9px 12px;border:0;border-radius:9px;background:transparent;color:#5b6e63;font-weight:800;cursor:pointer;
+}
+.lookup-tab.active{background:#087747;color:#fff}
+.lookup-tab-panel{display:grid;gap:12px}
+.lookup-course-card{
+  padding:17px 18px;border:1px solid #dce8e1;border-radius:14px;background:#fff;
+  box-shadow:0 3px 12px rgba(17,83,52,.04);
+}
+.lookup-course-top{display:flex;align-items:flex-start;justify-content:space-between;gap:15px}
+.lookup-course-code{color:#087747;font-size:11px;font-weight:900}
+.lookup-course-name{margin:4px 0 0;font-size:16px;font-weight:900}
+.lookup-status{white-space:nowrap;padding:5px 9px;border-radius:999px;background:#e8f5ed;color:#17643e;font-size:10px;font-weight:900}
+.lookup-course-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px 18px;margin-top:14px;padding-top:13px;border-top:1px solid #edf2ef;
+}
+.lookup-course-field span{display:block;color:#819087;font-size:10px;font-weight:800;text-transform:uppercase}
+.lookup-course-field strong{display:block;margin-top:3px;color:#314b3d;font-size:12px;line-height:1.45}
+.lookup-course-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.lookup-course-actions button{
+  padding:7px 10px;border:1px solid #bcd7c8;border-radius:8px;background:#f2f9f5;color:#087747;font-weight:800;cursor:pointer;
+}
+.lookup-day-list{display:grid;gap:8px}
+.lookup-day{
+  display:grid;grid-template-columns:120px 1fr;gap:15px;padding:12px 14px;border:1px solid #dce8e1;border-radius:11px;background:#fff;
+}
+.lookup-day-date{font-weight:900;color:#087747}
+.lookup-day-course{font-weight:800}
+.lookup-day-conflict{border-color:#efcf85;background:#fff8e8}
+.lookup-check-card{padding:20px;border:1px solid #dce8e1;border-radius:14px;background:#fff}
+.lookup-check-card h3{margin:0 0 6px}
+.lookup-check-card p{margin:0 0 12px;color:#687970;font-size:12px}
+.lookup-check-card textarea{
+  width:100%;box-sizing:border-box;padding:12px;border:1px solid #cbdcd2;border-radius:10px;font:inherit;resize:vertical;
+}
+.lookup-check-button{margin-top:9px;padding:10px 16px}
+.lookup-check-result{margin-top:12px;padding:13px;border-radius:10px;background:#f3f7f4}
+.lookup-check-hit{margin-top:8px;padding:9px 10px;border-radius:8px;background:#fff2d6;color:#744d00}
+.lookup-check-free{margin-top:8px;padding:9px 10px;border-radius:8px;background:#e9f7ef;color:#17643e}
+.lookup-empty{padding:18px;border:1px dashed #cbdcd2;border-radius:12px;background:#fff;color:#74857b;text-align:center}
+@media(max-width:800px){
+  .public-lookup-header{padding:12px 14px}
+  .public-lookup-company{display:none}
+  .public-lookup-title{font-size:16px}
+  .public-lookup-logo{width:42px;height:42px}
+  .public-login-link{font-size:11px;padding:8px 9px}
+  .public-lookup-main{padding:16px 12px 40px}
+  .lookup-hero{padding:18px}
+  .lookup-hero h2{font-size:22px}
+  .lookup-search-row{flex-direction:column}
+  .lookup-search-row button{padding:11px}
+  .lookup-stats{grid-template-columns:repeat(2,1fr)}
+  .lookup-course-grid{grid-template-columns:1fr 1fr}
+  .lookup-day{grid-template-columns:1fr;gap:4px}
+}
+@media(max-width:520px){
+  .lookup-course-grid{grid-template-columns:1fr}
+  .lookup-course-top{flex-direction:column}
+}
+
 </style>
 </head>
 
@@ -3465,6 +3630,18 @@ body.demo-mode #navAdmin {
     </div>
 
     <button
+      class="public-lookup-button"
+      id="publicLookupButton"
+      onclick="openPublicTrainingLookup()"
+    >
+      🔎 Tra cứu lịch đào tạo
+    </button>
+
+    <div class="public-lookup-note">
+      Không cần đăng nhập · Tìm lịch đào tạo theo họ tên và kiểm tra trùng lịch.
+    </div>
+
+    <button
       class="demo-login-button"
       id="demoLoginButton"
       onclick="startDemoMode()"
@@ -3480,6 +3657,120 @@ body.demo-mode #navAdmin {
 
 </div>
 
+
+
+<!-- =========================
+     PUBLIC TRAINING LOOKUP
+========================= -->
+
+<div id="publicLookupScreen" class="public-lookup-screen">
+
+  <header class="public-lookup-header">
+    <div class="public-lookup-brand">
+      <img src="logo-pvep.png" alt="PVEP" class="public-lookup-logo">
+      <div>
+        <div class="public-lookup-company">TỔNG CÔNG TY THĂM DÒ KHAI THÁC DẦU KHÍ</div>
+        <div class="public-lookup-title">TRA CỨU LỊCH ĐÀO TẠO</div>
+      </div>
+    </div>
+
+    <button type="button" class="public-login-link" onclick="closePublicTrainingLookup()">
+      🔐 Đăng nhập hệ thống
+    </button>
+  </header>
+
+  <main class="public-lookup-main">
+
+    <section class="lookup-hero">
+      <div class="lookup-eyebrow">HỒ SƠ ĐÀO TẠO CÁ NHÂN</div>
+      <h2>Kiểm tra lịch đào tạo của bạn</h2>
+      <p>
+        Nhập họ và tên để xem các khóa đã, đang và dự kiến tham gia;
+        đồng thời kiểm tra trùng lịch trước khi đăng ký khóa mới.
+      </p>
+
+      <div class="lookup-search-row">
+        <input
+          id="publicStudentSearch"
+          type="text"
+          placeholder="Nhập họ và tên, ví dụ: Nguyễn Công Huân"
+          autocomplete="off"
+          oninput="schedulePublicStudentSearch()"
+          onkeydown="if(event.key === 'Enter') searchPublicStudentsNow()"
+        >
+        <button type="button" onclick="searchPublicStudentsNow()">Tìm kiếm</button>
+      </div>
+
+      <div id="publicSearchHint" class="lookup-search-hint">
+        Nhập ít nhất 2 ký tự để bắt đầu tra cứu.
+      </div>
+
+      <div id="publicSearchResults" class="lookup-search-results"></div>
+    </section>
+
+    <section id="publicTrainingProfile" class="public-training-profile" style="display:none">
+
+      <div class="lookup-profile-head">
+        <div>
+          <button type="button" class="lookup-back-search" onclick="resetPublicTrainingLookup()">
+            ← Tra cứu người khác
+          </button>
+          <h2 id="lookupProfileName">—</h2>
+          <div id="lookupProfileMeta" class="lookup-profile-meta"></div>
+        </div>
+      </div>
+
+      <div id="lookupStats" class="lookup-stats"></div>
+      <div id="lookupConflictBanner"></div>
+
+      <div class="lookup-tabs">
+        <button class="lookup-tab active" data-lookup-tab="history" onclick="switchLookupTab('history')">
+          Hồ sơ đào tạo
+        </button>
+        <button class="lookup-tab" data-lookup-tab="schedule" onclick="switchLookupTab('schedule')">
+          Lịch của tôi
+        </button>
+        <button class="lookup-tab" data-lookup-tab="check" onclick="switchLookupTab('check')">
+          Kiểm tra trùng lịch
+        </button>
+      </div>
+
+      <div id="lookupTabHistory" class="lookup-tab-panel"></div>
+      <div id="lookupTabSchedule" class="lookup-tab-panel" style="display:none"></div>
+
+      <div id="lookupTabCheck" class="lookup-tab-panel" style="display:none">
+        <div class="lookup-check-card">
+          <h3>Kiểm tra trước khi đăng ký khóa mới</h3>
+          <p>
+            Nhập một hoặc nhiều ngày dự kiến học, cách nhau bằng dấu chấm phẩy.
+          </p>
+          <textarea
+            id="lookupProposedDates"
+            rows="3"
+            placeholder="Ví dụ: 20/09/2026; 22/09/2026"
+          ></textarea>
+          <button type="button" class="lookup-check-button" onclick="checkPublicProposedDates()">
+            Kiểm tra lịch
+          </button>
+          <div id="lookupProposedResult"></div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+<div id="publicStudentListModal" class="modal">
+  <div class="modal-content student-detail-modal-content">
+    <div class="modal-header">
+      <div class="modal-title">👥 Danh sách học viên</div>
+      <button class="modal-close" onclick="closeModal('publicStudentListModal')">×</button>
+    </div>
+    <div class="modal-body" id="publicStudentListModalBody"></div>
+  </div>
+</div>
 
 
 <!-- =========================
@@ -4791,6 +5082,10 @@ let currentProfile = null;
 
 let demoMode = false;
 
+let publicLookupHistory = [];
+let publicLookupSelectedName = "";
+let publicLookupSearchTimer = null;
+
 let editingCourseId = null;
 
 let saving = false;
@@ -4805,6 +5100,457 @@ calendarDate =
     1
   );
 
+
+
+/* =====================================================
+   PUBLIC TRAINING LOOKUP
+===================================================== */
+
+function openPublicTrainingLookup() {
+  document.getElementById("loginScreen").style.display = "none";
+  document.getElementById("app").style.display = "none";
+  document.getElementById("publicLookupScreen").style.display = "block";
+  resetPublicTrainingLookup();
+  window.scrollTo(0, 0);
+}
+
+function closePublicTrainingLookup() {
+  document.getElementById("publicLookupScreen").style.display = "none";
+  document.getElementById("loginScreen").style.display = "flex";
+  window.scrollTo(0, 0);
+}
+
+function resetPublicTrainingLookup() {
+  publicLookupHistory = [];
+  publicLookupSelectedName = "";
+
+  const search = document.getElementById("publicStudentSearch");
+  const results = document.getElementById("publicSearchResults");
+  const hint = document.getElementById("publicSearchHint");
+  const profile = document.getElementById("publicTrainingProfile");
+
+  if (search) search.value = "";
+  if (results) results.innerHTML = "";
+  if (hint) hint.innerText = "Nhập ít nhất 2 ký tự để bắt đầu tra cứu.";
+  if (profile) profile.style.display = "none";
+
+  const hero = document.querySelector(".lookup-hero");
+  if (hero) hero.style.display = "block";
+
+  switchLookupTab("history");
+  setTimeout(() => search && search.focus(), 50);
+}
+
+function schedulePublicStudentSearch() {
+  clearTimeout(publicLookupSearchTimer);
+  publicLookupSearchTimer = setTimeout(searchPublicStudentsNow, 280);
+}
+
+async function searchPublicStudentsNow() {
+  const input = document.getElementById("publicStudentSearch");
+  const results = document.getElementById("publicSearchResults");
+  const hint = document.getElementById("publicSearchHint");
+  const query = String(input?.value || "").trim();
+
+  if (query.length < 2) {
+    results.innerHTML = "";
+    hint.innerText = "Nhập ít nhất 2 ký tự để bắt đầu tra cứu.";
+    return;
+  }
+
+  hint.innerText = "Đang tìm kiếm...";
+  results.innerHTML = "";
+
+  try {
+    const { data, error } = await supabaseClient.rpc(
+      "search_training_students",
+      { p_query: query }
+    );
+
+    if (error) throw error;
+
+    const rows = Array.isArray(data) ? data : [];
+
+    if (!rows.length) {
+      hint.innerText = "Không tìm thấy học viên phù hợp.";
+      results.innerHTML = `<div class="lookup-empty">Không có kết quả cho “${escapeHTML(query)}”.</div>`;
+      return;
+    }
+
+    hint.innerText = `Tìm thấy ${rows.length} kết quả. Chọn đúng họ tên; Chức danh/Ban chỉ dùng để hỗ trợ nhận diện.`;
+
+    results.innerHTML = rows.map(row => `
+      <button
+        type="button"
+        class="lookup-person-result"
+        onclick='loadPublicTrainingHistory(${JSON.stringify(String(row.full_name || ""))})'
+      >
+        <div>
+          <div class="lookup-person-name">${escapeHTML(row.full_name || "—")}</div>
+          <div class="lookup-person-meta">
+            ${escapeHTML(row.job_title || "Chưa có chức danh")}
+            ·
+            ${escapeHTML(row.department || "Chưa có Ban/Đơn vị")}
+          </div>
+        </div>
+        <div class="lookup-person-arrow">›</div>
+      </button>
+    `).join("");
+
+  } catch (error) {
+    console.error(error);
+    hint.innerText = "Không thể tra cứu lúc này.";
+    results.innerHTML = `<div class="lookup-empty">Có lỗi khi kết nối dữ liệu. Vui lòng thử lại.</div>`;
+  }
+}
+
+async function loadPublicTrainingHistory(fullName) {
+  const profile = document.getElementById("publicTrainingProfile");
+  const results = document.getElementById("publicSearchResults");
+  const hint = document.getElementById("publicSearchHint");
+
+  publicLookupSelectedName = String(fullName || "").trim();
+
+  if (!publicLookupSelectedName) return;
+
+  hint.innerText = "Đang tải hồ sơ đào tạo...";
+  results.innerHTML = "";
+
+  try {
+    const { data, error } = await supabaseClient.rpc(
+      "get_training_history_by_name",
+      { p_full_name: publicLookupSelectedName }
+    );
+
+    if (error) throw error;
+
+    publicLookupHistory = Array.isArray(data) ? data : [];
+
+    document.getElementById("lookupProfileName").innerText = publicLookupSelectedName;
+
+    const metas = [];
+    publicLookupHistory.forEach(course => {
+      const text = [course.student_job_title, course.student_department]
+        .filter(Boolean)
+        .join(" · ");
+      if (text && !metas.includes(text)) metas.push(text);
+    });
+
+    document.getElementById("lookupProfileMeta").innerText =
+      metas.length
+        ? "Thông tin ghi nhận theo các khóa: " + metas.join(" | ")
+        : "Thông tin chức danh/Ban được hiển thị theo từng khóa học.";
+
+    renderPublicLookupProfile();
+
+    profile.style.display = "block";
+    document.querySelector(".lookup-hero").style.display = "none";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+  } catch (error) {
+    console.error(error);
+    hint.innerText = "Không thể tải hồ sơ đào tạo.";
+    results.innerHTML = `<div class="lookup-empty">Có lỗi khi tải dữ liệu. Vui lòng thử lại.</div>`;
+  }
+}
+
+function getPublicCourseDates(course) {
+  const actual = Array.isArray(course.actual_training_dates)
+    ? course.actual_training_dates.filter(Boolean)
+    : [];
+
+  if (actual.length) {
+    return [...new Set(actual.map(String))].sort();
+  }
+
+  if (!course.start_date || !course.end_date) return [];
+
+  const dates = [];
+  const start = new Date(course.start_date + "T00:00:00");
+  const end = new Date(course.end_date + "T00:00:00");
+
+  if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return [];
+
+  for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    dates.push(`${y}-${m}-${day}`);
+  }
+
+  return dates;
+}
+
+function formatPublicDate(value) {
+  if (!value) return "—";
+  const parts = String(value).slice(0, 10).split("-");
+  if (parts.length !== 3) return escapeHTML(value);
+  return `${parts[2]}/${parts[1]}/${parts[0]}`;
+}
+
+function getPublicDateMap() {
+  const map = new Map();
+
+  publicLookupHistory.forEach(course => {
+    if (course.status === "Hủy") return;
+
+    getPublicCourseDates(course).forEach(date => {
+      if (!map.has(date)) map.set(date, []);
+      map.get(date).push(course);
+    });
+  });
+
+  return map;
+}
+
+function renderPublicLookupProfile() {
+  const history = publicLookupHistory;
+  const dateMap = getPublicDateMap();
+  const uniqueDates = [...dateMap.keys()];
+  const conflictDates = [...dateMap.entries()].filter(([, list]) => list.length > 1);
+
+  const completed = history.filter(c => c.status === "Hoàn thành").length;
+  const active = history.filter(c => c.status !== "Hoàn thành" && c.status !== "Hủy").length;
+
+  document.getElementById("lookupStats").innerHTML = `
+    <div class="lookup-stat">
+      <div class="lookup-stat-value">${history.length}</div>
+      <div class="lookup-stat-label">Tổng số khóa</div>
+    </div>
+    <div class="lookup-stat">
+      <div class="lookup-stat-value">${completed}</div>
+      <div class="lookup-stat-label">Khóa đã hoàn thành</div>
+    </div>
+    <div class="lookup-stat">
+      <div class="lookup-stat-value">${active}</div>
+      <div class="lookup-stat-label">Đang / dự kiến tham gia</div>
+    </div>
+    <div class="lookup-stat">
+      <div class="lookup-stat-value">${uniqueDates.length}</div>
+      <div class="lookup-stat-label">Ngày đào tạo</div>
+    </div>
+  `;
+
+  document.getElementById("lookupConflictBanner").innerHTML =
+    conflictDates.length
+      ? `<div class="lookup-conflict">⚠ Phát hiện ${conflictDates.length} ngày có từ 2 khóa đào tạo trở lên. Xem tab “Lịch của tôi” để kiểm tra chi tiết.</div>`
+      : `<div class="lookup-no-conflict">✓ Chưa phát hiện khóa đào tạo nào bị trùng ngày trong hồ sơ hiện tại.</div>`;
+
+  renderPublicHistory();
+  renderPublicSchedule();
+}
+
+function renderPublicHistory() {
+  const box = document.getElementById("lookupTabHistory");
+
+  if (!publicLookupHistory.length) {
+    box.innerHTML = `<div class="lookup-empty">Chưa có khóa đào tạo nào được ghi nhận cho họ tên này.</div>`;
+    return;
+  }
+
+  box.innerHTML = publicLookupHistory.map((course, index) => {
+    const dates = getPublicCourseDates(course);
+    const studentList = Array.isArray(course.student_list) ? course.student_list : [];
+    const courseId = Number(course.course_id);
+
+    return `
+      <article class="lookup-course-card">
+        <div class="lookup-course-top">
+          <div>
+            <div class="lookup-course-code">${escapeHTML(course.course_code || "Chưa có mã")}</div>
+            <div class="lookup-course-name">${escapeHTML(course.course_name || "—")}</div>
+          </div>
+          <div class="lookup-status">${escapeHTML(course.status || "—")}</div>
+        </div>
+
+        <div class="lookup-course-grid">
+          <div class="lookup-course-field">
+            <span>Thời gian</span>
+            <strong>${formatPublicDate(course.start_date)}${course.end_date && course.end_date !== course.start_date ? " – " + formatPublicDate(course.end_date) : ""}</strong>
+          </div>
+          <div class="lookup-course-field">
+            <span>Ngày học thực tế</span>
+            <strong>${dates.length ? dates.map(formatPublicDate).join("; ") : "—"}</strong>
+          </div>
+          <div class="lookup-course-field">
+            <span>Thông tin của bạn tại khóa</span>
+            <strong>${escapeHTML(course.student_job_title || "—")} · ${escapeHTML(course.student_department || "—")}</strong>
+          </div>
+          <div class="lookup-course-field">
+            <span>Địa điểm</span>
+            <strong>${escapeHTML(course.location || "—")}</strong>
+          </div>
+          <div class="lookup-course-field">
+            <span>Giảng viên</span>
+            <strong>${escapeHTML(course.lecturer || "—")}</strong>
+          </div>
+          <div class="lookup-course-field">
+            <span>Cơ sở đào tạo</span>
+            <strong>${escapeHTML(course.provider || "—")}</strong>
+          </div>
+          <div class="lookup-course-field">
+            <span>Nhân sự thực hiện</span>
+            <strong>${escapeHTML(course.person_in_charge || "—")}</strong>
+          </div>
+          <div class="lookup-course-field">
+            <span>Số học viên</span>
+            <strong>${Number(course.student_count || studentList.length || 0)}</strong>
+          </div>
+        </div>
+
+        <div class="lookup-course-actions">
+          <button type="button" onclick="openPublicStudentList(${index})">
+            👥 Xem danh sách học viên
+          </button>
+        </div>
+      </article>
+    `;
+  }).join("");
+}
+
+function renderPublicSchedule() {
+  const box = document.getElementById("lookupTabSchedule");
+  const dateMap = getPublicDateMap();
+  const dates = [...dateMap.keys()].sort();
+
+  if (!dates.length) {
+    box.innerHTML = `<div class="lookup-empty">Chưa có ngày đào tạo để hiển thị.</div>`;
+    return;
+  }
+
+  box.innerHTML = `
+    <div class="lookup-day-list">
+      ${dates.map(date => {
+        const list = dateMap.get(date) || [];
+        return `
+          <div class="lookup-day ${list.length > 1 ? "lookup-day-conflict" : ""}">
+            <div class="lookup-day-date">
+              ${list.length > 1 ? "⚠ " : ""}${formatPublicDate(date)}
+            </div>
+            <div>
+              ${list.map(course => `
+                <div class="lookup-day-course">${escapeHTML(course.course_name || "—")}</div>
+              `).join("")}
+            </div>
+          </div>
+        `;
+      }).join("")}
+    </div>
+  `;
+}
+
+function switchLookupTab(tab) {
+  ["history", "schedule", "check"].forEach(name => {
+    const panel = document.getElementById(
+      "lookupTab" + name.charAt(0).toUpperCase() + name.slice(1)
+    );
+    if (panel) panel.style.display = name === tab ? "block" : "none";
+  });
+
+  document.querySelectorAll(".lookup-tab").forEach(button => {
+    button.classList.toggle("active", button.dataset.lookupTab === tab);
+  });
+}
+
+function openPublicStudentList(courseIndex) {
+  const course = publicLookupHistory[courseIndex];
+  if (!course) return;
+
+  const students = Array.isArray(course.student_list) ? course.student_list : [];
+  const body = document.getElementById("publicStudentListModalBody");
+
+  body.innerHTML = `
+    <div style="margin-bottom:12px">
+      <strong>${escapeHTML(course.course_name || "—")}</strong><br>
+      <span style="color:#718077;font-size:11px">${escapeHTML(course.course_code || "")} · ${students.length} học viên</span>
+    </div>
+
+    <div class="student-detail-table-wrap">
+      <table class="student-detail-table">
+        <thead>
+          <tr>
+            <th>STT</th>
+            <th>Họ và tên</th>
+            <th>Chức danh</th>
+            <th>Ban/Đơn vị</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${students.map((student, index) => `
+            <tr>
+              <td>${index + 1}</td>
+              <td>${escapeHTML(student.full_name || "—")}</td>
+              <td>${escapeHTML(student.job_title || "—")}</td>
+              <td>${escapeHTML(student.department || "—")}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+
+  document.getElementById("publicStudentListModal").classList.add("show");
+}
+
+function parsePublicProposedDates(text) {
+  const parts = String(text || "")
+    .split(/[;\n,]+/)
+    .map(item => item.trim())
+    .filter(Boolean);
+
+  const dates = [];
+  const invalid = [];
+
+  parts.forEach(value => {
+    let iso = "";
+
+    if (/^\d{2}\/\d{2}\/\d{4}$/.test(value)) {
+      const [d, m, y] = value.split("/");
+      iso = `${y}-${m}-${d}`;
+    } else if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      iso = value;
+    }
+
+    if (!iso) {
+      invalid.push(value);
+      return;
+    }
+
+    const dt = new Date(iso + "T00:00:00");
+    if (Number.isNaN(dt.getTime())) invalid.push(value);
+    else dates.push(iso);
+  });
+
+  return {
+    dates: [...new Set(dates)].sort(),
+    invalid
+  };
+}
+
+function checkPublicProposedDates() {
+  const text = document.getElementById("lookupProposedDates").value;
+  const result = document.getElementById("lookupProposedResult");
+  const parsed = parsePublicProposedDates(text);
+
+  if (!parsed.dates.length) {
+    result.innerHTML = `<div class="lookup-check-result">Vui lòng nhập ít nhất một ngày theo định dạng dd/mm/yyyy.</div>`;
+    return;
+  }
+
+  const dateMap = getPublicDateMap();
+
+  result.innerHTML = `
+    <div class="lookup-check-result">
+      ${parsed.invalid.length ? `<div>⚠ Bỏ qua giá trị chưa đúng định dạng: ${escapeHTML(parsed.invalid.join("; "))}</div>` : ""}
+      ${parsed.dates.map(date => {
+        const hits = dateMap.get(date) || [];
+        return hits.length
+          ? `<div class="lookup-check-hit"><strong>⚠ ${formatPublicDate(date)}</strong><br>${hits.map(c => escapeHTML(c.course_name || "—")).join("<br>")}</div>`
+          : `<div class="lookup-check-free"><strong>✓ ${formatPublicDate(date)}</strong> · Không có lịch đào tạo.</div>`;
+      }).join("")}
+    </div>
+  `;
+}
 
 /* =====================================================
    HELPERS
