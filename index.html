@@ -4053,6 +4053,37 @@ body.demo-mode #navAdmin {
   background:#f8fbf9;
 }
 
+
+/* PUBLIC LOOKUP — scrollable training history */
+.lookup-history-scroll{
+  max-height:720px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  padding:8px 8px 8px 0;
+  scrollbar-gutter:stable;
+  overscroll-behavior:contain;
+}
+.lookup-history-scroll::-webkit-scrollbar{
+  width:10px;
+}
+.lookup-history-scroll::-webkit-scrollbar-track{
+  background:#eef5f1;
+  border-radius:999px;
+}
+.lookup-history-scroll::-webkit-scrollbar-thumb{
+  background:#9eb9aa;
+  border-radius:999px;
+  border:2px solid #eef5f1;
+}
+.lookup-history-scroll::-webkit-scrollbar-thumb:hover{
+  background:#789b87;
+}
+@media (max-width: 768px){
+  .lookup-history-scroll{
+    max-height:640px;
+    padding-right:4px;
+  }
+}
 </style>
 </head>
 
@@ -6231,7 +6262,7 @@ function renderPublicHistory() {
     return;
   }
 
-  box.innerHTML = publicLookupHistory.map((course, index) => {
+  const historyCards = publicLookupHistory.map((course, index) => {
     const dates = getPublicCourseDates(course);
     const studentList = Array.isArray(course.student_list) ? course.student_list : [];
     const courseId = Number(course.course_id);
@@ -6289,6 +6320,8 @@ function renderPublicHistory() {
       </article>
     `;
   }).join("");
+
+  box.innerHTML = `<div class="lookup-history-scroll">${historyCards}</div>`;
 }
 
 function renderPublicSchedule() {
