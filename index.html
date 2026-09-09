@@ -3107,6 +3107,49 @@ function parsePastedStudents(text) {
 }
 
 
+
+function toggleInlinePasteStudents() {
+  const panel=document.getElementById("inlinePasteStudents");
+  const textarea=document.getElementById("inlinePasteStudentsText");
+  if(!panel||!textarea)return;
+  if(panel.style.display!=="none"){panel.style.display="none";return;}
+  panel.style.display="block";
+  setTimeout(function(){textarea.focus();},50);
+}
+
+function cancelInlinePasteStudents() {
+  const panel=document.getElementById("inlinePasteStudents");
+  const textarea=document.getElementById("inlinePasteStudentsText");
+  const preview=document.getElementById("inlinePasteStudentPreview");
+  if(textarea)textarea.value="";
+  if(preview)preview.innerText="Chưa có dữ liệu được dán.";
+  if(panel)panel.style.display="none";
+}
+
+function updateInlinePastePreview() {
+  const textarea=document.getElementById("inlinePasteStudentsText");
+  const preview=document.getElementById("inlinePasteStudentPreview");
+  if(!textarea||!preview)return;
+  const parsed=parsePastedStudents(textarea.value);
+  preview.innerText=parsed.length
+    ?"Đã nhận diện "+parsed.length+" học viên. Bấm “Đưa vào danh sách” để kiểm tra trước khi lưu khóa."
+    :"Chưa nhận diện được học viên.";
+}
+
+function confirmInlinePasteStudents() {
+  const textarea=document.getElementById("inlinePasteStudentsText");
+  if(!textarea)return;
+  const parsed=parsePastedStudents(textarea.value);
+  if(!parsed.length){
+    alert("Chưa đọc được học viên nào. Hãy copy các cột Họ và tên, Chức danh, Ban/Đơn vị từ Excel rồi Ctrl+V vào ô.");
+    return;
+  }
+  const result=mergeDirectStudents(parsed);
+  cancelInlinePasteStudents();
+  alert("Đã đưa "+result.added+" học viên vào danh sách."+
+    (result.skipped?" Bỏ qua "+result.skipped+" học viên trùng tên.":""));
+}
+
 function openPasteStudentsModal() {
 
   const overlay =
@@ -3681,6 +3724,19 @@ document.addEventListener(
   .student-editor-actions .btn-add-student {
     width: 100%;
   }
+}
+
+
+/* INLINE PASTE FROM EXCEL */
+.inline-paste-students{margin:12px 0 14px;padding:14px;border:1px solid #cfe2d6;border-radius:11px;background:#f7fbf8}
+.inline-paste-title{margin-bottom:7px;color:#075437;font-size:13px;font-weight:800}
+.inline-paste-students .paste-students-textarea{width:100%;min-height:150px;margin-top:10px;box-sizing:border-box;background:#fff}
+.inline-paste-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+@media(max-width:900px){
+.inline-paste-students{padding:12px}
+.inline-paste-actions{display:grid;grid-template-columns:1fr 1fr}
+.inline-paste-actions button{width:100%}
+.inline-paste-students .paste-students-textarea{font-size:16px}
 }
 
 </style>
@@ -4322,7 +4378,7 @@ document.addEventListener(
             <button
               type="button"
               class="btn-add-student"
-              onclick="openPasteStudentsModal()"
+              onclick="toggleInlinePasteStudents()"
             >
               📋 Dán từ Excel
             </button>
@@ -4342,6 +4398,24 @@ document.addEventListener(
               style="display:none;"
               onchange="importDirectStudentsFromExcel(this.files[0]); this.value='';"
             >
+          </div>
+        </div>
+
+        <div class="inline-paste-students" id="inlinePasteStudents" style="display:none;">
+          <div class="inline-paste-title">📋 Dán danh sách từ Excel</div>
+          <div class="hint">
+            Trong Excel, copy các cột theo thứ tự <strong>Họ và tên | Chức danh | Ban/Đơn vị</strong>
+            rồi Ctrl+V vào ô dưới đây. Có thể copy cả dòng tiêu đề.
+          </div>
+          <textarea id="inlinePasteStudentsText" class="paste-students-textarea"
+            placeholder="Bấm vào đây rồi nhấn Ctrl+V"
+            oninput="updateInlinePastePreview()"></textarea>
+          <div class="paste-student-preview" id="inlinePasteStudentPreview">
+            Chưa có dữ liệu được dán.
+          </div>
+          <div class="inline-paste-actions">
+            <button type="button" class="btn-secondary" onclick="cancelInlinePasteStudents()">Hủy</button>
+            <button type="button" class="btn-primary" onclick="confirmInlinePasteStudents()">Đưa vào danh sách</button>
           </div>
         </div>
 
