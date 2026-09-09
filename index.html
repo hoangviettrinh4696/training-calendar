@@ -3232,6 +3232,50 @@ body.demo-mode #navAdmin {
   margin:0
 }
 
+
+/* =====================================================
+   COMPACT STUDENT LIST — COURSE MANAGEMENT
+===================================================== */
+.student-list-compact{
+  display:grid;
+  gap:3px;
+  min-width:145px;
+  max-width:210px;
+}
+.student-preview-name{
+  overflow:hidden;
+  color:#30483b;
+  font-size:11px;
+  line-height:1.35;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.student-more-button{
+  width:fit-content;
+  margin-top:3px;
+  padding:2px 0;
+  border:0;
+  background:transparent;
+  color:#087747;
+  font-size:10px;
+  font-weight:800;
+  text-align:left;
+  cursor:pointer;
+}
+.student-more-button:hover{
+  color:#055b36;
+  text-decoration:underline;
+}
+.student-list-empty{
+  color:#8a9890;
+  font-size:11px;
+}
+@media(max-width:900px){
+  .student-list-compact{max-width:100%}
+  .student-preview-name{font-size:12px}
+  .student-more-button{font-size:11px}
+}
+
 </style>
 </head>
 
@@ -8931,6 +8975,68 @@ function clearFilters() {
    RENDER
 ===================================================== */
 
+
+function renderCompactStudentList(
+  course,
+  visibleCount = 3
+) {
+
+  const students =
+    getStudentArray(
+      course.students
+    );
+
+  if (!students.length) {
+    return `<span class="student-list-empty">—</span>`;
+  }
+
+  const visible =
+    students.slice(
+      0,
+      visibleCount
+    );
+
+  const remaining =
+    students.length -
+    visible.length;
+
+  return `
+    <div class="student-list-compact">
+
+      ${visible
+        .map(name =>
+          `<div class="student-preview-name">${escapeHTML(name)}</div>`
+        )
+        .join("")}
+
+      ${
+        remaining > 0
+          ? `
+            <button
+              type="button"
+              class="student-more-button"
+              onclick="openStudentDetailModal(${course.id})"
+            >
+              + ${remaining} học viên khác
+            </button>
+          `
+          : `
+            <button
+              type="button"
+              class="student-more-button"
+              onclick="openStudentDetailModal(${course.id})"
+            >
+              Xem chi tiết
+            </button>
+          `
+      }
+
+    </div>
+  `;
+
+}
+
+
 function renderCourses() {
 
   updatePersonFilter();
@@ -9267,27 +9373,7 @@ function renderCourses() {
 
 
         <td class="student-list">
-
-          ${
-            students
-              .map(escapeHTML)
-              .join("<br>")
-          }
-
-          ${
-            students.length
-              ? `
-                <br>
-                <button
-                  class="btn-student-detail"
-                  onclick="openStudentDetailModal(${course.id})"
-                >
-                  👥 Xem chi tiết học viên
-                </button>
-              `
-              : ""
-          }
-
+          ${renderCompactStudentList(course, 3)}
         </td>
 
 
@@ -9670,7 +9756,7 @@ function renderMobileCourseCards(filtered, conflictIndexes, studentConflictIndex
           </div>
           <div class="wide">
             <span>Học viên (${students.length})</span>
-            <strong>${students.length ? students.map(escapeHTML).join(", ") : "—"}</strong>
+            ${renderCompactStudentList(course, 3)}
           </div>
         </div>
 
