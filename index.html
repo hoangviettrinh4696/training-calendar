@@ -951,9 +951,20 @@ button {
 ========================= */
 
 .table-wrapper {
-  overflow-x: auto;
+  overflow: auto;
+  max-height: min(640px, calc(100vh - 270px));
   border: 1px solid #dce7e0;
   border-radius: 8px;
+  scrollbar-gutter: stable;
+}
+
+/* Giữ tiêu đề cột luôn nhìn thấy khi cuộn dọc danh sách khóa */
+.table-wrapper thead th {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: #087043;
+  box-shadow: 0 1px 0 rgba(255,255,255,.16), 0 1px 3px rgba(0,0,0,.08);
 }
 
 table {
