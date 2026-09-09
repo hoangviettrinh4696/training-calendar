@@ -5854,13 +5854,17 @@ async function searchPublicStudentsNow() {
 
       const key = normalizeText(fullName);
       if (!grouped.has(key)) {
-        grouped.set(key, { fullName, variants: [] });
+        grouped.set(key, { fullName, nameVariants: [], variants: [] });
+      }
+
+      const person = grouped.get(key);
+      if (!person.nameVariants.some(name => name === fullName)) {
+        person.nameVariants.push(fullName);
       }
 
       const jobTitle = String(row.job_title || "").trim();
       const department = String(row.department || "").trim();
       const variantKey = normalizeText(jobTitle) + "|" + normalizeText(department);
-      const person = grouped.get(key);
 
       if (!person.variants.some(item => item.key === variantKey)) {
         person.variants.push({ key: variantKey, jobTitle, department });
@@ -5877,6 +5881,11 @@ async function searchPublicStudentsNow() {
       return `
         <div class="lookup-person-select-card">
           <div class="lookup-person-name">${escapeHTML(person.fullName)}</div>
+          ${person.nameVariants.length > 1 ? `
+            <div class="lookup-person-select-help" style="margin-top:4px;">
+              Hệ thống nhận diện cùng tên từ ${person.nameVariants.length} cách ghi trong dữ liệu.
+            </div>
+          ` : ""}
           <div class="lookup-person-select-help">
             Chọn một hoặc nhiều thông tin đúng với bạn:
           </div>
