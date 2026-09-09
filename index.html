@@ -3662,6 +3662,83 @@ body.demo-mode #navAdmin {
   color:#267a49;
 }
 
+
+/* PUBLIC LOOKUP — multi-select identity variants */
+.lookup-person-select-card{
+  margin-top:12px;
+  padding:16px 18px;
+  border:1px solid #d6e5dc;
+  border-radius:14px;
+  background:#fbfdfc;
+}
+.lookup-person-select-help{
+  margin-top:5px;
+  color:#718078;
+  font-size:12px;
+}
+.lookup-variant-list{
+  margin-top:10px;
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+.lookup-variant-option{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  border:1px solid #dce8e1;
+  border-radius:10px;
+  background:#fff;
+  cursor:pointer;
+}
+.lookup-variant-option:hover{
+  border-color:#8fc4a5;
+  background:#f6fbf8;
+}
+.lookup-variant-checkbox{
+  width:18px;
+  height:18px;
+  accent-color:#267a49;
+  flex:0 0 auto;
+}
+.lookup-variant-text{
+  color:#42564b;
+  font-size:13px;
+  line-height:1.4;
+}
+.lookup-open-selected{
+  margin-top:12px;
+  padding:10px 15px;
+  border:0;
+  border-radius:9px;
+  background:#267a49;
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+}
+.lookup-open-selected:disabled{
+  background:#c9d5ce;
+  cursor:not-allowed;
+}
+.lookup-selected-count{
+  display:inline-block;
+  margin-left:10px;
+  color:#718078;
+  font-size:11px;
+}
+@media(max-width:700px){
+  .lookup-open-selected{
+    width:100%;
+  }
+  .lookup-selected-count{
+    display:block;
+    margin:7px 0 0;
+    text-align:center;
+  }
+}
+
 </style>
 </head>
 
@@ -5224,6 +5301,7 @@ let demoMode = false;
 
 let publicLookupHistory = [];
 let publicLookupSelectedName = "";
+let publicLookupSelectedVariants = [];
 let publicLookupSearchTimer = null;
 
 let editingCourseId = null;
@@ -5263,6 +5341,7 @@ function closePublicTrainingLookup() {
 function resetPublicTrainingLookup() {
   publicLookupHistory = [];
   publicLookupSelectedName = "";
+  publicLookupSelectedVariants = [];
 
   const search = document.getElementById("publicStudentSearch");
   const results = document.getElementById("publicSearchResults");
@@ -5317,9 +5396,8 @@ async function searchPublicStudentsNow() {
       return;
     }
 
-    // Gom các bản ghi có cùng họ tên thành MỘT người.
-    // Chức danh/Ban chỉ là thông tin lịch sử để người dùng nhận diện,
-    // không dùng để tách thành các hồ sơ khác nhau.
+    // Gom kết quả theo họ tên, nhưng để người dùng CHỌN NHIỀU
+    // tổ hợp Chức danh + Ban/Đơn vị trước khi tạo một hồ sơ chung.
     const grouped = new Map();
 
     rows.forEach(row => {
@@ -5328,59 +5406,69 @@ async function searchPublicStudentsNow() {
 
       const key = normalizeText(fullName);
       if (!grouped.has(key)) {
-        grouped.set(key, {
-          fullName,
-          metas: []
-        });
+        grouped.set(key, { fullName, variants: [] });
       }
 
       const jobTitle = String(row.job_title || "").trim();
       const department = String(row.department || "").trim();
-      const metaKey = normalizeText(jobTitle) + "|" + normalizeText(department);
-
+      const variantKey = normalizeText(jobTitle) + "|" + normalizeText(department);
       const person = grouped.get(key);
-      if (!person.metas.some(item => item.key === metaKey)) {
-        person.metas.push({
-          key: metaKey,
-          jobTitle,
-          department
-        });
+
+      if (!person.variants.some(item => item.key === variantKey)) {
+        person.variants.push({ key: variantKey, jobTitle, department });
       }
     });
 
     const people = Array.from(grouped.values());
 
     hint.innerText =
-      `Tìm thấy ${people.length} họ tên phù hợp. Các chức danh/Ban bên dưới là thông tin từng được ghi nhận để hỗ trợ nhận diện.`;
+      `Tìm thấy ${people.length} họ tên phù hợp. Tick một hoặc nhiều Chức danh/Ban thuộc về bạn, sau đó xem hồ sơ chung.`;
 
-    results.innerHTML = people.map(person => `
-      <button
-        type="button"
-        class="lookup-person-result lookup-person-group"
-        onclick='loadPublicTrainingHistory(${JSON.stringify(person.fullName)})'
-      >
-        <div class="lookup-person-group-main">
+    results.innerHTML = people.map((person, personIndex) => {
+      const encodedName = encodeURIComponent(person.fullName);
+      return `
+        <div class="lookup-person-select-card">
           <div class="lookup-person-name">${escapeHTML(person.fullName)}</div>
-          <div class="lookup-person-history-label">Thông tin đã ghi nhận:</div>
-          <div class="lookup-person-history">
-            ${person.metas.length
-              ? person.metas.map(item => `
-                  <div class="lookup-person-meta-line">
-                    <span class="lookup-person-meta-bullet">•</span>
-                    <span>
-                      ${escapeHTML(item.jobTitle || "Chưa có chức danh")}
-                      ·
-                      ${escapeHTML(item.department || "Chưa có Ban/Đơn vị")}
-                    </span>
-                  </div>
-                `).join("")
-              : `<div class="lookup-person-meta-line">Chưa có thông tin chức danh/Ban</div>`
-            }
+          <div class="lookup-person-select-help">
+            Chọn một hoặc nhiều thông tin đúng với bạn:
+          </div>
+
+          <div class="lookup-variant-list">
+            ${person.variants.map((item, variantIndex) => `
+              <label class="lookup-variant-option">
+                <input
+                  type="checkbox"
+                  class="lookup-variant-checkbox"
+                  data-person-index="${personIndex}"
+                  data-full-name="${encodedName}"
+                  data-job-title="${encodeURIComponent(item.jobTitle)}"
+                  data-department="${encodeURIComponent(item.department)}"
+                  onchange="updatePublicVariantSelection(${personIndex})"
+                >
+                <span class="lookup-variant-checkmark"></span>
+                <span class="lookup-variant-text">
+                  <strong>${escapeHTML(item.jobTitle || "Chưa có chức danh")}</strong>
+                  <span> · ${escapeHTML(item.department || "Chưa có Ban/Đơn vị")}</span>
+                </span>
+              </label>
+            `).join("")}
+          </div>
+
+          <button
+            type="button"
+            id="lookupVariantOpen-${personIndex}"
+            class="lookup-open-selected"
+            onclick="openSelectedPublicProfile(${personIndex})"
+            disabled
+          >
+            Xem hồ sơ đào tạo
+          </button>
+          <div id="lookupVariantCount-${personIndex}" class="lookup-selected-count">
+            Chưa chọn thông tin nào
           </div>
         </div>
-        <div class="lookup-person-arrow" title="Xem hồ sơ đào tạo">›</div>
-      </button>
-    `).join("");
+      `;
+    }).join("");
 
   } catch (error) {
     console.error(error);
@@ -5389,7 +5477,57 @@ async function searchPublicStudentsNow() {
   }
 }
 
-async function loadPublicTrainingHistory(fullName) {
+
+function getPublicSelectedVariants(personIndex) {
+  return Array.from(
+    document.querySelectorAll(
+      `.lookup-variant-checkbox[data-person-index="${personIndex}"]:checked`
+    )
+  ).map(box => ({
+    fullName: decodeURIComponent(box.dataset.fullName || ""),
+    jobTitle: decodeURIComponent(box.dataset.jobTitle || ""),
+    department: decodeURIComponent(box.dataset.department || "")
+  }));
+}
+
+function updatePublicVariantSelection(personIndex) {
+  const selected = getPublicSelectedVariants(personIndex);
+  const button = document.getElementById(`lookupVariantOpen-${personIndex}`);
+  const count = document.getElementById(`lookupVariantCount-${personIndex}`);
+
+  if (button) {
+    button.disabled = selected.length === 0;
+    button.innerText = selected.length
+      ? `Xem hồ sơ đào tạo (${selected.length} thông tin đã chọn)`
+      : "Xem hồ sơ đào tạo";
+  }
+
+  if (count) {
+    count.innerText = selected.length
+      ? `Đã chọn ${selected.length} Chức danh/Ban`
+      : "Chưa chọn thông tin nào";
+  }
+}
+
+function samePublicVariant(course, selected) {
+  const courseJob = normalizeText(course.student_job_title || "");
+  const courseDepartment = normalizeText(course.student_department || "");
+
+  return selected.some(item =>
+    courseJob === normalizeText(item.jobTitle || "") &&
+    courseDepartment === normalizeText(item.department || "")
+  );
+}
+
+async function openSelectedPublicProfile(personIndex) {
+  const selected = getPublicSelectedVariants(personIndex);
+  if (!selected.length) return;
+
+  publicLookupSelectedVariants = selected;
+  await loadPublicTrainingHistory(selected[0].fullName, selected);
+}
+
+async function loadPublicTrainingHistory(fullName, selectedVariants = []) {
   const profile = document.getElementById("publicTrainingProfile");
   const results = document.getElementById("publicSearchResults");
   const hint = document.getElementById("publicSearchHint");
@@ -5409,21 +5547,22 @@ async function loadPublicTrainingHistory(fullName) {
 
     if (error) throw error;
 
-    publicLookupHistory = Array.isArray(data) ? data : [];
+    const allNameHistory = Array.isArray(data) ? data : [];
+    publicLookupSelectedVariants = Array.isArray(selectedVariants) ? selectedVariants : [];
+
+    publicLookupHistory = publicLookupSelectedVariants.length
+      ? allNameHistory.filter(course => samePublicVariant(course, publicLookupSelectedVariants))
+      : allNameHistory;
 
     document.getElementById("lookupProfileName").innerText = publicLookupSelectedName;
 
-    const metas = [];
-    publicLookupHistory.forEach(course => {
-      const text = [course.student_job_title, course.student_department]
-        .filter(Boolean)
-        .join(" · ");
-      if (text && !metas.includes(text)) metas.push(text);
-    });
+    const metas = publicLookupSelectedVariants.map(item =>
+      [item.jobTitle, item.department].filter(Boolean).join(" · ")
+    ).filter(Boolean);
 
     document.getElementById("lookupProfileMeta").innerText =
       metas.length
-        ? "Thông tin ghi nhận theo các khóa: " + metas.join(" | ")
+        ? "Thông tin bạn đã chọn: " + metas.join(" | ")
         : "Thông tin chức danh/Ban được hiển thị theo từng khóa học.";
 
     renderPublicLookupProfile();
