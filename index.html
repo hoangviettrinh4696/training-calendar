@@ -3984,6 +3984,64 @@ body.demo-mode #navAdmin {
   background:#fff;
 }
 
+
+/* PUBLIC LOOKUP — compact quick schedule text */
+.lookup-check-grid #lookupQuickSchedule .lookup-day{
+  padding:9px 11px;
+  grid-template-columns:105px 1fr;
+}
+.lookup-check-grid #lookupQuickSchedule .lookup-day-date{
+  font-size:12px !important;
+  line-height:1.35;
+}
+.lookup-check-grid #lookupQuickSchedule .lookup-day-course{
+  font-size:12px !important;
+  line-height:1.35;
+  font-weight:600 !important;
+}
+.lookup-check-grid #lookupQuickSchedule .lookup-section-note{
+  font-size:11px !important;
+  padding:8px 10px;
+}
+
+/* PUBLIC LOOKUP — statistics table modal */
+.lookup-stat-table-wrap{
+  max-height:60vh;
+  overflow:auto;
+  border:1px solid #dce8e1;
+  border-radius:10px;
+}
+.lookup-stat-table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:720px;
+}
+.lookup-stat-table th{
+  position:sticky;
+  top:0;
+  z-index:2;
+  padding:10px 11px;
+  border-bottom:1px solid #dce8e1;
+  background:#f3f8f5;
+  color:#274b39;
+  font-size:11px;
+  text-align:left;
+}
+.lookup-stat-table td{
+  padding:10px 11px;
+  border-bottom:1px solid #edf2ef;
+  color:#374d41;
+  font-size:11px;
+  line-height:1.4;
+  vertical-align:top;
+}
+.lookup-stat-table tbody tr:last-child td{
+  border-bottom:0;
+}
+.lookup-stat-table tbody tr:hover{
+  background:#f8fbf9;
+}
+
 </style>
 </head>
 
@@ -4183,15 +4241,6 @@ body.demo-mode #navAdmin {
       </div>
 
       <div id="lookupStats" class="lookup-stats"></div>
-
-      <div id="lookupStatDetailPanel" class="lookup-stat-detail-panel" style="display:none">
-        <div class="lookup-stat-detail-head">
-          <strong id="lookupStatDetailTitle">Danh sách khóa</strong>
-          <button type="button" onclick="closeLookupStatDetail()">×</button>
-        </div>
-        <div id="lookupStatDetailBody" class="lookup-stat-detail-body"></div>
-      </div>
-
       <div id="lookupConflictBanner"></div>
 
       <div class="lookup-breadcrumb" id="lookupBreadcrumb">
@@ -4247,6 +4296,16 @@ body.demo-mode #navAdmin {
 
   </main>
 
+</div>
+
+<div id="publicStatModal" class="public-student-modal" aria-hidden="true">
+  <div class="modal-content student-detail-modal-content">
+    <div class="modal-header">
+      <div class="modal-title" id="publicStatModalTitle">Danh sách khóa đào tạo</div>
+      <button class="modal-close" onclick="closePublicStatModal()">×</button>
+    </div>
+    <div class="modal-body" id="publicStatModalBody"></div>
+  </div>
 </div>
 
 <div id="publicStudentListModal" class="public-student-modal" aria-hidden="true">
@@ -6058,45 +6117,64 @@ function getLookupStatTitle(key) {
 }
 
 function openLookupStatDetail(key) {
-  const panel = document.getElementById("lookupStatDetailPanel");
-  const title = document.getElementById("lookupStatDetailTitle");
-  const body = document.getElementById("lookupStatDetailBody");
+  const modal = document.getElementById("publicStatModal");
+  const title = document.getElementById("publicStatModalTitle");
+  const body = document.getElementById("publicStatModalBody");
   const courses = getLookupStatCourses(key);
 
-  if (!panel || !title || !body) return;
+  if (!modal || !title || !body) return;
 
   title.innerText = getLookupStatTitle(key);
 
   body.innerHTML = courses.length
-    ? courses.map(course => {
-        const start = formatPublicDate(course.start_date);
-        const end = course.end_date && course.end_date !== course.start_date
-          ? " – " + formatPublicDate(course.end_date)
-          : "";
+    ? `
+      <div class="lookup-stat-table-wrap">
+        <table class="lookup-stat-table">
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>Mã khóa</th>
+              <th>Tên khóa đào tạo</th>
+              <th>Thời gian</th>
+              <th>Tình trạng</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${courses.map((course, index) => {
+              const start = formatPublicDate(course.start_date);
+              const end = course.end_date && course.end_date !== course.start_date
+                ? " – " + formatPublicDate(course.end_date)
+                : "";
 
-        return `
-          <div class="lookup-stat-detail-item">
-            <div class="lookup-stat-detail-course">
-              ${escapeHTML(course.course_name || "—")}
-            </div>
-            <div class="lookup-stat-detail-date">
-              ${start}${end}
-            </div>
-          </div>
-        `;
-      }).join("")
-    : `<div class="lookup-stat-detail-empty">Không có khóa học trong nhóm này.</div>`;
+              return `
+                <tr>
+                  <td>${index + 1}</td>
+                  <td>${escapeHTML(course.course_code || "—")}</td>
+                  <td>${escapeHTML(course.course_name || "—")}</td>
+                  <td>${start}${end}</td>
+                  <td>${escapeHTML(course.status || "—")}</td>
+                </tr>
+              `;
+            }).join("")}
+          </tbody>
+        </table>
+      </div>
+    `
+    : `<div class="lookup-empty">Không có khóa học trong nhóm này.</div>`;
 
-  panel.style.display = "block";
-  panel.scrollIntoView({
-    behavior: "smooth",
-    block: "nearest"
-  });
+  modal.classList.add("show");
+  modal.setAttribute("aria-hidden", "false");
+}
+
+function closePublicStatModal() {
+  const modal = document.getElementById("publicStatModal");
+  if (!modal) return;
+  modal.classList.remove("show");
+  modal.setAttribute("aria-hidden", "true");
 }
 
 function closeLookupStatDetail() {
-  const panel = document.getElementById("lookupStatDetailPanel");
-  if (panel) panel.style.display = "none";
+  closePublicStatModal();
 }
 
 function renderPublicLookupProfile() {
