@@ -5854,7 +5854,11 @@ async function searchPublicStudentsNow() {
 
       const key = normalizeText(fullName);
       if (!grouped.has(key)) {
-        grouped.set(key, { fullName, nameVariants: [], variants: [] });
+        grouped.set(key, {
+          fullName: formatPublicDisplayName(fullName),
+          nameVariants: [],
+          variants: []
+        });
       }
 
       const person = grouped.get(key);
@@ -5874,20 +5878,15 @@ async function searchPublicStudentsNow() {
     const people = Array.from(grouped.values());
 
     hint.innerText =
-      `Tìm thấy ${people.length} họ tên phù hợp. Tick một hoặc nhiều Chức danh/Ban thuộc về bạn, sau đó xem hồ sơ chung.`;
+      `Tìm thấy ${people.length} người phù hợp. Chọn một hoặc nhiều thông tin công tác đúng với bạn để xem hồ sơ đào tạo.`;
 
     results.innerHTML = people.map((person, personIndex) => {
       const encodedName = encodeURIComponent(person.fullName);
       return `
         <div class="lookup-person-select-card">
           <div class="lookup-person-name">${escapeHTML(person.fullName)}</div>
-          ${person.nameVariants.length > 1 ? `
-            <div class="lookup-person-select-help" style="margin-top:4px;">
-              Hệ thống nhận diện cùng tên từ ${person.nameVariants.length} cách ghi trong dữ liệu.
-            </div>
-          ` : ""}
           <div class="lookup-person-select-help">
-            Chọn một hoặc nhiều thông tin đúng với bạn:
+            Có ${person.variants.length} thông tin công tác được tìm thấy
           </div>
 
           <div class="lookup-variant-list">
@@ -6500,6 +6499,14 @@ function normalizeName(value) {
 
   return normalizeText(value);
 
+}
+
+function formatPublicDisplayName(value) {
+  return normalizeText(value)
+    .split(" ")
+    .filter(Boolean)
+    .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
 }
 
 
