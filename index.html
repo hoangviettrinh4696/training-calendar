@@ -3001,636 +3001,6 @@ body.demo-mode #navAdmin {
 
 
 /* =====================================================
-   BULK STUDENT INPUT
-===================================================== */
-
-function isStudentHeaderRow(cells) {
-
-  const normalized =
-    cells.map(
-      cell =>
-        normalizeText(
-          String(cell || "")
-        )
-    );
-
-
-  return (
-    normalized.some(value =>
-      value === "ho va ten" ||
-      value === "ho ten" ||
-      value === "ten hoc vien"
-    ) &&
-    normalized.some(value =>
-      value.includes("chuc danh") ||
-      value.includes("ban") ||
-      value.includes("don vi")
-    )
-  );
-
-}
-
-
-function parsePastedStudents(text) {
-
-  const lines =
-    String(text || "")
-      .replace(/\r/g, "")
-      .split("\n")
-      .filter(line =>
-        line.trim()
-      );
-
-
-  const parsed = [];
-
-
-  lines.forEach(function(line, index) {
-
-    let cells =
-      line.split("\t");
-
-
-    /*
-      Tab is Excel's normal clipboard delimiter.
-      As a convenience, also accept semicolon when the user
-      manually types/pastes a simple delimited list.
-    */
-    if (
-      cells.length === 1 &&
-      line.includes(";")
-    ) {
-      cells =
-        line.split(";");
-    }
-
-
-    cells =
-      cells.map(cell =>
-        String(cell || "").trim()
-      );
-
-
-    if (
-      index === 0 &&
-      isStudentHeaderRow(cells)
-    ) {
-      return;
-    }
-
-
-    const fullName =
-      cells[0] || "";
-
-
-    if (!fullName) {
-      return;
-    }
-
-
-    parsed.push({
-      fullName:
-        fullName,
-
-      jobTitle:
-        cells[1] || "",
-
-      department:
-        cells.slice(2).join(" ").trim()
-    });
-
-  });
-
-
-  return parsed;
-
-}
-
-
-
-function toggleInlinePasteStudents() {
-  const panel=document.getElementById("inlinePasteStudents");
-  const textarea=document.getElementById("inlinePasteStudentsText");
-  if(!panel||!textarea)return;
-  if(panel.style.display!=="none"){panel.style.display="none";return;}
-  panel.style.display="block";
-  setTimeout(function(){textarea.focus();},50);
-}
-
-function cancelInlinePasteStudents() {
-  const panel=document.getElementById("inlinePasteStudents");
-  const textarea=document.getElementById("inlinePasteStudentsText");
-  const preview=document.getElementById("inlinePasteStudentPreview");
-  if(textarea)textarea.value="";
-  if(preview)preview.innerText="Chưa có dữ liệu được dán.";
-  if(panel)panel.style.display="none";
-}
-
-function updateInlinePastePreview() {
-
-  const textarea =
-    document.getElementById(
-      "inlinePasteStudentsText"
-    );
-
-  const preview =
-    document.getElementById(
-      "inlinePasteStudentPreview"
-    );
-
-  if (!textarea || !preview) {
-    return;
-  }
-
-  const parsed =
-    parsePastedStudents(
-      textarea.value || ""
-    );
-
-  preview.innerText =
-    parsed.length
-      ? "Đã nhận diện " +
-        parsed.length +
-        " học viên. Bấm “Đưa vào danh sách” để kiểm tra trước khi cập nhật khóa."
-      : "Chưa có dữ liệu được dán.";
-
-}
-
-function confirmInlinePasteStudents() {
-
-  const textarea =
-    document.getElementById(
-      "inlinePasteStudentsText"
-    );
-
-  if (!textarea) {
-    return;
-  }
-
-  const rawText =
-    textarea.value || "";
-
-  const parsed =
-    parsePastedStudents(
-      rawText
-    );
-
-  if (!parsed.length) {
-
-    alert(
-      "Chưa đọc được học viên nào. Hãy copy các cột Họ và tên, Chức danh, Ban/Đơn vị từ Excel rồi Ctrl+V vào ô."
-    );
-
-    return;
-  }
-
-  const replaceExisting =
-    document.getElementById(
-      "replaceDirectStudentsOnPaste"
-    );
-
-  if (
-    replaceExisting &&
-    replaceExisting.checked
-  ) {
-    directStudents = [];
-  }
-
-  const result =
-    mergeDirectStudents(
-      parsed
-    );
-
-  if (replaceExisting) {
-    replaceExisting.checked = false;
-  }
-
-  /*
-    Force a render here as well. This makes the flow independent
-    of whether the browser fired the input event after paste.
-  */
-  renderDirectStudentEditor();
-
-  textarea.value = "";
-
-  const preview =
-    document.getElementById(
-      "inlinePasteStudentPreview"
-    );
-
-  if (preview) {
-
-    preview.innerText =
-      "Đã đưa " +
-      result.added +
-      " học viên vào danh sách bên dưới." +
-      (
-        result.skipped
-          ? " Bỏ qua " +
-            result.skipped +
-            " học viên trùng tên."
-          : ""
-      );
-
-  }
-
-  alert(
-    "Đã đưa " +
-    result.added +
-    " học viên vào danh sách." +
-    (
-      result.skipped
-        ? " Bỏ qua " +
-          result.skipped +
-          " học viên trùng tên."
-        : ""
-    )
-  );
-
-}
-
-function openPasteStudentsModal() {
-
-  const overlay =
-    document.getElementById(
-      "pasteStudentsModalOverlay"
-    );
-
-  const textarea =
-    document.getElementById(
-      "pasteStudentsText"
-    );
-
-  const preview =
-    document.getElementById(
-      "pasteStudentPreview"
-    );
-
-
-  textarea.value = "";
-  preview.innerText =
-    "Chưa có dữ liệu được dán.";
-
-  overlay.style.display =
-    "flex";
-
-
-  setTimeout(function() {
-    textarea.focus();
-  }, 50);
-
-}
-
-
-function closePasteStudentsModal() {
-
-  document.getElementById(
-    "pasteStudentsModalOverlay"
-  ).style.display =
-    "none";
-
-}
-
-
-function mergeDirectStudents(newStudents) {
-
-  const existingKeys =
-    new Set(
-      directStudents
-        .map(student =>
-          normalizeText(
-            student.fullName || ""
-          )
-        )
-        .filter(Boolean)
-    );
-
-
-  let added = 0;
-  let skipped = 0;
-
-
-  newStudents.forEach(function(student) {
-
-    const normalized =
-      normalizeDirectStudent(
-        student
-      );
-
-
-    const key =
-      normalizeText(
-        normalized.fullName
-      );
-
-
-    if (!key) {
-      return;
-    }
-
-
-    if (
-      existingKeys.has(key)
-    ) {
-      skipped += 1;
-      return;
-    }
-
-
-    directStudents.push(
-      normalized
-    );
-
-    existingKeys.add(key);
-    added += 1;
-
-  });
-
-
-  renderDirectStudentEditor();
-
-
-  return {
-    added:
-      added,
-
-    skipped:
-      skipped
-  };
-
-}
-
-
-function confirmPasteStudents() {
-
-  const text =
-    document.getElementById(
-      "pasteStudentsText"
-    ).value;
-
-
-  const parsed =
-    parsePastedStudents(
-      text
-    );
-
-
-  if (!parsed.length) {
-
-    alert(
-      "Chưa đọc được học viên nào. Hãy copy các cột Họ và tên, Chức danh, Ban/Đơn vị từ Excel rồi dán lại."
-    );
-
-    return;
-
-  }
-
-
-  const result =
-    mergeDirectStudents(
-      parsed
-    );
-
-
-  closePasteStudentsModal();
-
-
-  alert(
-    "Đã đưa " +
-    result.added +
-    " học viên vào danh sách." +
-    (
-      result.skipped
-        ? " Bỏ qua " +
-          result.skipped +
-          " học viên trùng tên."
-        : ""
-    )
-  );
-
-}
-
-
-async function importDirectStudentsFromExcel(file) {
-
-  if (!file) {
-    return;
-  }
-
-
-  if (
-    typeof XLSX === "undefined"
-  ) {
-
-    alert(
-      "Không tải được công cụ đọc Excel. Vui lòng kiểm tra kết nối Internet."
-    );
-
-    return;
-
-  }
-
-
-  try {
-
-    const buffer =
-      await file.arrayBuffer();
-
-
-    const workbook =
-      XLSX.read(
-        buffer,
-        {
-          type: "array",
-          cellDates: false
-        }
-      );
-
-
-    if (!workbook.SheetNames.length) {
-      throw new Error(
-        "File Excel không có sheet dữ liệu."
-      );
-    }
-
-
-    const worksheet =
-      workbook.Sheets[
-        workbook.SheetNames[0]
-      ];
-
-
-    const rows =
-      XLSX.utils.sheet_to_json(
-        worksheet,
-        {
-          header: 1,
-          defval: "",
-          raw: false
-        }
-      );
-
-
-    const nonEmptyRows =
-      rows.filter(row =>
-        Array.isArray(row) &&
-        row.some(cell =>
-          String(cell || "").trim()
-        )
-      );
-
-
-    if (!nonEmptyRows.length) {
-
-      alert(
-        "Không tìm thấy dữ liệu học viên trong sheet đầu tiên."
-      );
-
-      return;
-
-    }
-
-
-    let startIndex = 0;
-
-
-    if (
-      isStudentHeaderRow(
-        nonEmptyRows[0]
-      )
-    ) {
-      startIndex = 1;
-    }
-
-
-    const parsed =
-      nonEmptyRows
-        .slice(startIndex)
-        .map(function(row) {
-
-          return {
-            fullName:
-              String(
-                row[0] || ""
-              ).trim(),
-
-            jobTitle:
-              String(
-                row[1] || ""
-              ).trim(),
-
-            department:
-              row
-                .slice(2)
-                .map(cell =>
-                  String(cell || "").trim()
-                )
-                .filter(Boolean)
-                .join(" ")
-          };
-
-        })
-        .filter(student =>
-          student.fullName
-        );
-
-
-    if (!parsed.length) {
-
-      alert(
-        "Không đọc được học viên nào. File nên có 3 cột theo thứ tự: Họ và tên | Chức danh | Ban/Đơn vị."
-      );
-
-      return;
-
-    }
-
-
-    const result =
-      mergeDirectStudents(
-        parsed
-      );
-
-
-    alert(
-      "Đã đọc " +
-      parsed.length +
-      " học viên từ Excel và đưa " +
-      result.added +
-      " học viên vào danh sách." +
-      (
-        result.skipped
-          ? " Bỏ qua " +
-            result.skipped +
-            " học viên trùng tên."
-          : ""
-      )
-    );
-
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-
-    alert(
-      "Không đọc được file Excel: " +
-      (
-        error.message ||
-        "Lỗi không xác định"
-      )
-    );
-
-  }
-
-}
-
-
-/*
-  Update paste preview while the modal is open.
-*/
-document.addEventListener(
-  "input",
-  function(event) {
-
-    if (
-      event.target &&
-      event.target.id ===
-        "pasteStudentsText"
-    ) {
-
-      const parsed =
-        parsePastedStudents(
-          event.target.value
-        );
-
-
-      const preview =
-        document.getElementById(
-          "pasteStudentPreview"
-        );
-
-
-      if (preview) {
-
-        preview.innerText =
-          parsed.length
-            ? "Đã nhận diện " +
-              parsed.length +
-              " học viên. Bấm “Đưa vào danh sách” để kiểm tra và chỉnh sửa trước khi lưu khóa."
-            : "Chưa nhận diện được học viên.";
-
-      }
-
-    }
-
-  }
-);
-
-
-/* =====================================================
    DIRECT STUDENT EDITOR
 ===================================================== */
 
@@ -6987,6 +6357,636 @@ async function migrateLocalCourses() {
 
 }
 
+
+
+/* =====================================================
+   BULK STUDENT INPUT — COPY/PASTE & EXCEL FILE
+===================================================== */
+
+function isStudentHeaderRow(cells) {
+
+  const normalized =
+    cells.map(
+      cell =>
+        normalizeText(
+          String(cell || "")
+        )
+    );
+
+
+  return (
+    normalized.some(value =>
+      value === "ho va ten" ||
+      value === "ho ten" ||
+      value === "ten hoc vien"
+    ) &&
+    normalized.some(value =>
+      value.includes("chuc danh") ||
+      value.includes("ban") ||
+      value.includes("don vi")
+    )
+  );
+
+}
+
+
+function parsePastedStudents(text) {
+
+  const lines =
+    String(text || "")
+      .replace(/\r/g, "")
+      .split("\n")
+      .filter(line =>
+        line.trim()
+      );
+
+
+  const parsed = [];
+
+
+  lines.forEach(function(line, index) {
+
+    let cells =
+      line.split("\t");
+
+
+    /*
+      Tab is Excel's normal clipboard delimiter.
+      As a convenience, also accept semicolon when the user
+      manually types/pastes a simple delimited list.
+    */
+    if (
+      cells.length === 1 &&
+      line.includes(";")
+    ) {
+      cells =
+        line.split(";");
+    }
+
+
+    cells =
+      cells.map(cell =>
+        String(cell || "").trim()
+      );
+
+
+    if (
+      index === 0 &&
+      isStudentHeaderRow(cells)
+    ) {
+      return;
+    }
+
+
+    const fullName =
+      cells[0] || "";
+
+
+    if (!fullName) {
+      return;
+    }
+
+
+    parsed.push({
+      fullName:
+        fullName,
+
+      jobTitle:
+        cells[1] || "",
+
+      department:
+        cells.slice(2).join(" ").trim()
+    });
+
+  });
+
+
+  return parsed;
+
+}
+
+
+
+function toggleInlinePasteStudents() {
+  const panel=document.getElementById("inlinePasteStudents");
+  const textarea=document.getElementById("inlinePasteStudentsText");
+  if(!panel||!textarea)return;
+  if(panel.style.display!=="none"){panel.style.display="none";return;}
+  panel.style.display="block";
+  setTimeout(function(){textarea.focus();},50);
+}
+
+function cancelInlinePasteStudents() {
+  const panel=document.getElementById("inlinePasteStudents");
+  const textarea=document.getElementById("inlinePasteStudentsText");
+  const preview=document.getElementById("inlinePasteStudentPreview");
+  if(textarea)textarea.value="";
+  if(preview)preview.innerText="Chưa có dữ liệu được dán.";
+  if(panel)panel.style.display="none";
+}
+
+function updateInlinePastePreview() {
+
+  const textarea =
+    document.getElementById(
+      "inlinePasteStudentsText"
+    );
+
+  const preview =
+    document.getElementById(
+      "inlinePasteStudentPreview"
+    );
+
+  if (!textarea || !preview) {
+    return;
+  }
+
+  const parsed =
+    parsePastedStudents(
+      textarea.value || ""
+    );
+
+  preview.innerText =
+    parsed.length
+      ? "Đã nhận diện " +
+        parsed.length +
+        " học viên. Bấm “Đưa vào danh sách” để kiểm tra trước khi cập nhật khóa."
+      : "Chưa có dữ liệu được dán.";
+
+}
+
+function confirmInlinePasteStudents() {
+
+  const textarea =
+    document.getElementById(
+      "inlinePasteStudentsText"
+    );
+
+  if (!textarea) {
+    return;
+  }
+
+  const rawText =
+    textarea.value || "";
+
+  const parsed =
+    parsePastedStudents(
+      rawText
+    );
+
+  if (!parsed.length) {
+
+    alert(
+      "Chưa đọc được học viên nào. Hãy copy các cột Họ và tên, Chức danh, Ban/Đơn vị từ Excel rồi Ctrl+V vào ô."
+    );
+
+    return;
+  }
+
+  const replaceExisting =
+    document.getElementById(
+      "replaceDirectStudentsOnPaste"
+    );
+
+  if (
+    replaceExisting &&
+    replaceExisting.checked
+  ) {
+    directStudents = [];
+  }
+
+  const result =
+    mergeDirectStudents(
+      parsed
+    );
+
+  if (replaceExisting) {
+    replaceExisting.checked = false;
+  }
+
+  /*
+    Force a render here as well. This makes the flow independent
+    of whether the browser fired the input event after paste.
+  */
+  renderDirectStudentEditor();
+
+  textarea.value = "";
+
+  const preview =
+    document.getElementById(
+      "inlinePasteStudentPreview"
+    );
+
+  if (preview) {
+
+    preview.innerText =
+      "Đã đưa " +
+      result.added +
+      " học viên vào danh sách bên dưới." +
+      (
+        result.skipped
+          ? " Bỏ qua " +
+            result.skipped +
+            " học viên trùng tên."
+          : ""
+      );
+
+  }
+
+  alert(
+    "Đã đưa " +
+    result.added +
+    " học viên vào danh sách." +
+    (
+      result.skipped
+        ? " Bỏ qua " +
+          result.skipped +
+          " học viên trùng tên."
+        : ""
+    )
+  );
+
+}
+
+function openPasteStudentsModal() {
+
+  const overlay =
+    document.getElementById(
+      "pasteStudentsModalOverlay"
+    );
+
+  const textarea =
+    document.getElementById(
+      "pasteStudentsText"
+    );
+
+  const preview =
+    document.getElementById(
+      "pasteStudentPreview"
+    );
+
+
+  textarea.value = "";
+  preview.innerText =
+    "Chưa có dữ liệu được dán.";
+
+  overlay.style.display =
+    "flex";
+
+
+  setTimeout(function() {
+    textarea.focus();
+  }, 50);
+
+}
+
+
+function closePasteStudentsModal() {
+
+  document.getElementById(
+    "pasteStudentsModalOverlay"
+  ).style.display =
+    "none";
+
+}
+
+
+function mergeDirectStudents(newStudents) {
+
+  const existingKeys =
+    new Set(
+      directStudents
+        .map(student =>
+          normalizeText(
+            student.fullName || ""
+          )
+        )
+        .filter(Boolean)
+    );
+
+
+  let added = 0;
+  let skipped = 0;
+
+
+  newStudents.forEach(function(student) {
+
+    const normalized =
+      normalizeDirectStudent(
+        student
+      );
+
+
+    const key =
+      normalizeText(
+        normalized.fullName
+      );
+
+
+    if (!key) {
+      return;
+    }
+
+
+    if (
+      existingKeys.has(key)
+    ) {
+      skipped += 1;
+      return;
+    }
+
+
+    directStudents.push(
+      normalized
+    );
+
+    existingKeys.add(key);
+    added += 1;
+
+  });
+
+
+  renderDirectStudentEditor();
+
+
+  return {
+    added:
+      added,
+
+    skipped:
+      skipped
+  };
+
+}
+
+
+function confirmPasteStudents() {
+
+  const text =
+    document.getElementById(
+      "pasteStudentsText"
+    ).value;
+
+
+  const parsed =
+    parsePastedStudents(
+      text
+    );
+
+
+  if (!parsed.length) {
+
+    alert(
+      "Chưa đọc được học viên nào. Hãy copy các cột Họ và tên, Chức danh, Ban/Đơn vị từ Excel rồi dán lại."
+    );
+
+    return;
+
+  }
+
+
+  const result =
+    mergeDirectStudents(
+      parsed
+    );
+
+
+  closePasteStudentsModal();
+
+
+  alert(
+    "Đã đưa " +
+    result.added +
+    " học viên vào danh sách." +
+    (
+      result.skipped
+        ? " Bỏ qua " +
+          result.skipped +
+          " học viên trùng tên."
+        : ""
+    )
+  );
+
+}
+
+
+async function importDirectStudentsFromExcel(file) {
+
+  if (!file) {
+    return;
+  }
+
+
+  if (
+    typeof XLSX === "undefined"
+  ) {
+
+    alert(
+      "Không tải được công cụ đọc Excel. Vui lòng kiểm tra kết nối Internet."
+    );
+
+    return;
+
+  }
+
+
+  try {
+
+    const buffer =
+      await file.arrayBuffer();
+
+
+    const workbook =
+      XLSX.read(
+        buffer,
+        {
+          type: "array",
+          cellDates: false
+        }
+      );
+
+
+    if (!workbook.SheetNames.length) {
+      throw new Error(
+        "File Excel không có sheet dữ liệu."
+      );
+    }
+
+
+    const worksheet =
+      workbook.Sheets[
+        workbook.SheetNames[0]
+      ];
+
+
+    const rows =
+      XLSX.utils.sheet_to_json(
+        worksheet,
+        {
+          header: 1,
+          defval: "",
+          raw: false
+        }
+      );
+
+
+    const nonEmptyRows =
+      rows.filter(row =>
+        Array.isArray(row) &&
+        row.some(cell =>
+          String(cell || "").trim()
+        )
+      );
+
+
+    if (!nonEmptyRows.length) {
+
+      alert(
+        "Không tìm thấy dữ liệu học viên trong sheet đầu tiên."
+      );
+
+      return;
+
+    }
+
+
+    let startIndex = 0;
+
+
+    if (
+      isStudentHeaderRow(
+        nonEmptyRows[0]
+      )
+    ) {
+      startIndex = 1;
+    }
+
+
+    const parsed =
+      nonEmptyRows
+        .slice(startIndex)
+        .map(function(row) {
+
+          return {
+            fullName:
+              String(
+                row[0] || ""
+              ).trim(),
+
+            jobTitle:
+              String(
+                row[1] || ""
+              ).trim(),
+
+            department:
+              row
+                .slice(2)
+                .map(cell =>
+                  String(cell || "").trim()
+                )
+                .filter(Boolean)
+                .join(" ")
+          };
+
+        })
+        .filter(student =>
+          student.fullName
+        );
+
+
+    if (!parsed.length) {
+
+      alert(
+        "Không đọc được học viên nào. File nên có 3 cột theo thứ tự: Họ và tên | Chức danh | Ban/Đơn vị."
+      );
+
+      return;
+
+    }
+
+
+    const result =
+      mergeDirectStudents(
+        parsed
+      );
+
+
+    alert(
+      "Đã đọc " +
+      parsed.length +
+      " học viên từ Excel và đưa " +
+      result.added +
+      " học viên vào danh sách." +
+      (
+        result.skipped
+          ? " Bỏ qua " +
+            result.skipped +
+            " học viên trùng tên."
+          : ""
+      )
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+
+    alert(
+      "Không đọc được file Excel: " +
+      (
+        error.message ||
+        "Lỗi không xác định"
+      )
+    );
+
+  }
+
+}
+
+
+/*
+  Update paste preview while the modal is open.
+*/
+document.addEventListener(
+  "input",
+  function(event) {
+
+    if (
+      event.target &&
+      event.target.id ===
+        "pasteStudentsText"
+    ) {
+
+      const parsed =
+        parsePastedStudents(
+          event.target.value
+        );
+
+
+      const preview =
+        document.getElementById(
+          "pasteStudentPreview"
+        );
+
+
+      if (preview) {
+
+        preview.innerText =
+          parsed.length
+            ? "Đã nhận diện " +
+              parsed.length +
+              " học viên. Bấm “Đưa vào danh sách” để kiểm tra và chỉnh sửa trước khi lưu khóa."
+            : "Chưa nhận diện được học viên.";
+
+      }
+
+    }
+
+  }
+);
 
 
 /* =====================================================
