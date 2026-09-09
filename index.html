@@ -3127,30 +3127,126 @@ function cancelInlinePasteStudents() {
 }
 
 function updateInlinePastePreview() {
-  const textarea=document.getElementById("inlinePasteStudentsText");
-  const preview=document.getElementById("inlinePasteStudentPreview");
-  if(!textarea||!preview)return;
-  const parsed=parsePastedStudents(textarea.value);
-  preview.innerText=parsed.length
-    ?"Đã nhận diện "+parsed.length+" học viên. Bấm “Đưa vào danh sách” để kiểm tra trước khi lưu khóa."
-    :"Chưa nhận diện được học viên.";
+
+  const textarea =
+    document.getElementById(
+      "inlinePasteStudentsText"
+    );
+
+  const preview =
+    document.getElementById(
+      "inlinePasteStudentPreview"
+    );
+
+  if (!textarea || !preview) {
+    return;
+  }
+
+  const parsed =
+    parsePastedStudents(
+      textarea.value || ""
+    );
+
+  preview.innerText =
+    parsed.length
+      ? "Đã nhận diện " +
+        parsed.length +
+        " học viên. Bấm “Đưa vào danh sách” để kiểm tra trước khi cập nhật khóa."
+      : "Chưa có dữ liệu được dán.";
+
 }
 
 function confirmInlinePasteStudents() {
-  const textarea=document.getElementById("inlinePasteStudentsText");
-  if(!textarea)return;
-  const parsed=parsePastedStudents(textarea.value);
-  if(!parsed.length){
-    alert("Chưa đọc được học viên nào. Hãy copy các cột Họ và tên, Chức danh, Ban/Đơn vị từ Excel rồi Ctrl+V vào ô.");
+
+  const textarea =
+    document.getElementById(
+      "inlinePasteStudentsText"
+    );
+
+  if (!textarea) {
     return;
   }
-  const result=mergeDirectStudents(parsed);
-  textarea.value="";
-  const preview=document.getElementById("inlinePasteStudentPreview");
-  if(preview)preview.innerText="Đã đưa dữ liệu vào danh sách. Bạn có thể dán tiếp nếu cần.";
 
-  alert("Đã đưa "+result.added+" học viên vào danh sách."+
-    (result.skipped?" Bỏ qua "+result.skipped+" học viên trùng tên.":""));
+  const rawText =
+    textarea.value || "";
+
+  const parsed =
+    parsePastedStudents(
+      rawText
+    );
+
+  if (!parsed.length) {
+
+    alert(
+      "Chưa đọc được học viên nào. Hãy copy các cột Họ và tên, Chức danh, Ban/Đơn vị từ Excel rồi Ctrl+V vào ô."
+    );
+
+    return;
+  }
+
+  const replaceExisting =
+    document.getElementById(
+      "replaceDirectStudentsOnPaste"
+    );
+
+  if (
+    replaceExisting &&
+    replaceExisting.checked
+  ) {
+    directStudents = [];
+  }
+
+  const result =
+    mergeDirectStudents(
+      parsed
+    );
+
+  if (replaceExisting) {
+    replaceExisting.checked = false;
+  }
+
+  /*
+    Force a render here as well. This makes the flow independent
+    of whether the browser fired the input event after paste.
+  */
+  renderDirectStudentEditor();
+
+  textarea.value = "";
+
+  const preview =
+    document.getElementById(
+      "inlinePasteStudentPreview"
+    );
+
+  if (preview) {
+
+    preview.innerText =
+      "Đã đưa " +
+      result.added +
+      " học viên vào danh sách bên dưới." +
+      (
+        result.skipped
+          ? " Bỏ qua " +
+            result.skipped +
+            " học viên trùng tên."
+          : ""
+      );
+
+  }
+
+  alert(
+    "Đã đưa " +
+    result.added +
+    " học viên vào danh sách." +
+    (
+      result.skipped
+        ? " Bỏ qua " +
+          result.skipped +
+          " học viên trùng tên."
+        : ""
+    )
+  );
+
 }
 
 function openPasteStudentsModal() {
@@ -3748,6 +3844,22 @@ document.addEventListener(
 @media(max-width:900px){
   .inline-paste-actions{display:block!important}
   .inline-paste-actions .btn-primary{width:100%!important}
+}
+
+
+.paste-replace-option{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:10px;
+  color:#4f6659;
+  font-size:11px;
+  cursor:pointer
+}
+.paste-replace-option input{
+  width:auto;
+  height:auto;
+  margin:0
 }
 
 </style>
@@ -4412,10 +4524,16 @@ document.addEventListener(
           </div>
           <textarea id="inlinePasteStudentsText" class="paste-students-textarea"
             placeholder="Click vào đây rồi nhấn Ctrl+V để dán bảng từ Excel"
-            oninput="updateInlinePastePreview()"></textarea>
+            oninput="updateInlinePastePreview()"
+            onpaste="setTimeout(updateInlinePastePreview, 0)"></textarea>
           <div class="paste-student-preview" id="inlinePasteStudentPreview">
             Chưa có dữ liệu được dán.
           </div>
+          <label class="paste-replace-option">
+            <input type="checkbox" id="replaceDirectStudentsOnPaste">
+            <span>Thay thế danh sách học viên hiện tại</span>
+          </label>
+
           <div class="inline-paste-actions">
             <button type="button" class="btn-primary" onclick="confirmInlinePasteStudents()">Đưa vào danh sách</button>
           </div>
