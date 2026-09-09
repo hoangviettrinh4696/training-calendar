@@ -3276,6 +3276,87 @@ body.demo-mode #navAdmin {
   .student-more-button{font-size:11px}
 }
 
+
+/* =====================================================
+   PAGE ROUTE / BACK / BREADCRUMB
+===================================================== */
+.page-route-bar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  margin:0 auto 12px;
+  padding:9px 14px;
+  max-width:1480px;
+  border:1px solid #dfe9e3;
+  border-radius:12px;
+  background:#ffffff;
+  box-shadow:0 2px 8px rgba(15,77,48,.05);
+}
+.route-back-button,
+.route-home-button{
+  border:0;
+  background:transparent;
+  color:#086b43;
+  font:inherit;
+  font-size:12px;
+  font-weight:800;
+  cursor:pointer;
+}
+.route-back-button{
+  padding:6px 9px;
+  border-radius:8px;
+  background:#edf7f1;
+}
+.route-back-button:hover{
+  background:#dff1e7;
+}
+.route-back-button:disabled{
+  opacity:.45;
+  cursor:default;
+}
+.route-breadcrumb{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:7px;
+  min-width:0;
+  color:#64756c;
+  font-size:12px;
+}
+.route-home-button{
+  padding:0;
+}
+.route-separator{
+  color:#9aac9f;
+}
+.route-current{
+  max-width:360px;
+  overflow:hidden;
+  color:#314b3d;
+  font-weight:800;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+@media(max-width:900px){
+  .page-route-bar{
+    margin:8px 12px 10px;
+    padding:8px 10px;
+  }
+  .route-back-button{
+    flex:0 0 auto;
+    font-size:11px;
+  }
+  .route-breadcrumb{
+    flex:1 1 auto;
+    overflow:hidden;
+    font-size:11px;
+  }
+  .route-current{
+    max-width:180px;
+  }
+}
+
 </style>
 </head>
 
@@ -3551,6 +3632,30 @@ body.demo-mode #navAdmin {
   ></div>
 
   <div class="workspace">
+
+    <div class="page-route-bar" id="pageRouteBar">
+      <button
+        type="button"
+        class="route-back-button"
+        id="routeBackButton"
+        onclick="goBackPage()"
+        title="Quay lại màn hình trước"
+      >
+        ← Quay lại
+      </button>
+
+      <div class="route-breadcrumb">
+        <button
+          type="button"
+          class="route-home-button"
+          onclick="switchPage('overview')"
+        >
+          Tổng quan
+        </button>
+        <span class="route-separator" id="routeSeparator">›</span>
+        <span class="route-current" id="routeCurrent">Tổng quan</span>
+      </div>
+    </div>
 
     <main class="container page-container">
 
@@ -5200,7 +5305,12 @@ function startDemoMode() {
     "👀 Chế độ trải nghiệm · Toàn bộ dữ liệu đang hiển thị là dữ liệu minh họa"
   );
 
-  switchPage("overview");
+  switchPage(
+    getPageFromHash(),
+    {
+      replaceHistory: true
+    }
+  );
 }
 
 
@@ -9783,15 +9893,47 @@ function renderMobileCourseCards(filtered, conflictIndexes, studentConflictIndex
    PAGE NAVIGATION
 ===================================================== */
 
-function switchPage(page) {
+function switchPage(page, options = {}) {
 
   closeMobileMenu();
+
+  const validPages = [
+    "overview",
+    "calendar",
+    "courses",
+    "direct",
+    "import",
+    "admin"
+  ];
+
+  if (!validPages.includes(page)) {
+    page = "overview";
+  }
 
   if (
     page === "admin" &&
     !isAdmin()
   ) {
     page = "overview";
+  }
+
+  const targetHash =
+    "#" + page;
+
+  if (!options.fromHistory) {
+    if (options.replaceHistory) {
+      history.replaceState(
+        { page: page },
+        "",
+        targetHash
+      );
+    } else if (window.location.hash !== targetHash) {
+      history.pushState(
+        { page: page },
+        "",
+        targetHash
+      );
+    }
   }
 
   const pageMap = {
@@ -9879,6 +10021,51 @@ function switchPage(page) {
     pageTitles[page] ||
     pageTitles.overview;
 
+  const routeCurrent =
+    document.getElementById(
+      "routeCurrent"
+    );
+
+  const routeSeparator =
+    document.getElementById(
+      "routeSeparator"
+    );
+
+  const routeBackButton =
+    document.getElementById(
+      "routeBackButton"
+    );
+
+  if (routeCurrent) {
+    routeCurrent.innerText =
+      currentTitle[0];
+  }
+
+  if (routeSeparator) {
+    routeSeparator.style.display =
+      page === "overview"
+        ? "none"
+        : "inline";
+  }
+
+  const routeHomeButton =
+    document.querySelector(
+      ".route-home-button"
+    );
+
+  if (routeHomeButton) {
+    routeHomeButton.style.display =
+      page === "overview"
+        ? "none"
+        : "inline";
+  }
+
+  if (routeBackButton) {
+    routeBackButton.disabled =
+      page === "overview" &&
+      history.length <= 1;
+  }
+
   if (title) {
     title.innerText =
       currentTitle[0];
@@ -9955,6 +10142,68 @@ function switchPage(page) {
     behavior: "smooth"
   });
 }
+
+
+
+function getPageFromHash() {
+
+  const page =
+    String(
+      window.location.hash || ""
+    )
+      .replace(/^#/, "")
+      .trim()
+      .toLowerCase();
+
+  const validPages = [
+    "overview",
+    "calendar",
+    "courses",
+    "direct",
+    "import",
+    "admin"
+  ];
+
+  return validPages.includes(page)
+    ? page
+    : "overview";
+}
+
+
+function goBackPage() {
+
+  if (history.length > 1) {
+    history.back();
+    return;
+  }
+
+  switchPage(
+    "overview",
+    {
+      replaceHistory: true
+    }
+  );
+}
+
+
+window.addEventListener(
+  "popstate",
+  function() {
+
+    if (
+      document.getElementById("app")
+        .style.display !== "none"
+    ) {
+      switchPage(
+        getPageFromHash(),
+        {
+          fromHistory: true
+        }
+      );
+    }
+
+  }
+);
 
 
 /* =====================================================
