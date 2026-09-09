@@ -3554,6 +3554,114 @@ body.demo-mode #navAdmin {
   .public-student-modal .modal-body{max-height:calc(92vh - 64px)}
 }
 
+
+/* =====================================================
+   PUBLIC LOOKUP — VIETNAMESE FONT & CONTRAST FIX
+   Scoped only to the public lookup screen.
+===================================================== */
+.public-lookup-screen,
+.public-lookup-screen *,
+.public-student-modal,
+.public-student-modal *{
+  font-family:"Segoe UI",Tahoma,Arial,sans-serif !important;
+  font-variant-ligatures:none;
+  text-rendering:optimizeLegibility;
+}
+
+.public-lookup-screen button,
+.public-lookup-screen input,
+.public-lookup-screen textarea,
+.public-student-modal button{
+  font-family:"Segoe UI",Tahoma,Arial,sans-serif !important;
+}
+
+.public-lookup-title,
+.lookup-eyebrow,
+.lookup-person-name,
+.lookup-course-name,
+.lookup-day-course,
+.lookup-profile-head h2{
+  font-weight:700 !important;
+}
+
+.lookup-profile-head h2{
+  color:#ffffff !important;
+  opacity:1 !important;
+  text-shadow:none !important;
+}
+
+.lookup-profile-meta{
+  color:#eaf7f0 !important;
+}
+
+.lookup-back-search{
+  color:#ffffff !important;
+}
+
+.lookup-tab{
+  font-weight:600 !important;
+}
+
+.lookup-tab.active{
+  font-weight:700 !important;
+}
+
+.lookup-stat-value{
+  font-weight:700 !important;
+}
+
+.lookup-section-note{
+  margin-bottom:10px;
+  padding:10px 12px;
+  border:1px solid #dce8e1;
+  border-radius:10px;
+  background:#f8fbf9;
+  color:#607168;
+  font-size:12px;
+  line-height:1.5;
+}
+
+
+/* PUBLIC LOOKUP — group same-name records into one person */
+.lookup-person-group{
+  align-items:center;
+}
+.lookup-person-group-main{
+  min-width:0;
+  flex:1;
+  text-align:left;
+}
+.lookup-person-history-label{
+  margin-top:6px;
+  color:#718078;
+  font-size:11px;
+  font-weight:600;
+}
+.lookup-person-history{
+  margin-top:3px;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+.lookup-person-meta-line{
+  display:flex;
+  gap:7px;
+  align-items:flex-start;
+  color:#53665c;
+  font-size:12px;
+  line-height:1.4;
+}
+.lookup-person-meta-bullet{
+  color:#267a49;
+  font-weight:700;
+}
+.lookup-person-group .lookup-person-arrow{
+  flex:0 0 auto;
+  margin-left:14px;
+  font-size:24px;
+  color:#267a49;
+}
+
 </style>
 </head>
 
@@ -3760,7 +3868,7 @@ body.demo-mode #navAdmin {
           Hồ sơ đào tạo
         </button>
         <button class="lookup-tab" data-lookup-tab="schedule" onclick="switchLookupTab('schedule')">
-          Lịch của tôi
+          Lịch đào tạo theo ngày
         </button>
         <button class="lookup-tab" data-lookup-tab="check" onclick="switchLookupTab('check')">
           Kiểm tra trùng lịch
@@ -5209,23 +5317,68 @@ async function searchPublicStudentsNow() {
       return;
     }
 
-    hint.innerText = `Tìm thấy ${rows.length} kết quả. Chọn đúng họ tên; Chức danh/Ban chỉ dùng để hỗ trợ nhận diện.`;
+    // Gom các bản ghi có cùng họ tên thành MỘT người.
+    // Chức danh/Ban chỉ là thông tin lịch sử để người dùng nhận diện,
+    // không dùng để tách thành các hồ sơ khác nhau.
+    const grouped = new Map();
 
-    results.innerHTML = rows.map(row => `
+    rows.forEach(row => {
+      const fullName = String(row.full_name || "").trim();
+      if (!fullName) return;
+
+      const key = normalizeText(fullName);
+      if (!grouped.has(key)) {
+        grouped.set(key, {
+          fullName,
+          metas: []
+        });
+      }
+
+      const jobTitle = String(row.job_title || "").trim();
+      const department = String(row.department || "").trim();
+      const metaKey = normalizeText(jobTitle) + "|" + normalizeText(department);
+
+      const person = grouped.get(key);
+      if (!person.metas.some(item => item.key === metaKey)) {
+        person.metas.push({
+          key: metaKey,
+          jobTitle,
+          department
+        });
+      }
+    });
+
+    const people = Array.from(grouped.values());
+
+    hint.innerText =
+      `Tìm thấy ${people.length} họ tên phù hợp. Các chức danh/Ban bên dưới là thông tin từng được ghi nhận để hỗ trợ nhận diện.`;
+
+    results.innerHTML = people.map(person => `
       <button
         type="button"
-        class="lookup-person-result"
-        onclick='loadPublicTrainingHistory(${JSON.stringify(String(row.full_name || ""))})'
+        class="lookup-person-result lookup-person-group"
+        onclick='loadPublicTrainingHistory(${JSON.stringify(person.fullName)})'
       >
-        <div>
-          <div class="lookup-person-name">${escapeHTML(row.full_name || "—")}</div>
-          <div class="lookup-person-meta">
-            ${escapeHTML(row.job_title || "Chưa có chức danh")}
-            ·
-            ${escapeHTML(row.department || "Chưa có Ban/Đơn vị")}
+        <div class="lookup-person-group-main">
+          <div class="lookup-person-name">${escapeHTML(person.fullName)}</div>
+          <div class="lookup-person-history-label">Thông tin đã ghi nhận:</div>
+          <div class="lookup-person-history">
+            ${person.metas.length
+              ? person.metas.map(item => `
+                  <div class="lookup-person-meta-line">
+                    <span class="lookup-person-meta-bullet">•</span>
+                    <span>
+                      ${escapeHTML(item.jobTitle || "Chưa có chức danh")}
+                      ·
+                      ${escapeHTML(item.department || "Chưa có Ban/Đơn vị")}
+                    </span>
+                  </div>
+                `).join("")
+              : `<div class="lookup-person-meta-line">Chưa có thông tin chức danh/Ban</div>`
+            }
           </div>
         </div>
-        <div class="lookup-person-arrow">›</div>
+        <div class="lookup-person-arrow" title="Xem hồ sơ đào tạo">›</div>
       </button>
     `).join("");
 
@@ -5365,7 +5518,7 @@ function renderPublicLookupProfile() {
 
   document.getElementById("lookupConflictBanner").innerHTML =
     conflictDates.length
-      ? `<div class="lookup-conflict">⚠ Phát hiện ${conflictDates.length} ngày có từ 2 khóa đào tạo trở lên. Xem tab “Lịch của tôi” để kiểm tra chi tiết.</div>`
+      ? `<div class="lookup-conflict">⚠ Phát hiện ${conflictDates.length} ngày có từ 2 khóa đào tạo trở lên. Xem tab “Lịch đào tạo theo ngày” để kiểm tra chi tiết.</div>`
       : `<div class="lookup-no-conflict">✓ Chưa phát hiện khóa đào tạo nào bị trùng ngày trong hồ sơ hiện tại.</div>`;
 
   renderPublicHistory();
@@ -5451,6 +5604,9 @@ function renderPublicSchedule() {
   }
 
   box.innerHTML = `
+    <div class="lookup-section-note">
+      Các khóa được sắp theo từng ngày học để bạn nhìn nhanh ngày nào đã có lịch và ngày nào bị trùng.
+    </div>
     <div class="lookup-day-list">
       ${dates.map(date => {
         const list = dateMap.get(date) || [];
