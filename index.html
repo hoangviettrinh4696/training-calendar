@@ -3739,6 +3739,113 @@ body.demo-mode #navAdmin {
   }
 }
 
+
+/* PUBLIC LOOKUP — stats tooltip + combined conflict check + breadcrumb */
+.lookup-stats{
+  grid-template-columns:repeat(3,1fr) !important;
+}
+.lookup-stat-hover{
+  position:relative;
+  cursor:help;
+}
+.lookup-stat-tooltip{
+  display:none;
+  position:absolute;
+  z-index:50;
+  left:14px;
+  right:14px;
+  top:calc(100% - 2px);
+  margin-top:8px;
+  padding:10px;
+  border:1px solid #cfe0d6;
+  border-radius:10px;
+  background:#ffffff;
+  box-shadow:0 12px 28px rgba(20,74,48,.16);
+  color:#314b3d;
+}
+.lookup-stat-hover:hover .lookup-stat-tooltip{
+  display:block;
+}
+.lookup-stat-tooltip-item{
+  padding:7px 6px;
+  border-bottom:1px solid #edf2ef;
+}
+.lookup-stat-tooltip-item:last-child{
+  border-bottom:0;
+}
+.lookup-stat-tooltip-item strong{
+  display:block;
+  font-size:12px;
+  line-height:1.4;
+}
+.lookup-stat-tooltip-item span{
+  display:block;
+  margin-top:2px;
+  color:#718078;
+  font-size:11px;
+}
+.lookup-stat-tooltip-empty{
+  color:#718078;
+  font-size:11px;
+}
+.lookup-breadcrumb{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:7px;
+  margin:12px 0 10px;
+  color:#718078;
+  font-size:11px;
+}
+.lookup-breadcrumb button{
+  padding:0;
+  border:0;
+  background:transparent;
+  color:#267a49;
+  font-weight:700;
+  cursor:pointer;
+}
+.lookup-breadcrumb button:hover{
+  text-decoration:underline;
+}
+.lookup-breadcrumb span:last-child{
+  color:#314b3d;
+  font-weight:700;
+}
+.lookup-tabs-two .lookup-tab{
+  min-width:0;
+}
+.lookup-check-section{
+  margin-bottom:12px;
+  padding:18px 20px;
+  border:1px solid #dce8e1;
+  border-radius:14px;
+  background:#fff;
+}
+.lookup-check-section-head{
+  margin-bottom:10px;
+}
+.lookup-check-section h3{
+  margin:0 0 5px;
+}
+.lookup-check-section p{
+  margin:0;
+  color:#687970;
+  font-size:12px;
+}
+@media(max-width:800px){
+  .lookup-stats{
+    grid-template-columns:1fr !important;
+  }
+  .lookup-stat-tooltip{
+    position:static;
+    margin-top:8px;
+  }
+  .lookup-stat-hover:hover .lookup-stat-tooltip{
+    display:block;
+  }
+}
+
 </style>
 </head>
 
@@ -3940,12 +4047,17 @@ body.demo-mode #navAdmin {
       <div id="lookupStats" class="lookup-stats"></div>
       <div id="lookupConflictBanner"></div>
 
-      <div class="lookup-tabs">
+      <div class="lookup-breadcrumb" id="lookupBreadcrumb">
+        <button type="button" onclick="resetPublicTrainingLookup()">Tra cứu lịch đào tạo</button>
+        <span>›</span>
+        <span id="lookupBreadcrumbPerson">—</span>
+        <span id="lookupBreadcrumbSectionWrap" style="display:none">›</span>
+        <span id="lookupBreadcrumbSection" style="display:none"></span>
+      </div>
+
+      <div class="lookup-tabs lookup-tabs-two">
         <button class="lookup-tab active" data-lookup-tab="history" onclick="switchLookupTab('history')">
           Hồ sơ đào tạo
-        </button>
-        <button class="lookup-tab" data-lookup-tab="schedule" onclick="switchLookupTab('schedule')">
-          Lịch đào tạo theo ngày
         </button>
         <button class="lookup-tab" data-lookup-tab="check" onclick="switchLookupTab('check')">
           Kiểm tra trùng lịch
@@ -3953,11 +4065,20 @@ body.demo-mode #navAdmin {
       </div>
 
       <div id="lookupTabHistory" class="lookup-tab-panel"></div>
-      <div id="lookupTabSchedule" class="lookup-tab-panel" style="display:none"></div>
 
       <div id="lookupTabCheck" class="lookup-tab-panel" style="display:none">
+        <div class="lookup-check-section">
+          <div class="lookup-check-section-head">
+            <div>
+              <h3>Lịch đào tạo theo ngày</h3>
+              <p>Check nhanh các ngày bạn đã có lịch đào tạo và phát hiện ngày bị trùng.</p>
+            </div>
+          </div>
+          <div id="lookupQuickSchedule"></div>
+        </div>
+
         <div class="lookup-check-card">
-          <h3>Kiểm tra trước khi đăng ký khóa mới</h3>
+          <h3>Kiểm tra thủ công</h3>
           <p>
             Nhập một hoặc nhiều ngày dự kiến học, cách nhau bằng dấu chấm phẩy.
           </p>
@@ -5556,6 +5677,9 @@ async function loadPublicTrainingHistory(fullName, selectedVariants = []) {
 
     document.getElementById("lookupProfileName").innerText = publicLookupSelectedName;
 
+    const breadcrumbPerson = document.getElementById("lookupBreadcrumbPerson");
+    if (breadcrumbPerson) breadcrumbPerson.innerText = publicLookupSelectedName;
+
     const metas = publicLookupSelectedVariants.map(item =>
       [item.jobTitle, item.department].filter(Boolean).join(" · ")
     ).filter(Boolean);
@@ -5627,6 +5751,36 @@ function getPublicDateMap() {
   return map;
 }
 
+
+function renderLookupStatCard(value, label, courseList) {
+  const list = Array.isArray(courseList) ? courseList : [];
+
+  const tooltip = list.length
+    ? list.map(course => {
+        const start = formatPublicDate(course.start_date);
+        const end = course.end_date && course.end_date !== course.start_date
+          ? " – " + formatPublicDate(course.end_date)
+          : "";
+        return `
+          <div class="lookup-stat-tooltip-item">
+            <strong>${escapeHTML(course.course_name || "—")}</strong>
+            <span>${start}${end}</span>
+          </div>
+        `;
+      }).join("")
+    : `<div class="lookup-stat-tooltip-empty">Không có khóa học.</div>`;
+
+  return `
+    <div class="lookup-stat lookup-stat-hover">
+      <div class="lookup-stat-value">${value}</div>
+      <div class="lookup-stat-label">${escapeHTML(label)}</div>
+      <div class="lookup-stat-tooltip">
+        ${tooltip}
+      </div>
+    </div>
+  `;
+}
+
 function renderPublicLookupProfile() {
   const history = publicLookupHistory;
   const dateMap = getPublicDateMap();
@@ -5636,28 +5790,18 @@ function renderPublicLookupProfile() {
   const completed = history.filter(c => c.status === "Hoàn thành").length;
   const active = history.filter(c => c.status !== "Hoàn thành" && c.status !== "Hủy").length;
 
+  const completedCourses = history.filter(c => c.status === "Hoàn thành");
+  const activeCourses = history.filter(c => c.status !== "Hoàn thành" && c.status !== "Hủy");
+
   document.getElementById("lookupStats").innerHTML = `
-    <div class="lookup-stat">
-      <div class="lookup-stat-value">${history.length}</div>
-      <div class="lookup-stat-label">Tổng số khóa</div>
-    </div>
-    <div class="lookup-stat">
-      <div class="lookup-stat-value">${completed}</div>
-      <div class="lookup-stat-label">Khóa đã hoàn thành</div>
-    </div>
-    <div class="lookup-stat">
-      <div class="lookup-stat-value">${active}</div>
-      <div class="lookup-stat-label">Đang / dự kiến tham gia</div>
-    </div>
-    <div class="lookup-stat">
-      <div class="lookup-stat-value">${uniqueDates.length}</div>
-      <div class="lookup-stat-label">Ngày đào tạo</div>
-    </div>
+    ${renderLookupStatCard(history.length, "Tổng số khóa", history)}
+    ${renderLookupStatCard(completed, "Khóa đã hoàn thành", completedCourses)}
+    ${renderLookupStatCard(active, "Đang / dự kiến tham gia", activeCourses)}
   `;
 
   document.getElementById("lookupConflictBanner").innerHTML =
     conflictDates.length
-      ? `<div class="lookup-conflict">⚠ Phát hiện ${conflictDates.length} ngày có từ 2 khóa đào tạo trở lên. Xem tab “Lịch đào tạo theo ngày” để kiểm tra chi tiết.</div>`
+      ? `<div class="lookup-conflict">⚠ Phát hiện ${conflictDates.length} ngày có từ 2 khóa đào tạo trở lên. Mở “Kiểm tra trùng lịch” để xem lịch theo ngày và kiểm tra chi tiết.</div>`
       : `<div class="lookup-no-conflict">✓ Chưa phát hiện khóa đào tạo nào bị trùng ngày trong hồ sơ hiện tại.</div>`;
 
   renderPublicHistory();
@@ -5733,7 +5877,7 @@ function renderPublicHistory() {
 }
 
 function renderPublicSchedule() {
-  const box = document.getElementById("lookupTabSchedule");
+  const box = document.getElementById("lookupQuickSchedule");
   const dateMap = getPublicDateMap();
   const dates = [...dateMap.keys()].sort();
 
@@ -5767,7 +5911,7 @@ function renderPublicSchedule() {
 }
 
 function switchLookupTab(tab) {
-  ["history", "schedule", "check"].forEach(name => {
+  ["history", "check"].forEach(name => {
     const panel = document.getElementById(
       "lookupTab" + name.charAt(0).toUpperCase() + name.slice(1)
     );
@@ -5777,6 +5921,21 @@ function switchLookupTab(tab) {
   document.querySelectorAll(".lookup-tab").forEach(button => {
     button.classList.toggle("active", button.dataset.lookupTab === tab);
   });
+
+  const section = document.getElementById("lookupBreadcrumbSection");
+  const wrap = document.getElementById("lookupBreadcrumbSectionWrap");
+
+  if (section && wrap) {
+    if (tab === "check") {
+      section.innerText = "Kiểm tra trùng lịch";
+      section.style.display = "inline";
+      wrap.style.display = "inline";
+    } else {
+      section.innerText = "";
+      section.style.display = "none";
+      wrap.style.display = "none";
+    }
+  }
 }
 
 function closePublicStudentList() {
