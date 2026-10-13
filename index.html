@@ -10126,12 +10126,15 @@ function getOverlappingTrainingDates(
   courseB
 ) {
 
+  // Chỉ cảnh báo các ngày trùng từ hôm nay trở đi.
+  // So sánh YYYY-MM-DD theo ngày địa phương, không phụ thuộc giờ UTC.
+  const today = toDateString(new Date());
   const datesB = new Set(
     getCourseTrainingDates(courseB)
   );
 
   return getCourseTrainingDates(courseA)
-    .filter(date => datesB.has(date))
+    .filter(date => date >= today && datesB.has(date))
     .sort();
 }
 
