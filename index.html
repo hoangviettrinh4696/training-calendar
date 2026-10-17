@@ -970,7 +970,7 @@ button {
 table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 1580px;
+  min-width: 1820px;
 }
 
 thead {
@@ -4874,6 +4874,16 @@ body.demo-mode #navAdmin {
       </div>
 
 
+      <div class="form-group">
+        <label for="totalCost">Tổng chi phí khóa học (VNĐ)</label>
+        <input id="totalCost" type="text" inputmode="numeric" placeholder="Ví dụ: 35.000.000" oninput="formatCourseCostInput(this)">
+        <div class="hint">Không bắt buộc. Để trống nếu chưa xác định chi phí.</div>
+      </div>
+      <div class="form-group">
+        <label for="contractNumber">Số hợp đồng (nếu có)</label>
+        <input id="contractNumber" type="text" maxlength="250" placeholder="Ví dụ: 123/HĐ/PVEP-ĐT/2026">
+      </div>
+
       <div class="form-group span-4">
 
         <div class="student-editor-heading">
@@ -5226,6 +5236,8 @@ body.demo-mode #navAdmin {
             <th>Địa điểm</th>
             <th>Giảng viên</th>
             <th>Cơ sở đào tạo</th>
+            <th>Tổng chi phí (VNĐ)</th>
+            <th>Số hợp đồng</th>
             <th>Tình trạng</th>
             <th>Nhân sự thực hiện</th>
             <th>Số HV</th>
@@ -7431,6 +7443,8 @@ function dbToCourse(row) {
     personInChargeId:
       row.person_in_charge_id || null,
 
+    totalCost: row.total_cost ?? null,
+    contractNumber: row.contract_number || "",
     courseName:
       row.course_name || "",
 
@@ -7498,6 +7512,8 @@ function courseToDb(course) {
 
   return {
 
+    total_cost: course.totalCost ?? null,
+    contract_number: course.contractNumber || null,
     course_name:
       course.courseName,
 
@@ -9210,6 +9226,22 @@ async function replaceCourseStudents(
 }
 
 
+function formatCourseCostInput(input) {
+  const digits = String(input.value || "").replace(/\D/g, "");
+  input.value = digits ? Number(digits).toLocaleString("vi-VN") : "";
+}
+function displayCourseCost(value) {
+  return value === null || value === undefined || value === ""
+    ? "—" : Number(value).toLocaleString("vi-VN") + " VNĐ";
+}
+function parseCourseCost() {
+  const value = document.getElementById("totalCost").value.replace(/\D/g, "");
+  if (!value) return null;
+  const amount = Number(value);
+  if (!Number.isSafeInteger(amount) || amount < 0) throw new Error("Chi phí phải là số nguyên VNĐ hợp lệ.");
+  return amount;
+}
+
 /* =====================================================
    SAVE COURSE
 ===================================================== */
@@ -9352,8 +9384,14 @@ const selectedPersonnel =
     );
 
 
+  let totalCost;
+  try { totalCost = parseCourseCost(); }
+  catch (error) { alert(error.message); return; }
+
   const courseData = {
 
+    totalCost,
+    contractNumber: document.getElementById("contractNumber").value.trim(),
     courseName,
 
     startDate,
@@ -9688,6 +9726,8 @@ function editCourse(id) {
 
   const values = {
 
+    totalCost: course.totalCost === null || course.totalCost === undefined ? "" : Number(course.totalCost).toLocaleString("vi-VN"),
+    contractNumber: course.contractNumber || "",
     courseName:
       course.courseName,
 
@@ -9864,6 +9904,8 @@ function resetForm() {
 
   [
     "courseName",
+    "totalCost",
+    "contractNumber",
     "startDate",
     "endDate",
     "actualTrainingDates",
@@ -10961,7 +11003,7 @@ function renderCourses() {
     row.innerHTML = `
 
       <td
-        colspan="13"
+        colspan="15"
         class="empty-state"
       >
         Chưa có khóa đào tạo phù hợp.
@@ -11169,6 +11211,8 @@ function renderCourses() {
             course.provider
           )}
         </td>
+        <td>${course.totalCost === null || course.totalCost === undefined ? "—" : escapeHTML(Number(course.totalCost).toLocaleString("vi-VN"))}</td>
+        <td>${escapeHTML(course.contractNumber || "—")}</td>
 
 
         <td>
@@ -11276,6 +11320,12 @@ function buildExcelData(
 
         "Cơ sở đào tạo":
           course.provider || "",
+
+        "Tổng chi phí khóa học (VNĐ)":
+          course.totalCost ?? "",
+
+        "Số hợp đồng":
+          course.contractNumber || "",
 
         "Tình trạng":
           course.status || "",
@@ -11428,6 +11478,8 @@ function exportCoursesToExcel(
     {wch:25},
     {wch:25},
     {wch:25},
+    {wch:22},
+    {wch:28},
     {wch:20},
     {wch:22},
     {wch:12},
@@ -12461,6 +12513,9 @@ function openCourseDetail(id) {
           "Chưa cấp mã"
         )
       )}
+
+      ${detailRow("Tổng chi phí khóa học", escapeHTML(displayCourseCost(course.totalCost)))}
+      ${detailRow("Số hợp đồng", escapeHTML(course.contractNumber || "—"))}
 
       ${detailRow(
         "Năm đào tạo",
