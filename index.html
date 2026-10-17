@@ -10934,10 +10934,11 @@ function renderAdminCostDashboard() {
   if (!isAdmin()) return;
   const picker = document.getElementById("costDashboardYear");
   const previous = picker.value;
-  const years = [...new Set(courses.map(c => String(c.startDate || "").slice(0,4)).filter(y => /^\d{4}$/.test(y)))].sort().reverse();
   const currentYear = String(new Date().getFullYear());
-  if (!years.includes(currentYear)) years.push(currentYear);
-  years.sort().reverse();
+  const dataYears = courses.map(c => Number(String(c.startDate || "").slice(0,4))).filter(y => Number.isInteger(y) && y >= 1900 && y <= 2200);
+  const firstYear = Math.min(2020, ...dataYears);
+  const lastYear = Math.max(Number(currentYear) + 2, 2028, ...dataYears);
+  const years = Array.from({length: lastYear - firstYear + 1}, (_, i) => String(lastYear - i));
   picker.innerHTML = years.map(y => `<option value="${y}">${y}</option>`).join("");
   picker.value = years.includes(previous) ? previous : currentYear;
   const selected = getAdminCostYearCourses();
