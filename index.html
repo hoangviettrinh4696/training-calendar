@@ -4628,9 +4628,28 @@ body.demo-mode #navAdmin {
 
 </section>
 
+<!-- Thống kê chi phí: chỉ dành cho Admin -->
+<section class="card" id="adminCostDashboard" style="display:none;">
+  <div class="card-title-row">
+    <div class="card-title"><div class="title-icon">₫</div><h2>Thống kê chi phí đào tạo</h2></div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <label for="costDashboardYear" style="margin:0;">Năm bắt đầu</label>
+      <select id="costDashboardYear" onchange="renderAdminCostDashboard()" style="min-width:115px;"></select>
+    </div>
+  </div>
+  <div class="stats" style="grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin-bottom:10px;">
+    <button type="button" class="stat-card clickable" onclick="openAdminCostDetails()" style="text-align:left;">
+      <div class="stat-icon">₫</div><div><div class="stat-number" id="costDashboardTotal" style="font-size:22px;">0 đ</div><div class="stat-label">Tổng chi phí đào tạo</div><div class="stat-click-hint">Bấm để xem chi tiết</div></div>
+    </button>
+    <div class="stat-card"><div class="stat-icon">📚</div><div><div class="stat-number" id="costDashboardCount">0</div><div class="stat-label">Khóa đã nhập chi phí</div></div></div>
+    <div class="stat-card"><div class="stat-icon">📋</div><div><div class="stat-number" id="costDashboardMissing">0</div><div class="stat-label">Khóa chưa nhập chi phí</div></div></div>
+  </div>
+  <div class="hint">Tính theo năm bắt đầu khóa học; khóa chưa nhập chi phí không được cộng vào tổng.</div>
+</section>
 
-
-
+<div class="modal-overlay" id="adminCostDetailModal" onclick="if(event.target===this)closeAdminCostDetails()">
+  <div class="modal"><div class="modal-header"><div class="modal-title" id="adminCostDetailTitle">Chi tiết chi phí</div><button class="modal-close" onclick="closeAdminCostDetails()">×</button></div><div class="modal-body" id="adminCostDetailBody"></div></div>
+</div>
 
         <div class="quick-actions">
           <button class="quick-action-card" onclick="switchPage('direct')">
@@ -10903,7 +10922,45 @@ function renderCompactStudentList(
 }
 
 
+function getAdminCostYearCourses() {
+  const year = document.getElementById("costDashboardYear")?.value;
+  return courses.filter(c => String(c.startDate || "").slice(0, 4) === year);
+}
+
+function renderAdminCostDashboard() {
+  const panel = document.getElementById("adminCostDashboard");
+  if (!panel) return;
+  panel.style.display = isAdmin() ? "block" : "none";
+  if (!isAdmin()) return;
+  const picker = document.getElementById("costDashboardYear");
+  const previous = picker.value;
+  const years = [...new Set(courses.map(c => String(c.startDate || "").slice(0,4)).filter(y => /^\d{4}$/.test(y)))].sort().reverse();
+  const currentYear = String(new Date().getFullYear());
+  if (!years.includes(currentYear)) years.push(currentYear);
+  years.sort().reverse();
+  picker.innerHTML = years.map(y => `<option value="${y}">${y}</option>`).join("");
+  picker.value = years.includes(previous) ? previous : currentYear;
+  const selected = getAdminCostYearCourses();
+  const recorded = selected.filter(c => c.totalCost !== null && c.totalCost !== undefined && c.totalCost !== "" && Number.isFinite(Number(c.totalCost)));
+  const total = recorded.reduce((sum,c) => sum + Number(c.totalCost),0);
+  document.getElementById("costDashboardTotal").textContent = total.toLocaleString("vi-VN") + " đ";
+  document.getElementById("costDashboardCount").textContent = recorded.length;
+  document.getElementById("costDashboardMissing").textContent = selected.length - recorded.length;
+}
+
+function openAdminCostDetails() {
+  if (!isAdmin()) return;
+  const year = document.getElementById("costDashboardYear").value;
+  const items = getAdminCostYearCourses();
+  document.getElementById("adminCostDetailTitle").textContent = "Chi phí đào tạo năm " + year;
+  const rows = items.map((c,i) => `<tr><td>${i+1}</td><td>${escapeHTML(c.courseName || c.name || c.course_name || "")}</td><td>${escapeHTML(String(c.startDate || ""))}</td><td style="text-align:right">${c.totalCost === null || c.totalCost === undefined || c.totalCost === "" ? "Chưa nhập" : Number(c.totalCost).toLocaleString("vi-VN") + " đ"}</td></tr>`).join("");
+  document.getElementById("adminCostDetailBody").innerHTML = items.length ? `<div class="table-wrapper" style="max-height:55vh"><table style="min-width:650px"><thead><tr><th>STT</th><th>Khóa học</th><th>Ngày bắt đầu</th><th>Chi phí</th></tr></thead><tbody>${rows}</tbody></table></div>` : `<div class="modal-empty">Không có khóa học trong năm ${year}.</div>`;
+  document.getElementById("adminCostDetailModal").classList.add("show");
+}
+function closeAdminCostDetails() { document.getElementById("adminCostDetailModal").classList.remove("show"); }
+
 function renderCourses() {
+  renderAdminCostDashboard();
 
   updatePersonFilter();
 
